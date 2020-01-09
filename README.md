@@ -1,7 +1,7 @@
 # Teste Programador Backend Pleno
 Teste destinado aos candidatos a vaga de Programador Backend <b>Pleno</b>. Se o seu nível é outro, por favor, dê uma olhada nos demais repositórios e escolha o que se adequa a sua skill. 
-- [@brainweb-interview-junior](https://github.com/brainweb-br/brainweb-interview-junior)
-- @brainweb-interview-senior
+- [@brainweb-interview-junior](https://github.com/brainweb-br/interview-junior)
+- [@brainweb-interview-senior](https://github.com/brainweb-br/interview-senior)
 
 ## Descrição
 Um cliente chamado Bruce Wayne nos contratou para fazer um sistema com o objetivo de catalogar os super-heróis existentes.
