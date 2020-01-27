@@ -1,6 +1,7 @@
 package br.com.brainweb.interview.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.UUID;
@@ -18,6 +19,7 @@ public class HeroDTO {
 	private String race;
 
 	@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+	@JsonProperty("power_stats")
 	private PowerStatsDTO powerStats;
 
 	@JsonInclude(JsonInclude.Include.NON_DEFAULT)

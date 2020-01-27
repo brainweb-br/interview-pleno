@@ -26,13 +26,13 @@ public class HeroController {
 	@Autowired
 	private PowerStatsRepository powerStatsRepository;
 
-	@GetMapping("/find")
+	@GetMapping
 	public List<Hero> findByName(@RequestParam("name") String name) {
 		List<Hero> hero = heroRepository.findAllByName(name);
 		return hero;
 	}
 
-	@GetMapping("/{id}/find")
+	@GetMapping("/{id}")
 	public Hero find(@PathVariable("id") UUID id) {
 		Hero hero = heroRepository.findById(id).orElseThrow(NotFoundException::new);
 		return hero;
@@ -46,7 +46,7 @@ public class HeroController {
 		return heroService.compareHeros(hero,hero2);
 	}
 
-	@PatchMapping("/{id}/delete")
+	@DeleteMapping("/{id}")
 	public void delete(@PathVariable("id") UUID id) {
 		Hero hero = heroRepository.findById(id).orElseThrow(NotFoundException::new);
 		heroRepository.delete(hero);
@@ -54,13 +54,13 @@ public class HeroController {
 
 	}
 
-	@PatchMapping("{id}/update")
+	@PatchMapping("{id}")
 	public Hero update(@PathVariable("id") UUID id, @RequestBody HeroDTO heroUpdate) {
 		Hero hero = heroRepository.findById(id).orElseThrow(NotFoundException::new);
 		return heroService.update(hero,heroUpdate);
 	}
 
-	@PatchMapping("/create")
+	@PostMapping("/create")
 	public Hero create(@RequestBody HeroDTO heroDTO) {
 
 		return heroService.create(heroDTO);
