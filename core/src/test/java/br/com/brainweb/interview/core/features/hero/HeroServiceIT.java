@@ -76,7 +76,7 @@ public class HeroServiceIT {
         heroDTO.setPowerStats(new PowerStatsDTO(6, 6, 6, 6));
         ObjectMapper ob = new ObjectMapper();
         String heroJSON = ob.writeValueAsString(heroDTO);
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/heros/create").content(heroJSON)).andExpect(
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/heros/create").contentType("application/json").content(heroJSON)).andExpect(
                 MockMvcResultMatchers.status().isOk());
     }
 }
