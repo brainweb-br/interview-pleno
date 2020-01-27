@@ -1,13 +1,16 @@
 package br.com.brainweb.interview.core.configuration;
 
 import com.zaxxer.hikari.HikariDataSource;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.concurrent.TimeUnit;
 
@@ -41,15 +44,20 @@ public class JdbcConfiguration {
         return dataSource;
     }
 
-    @Bean
-    public PlatformTransactionManager platformTransactionManager() {
-        return new DataSourceTransactionManager(dataSource());
-    }
 
     @Bean
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
         return new NamedParameterJdbcTemplate(dataSource());
     }
+
+	@Bean
+	@Qualifier(value ="jpaTransactionManager")
+	public PlatformTransactionManager jpaTransactionManager(EntityManagerFactory emf) {
+		JpaTransactionManager tm = new JpaTransactionManager();
+		tm.setEntityManagerFactory(emf);
+		tm.setDataSource(dataSource());
+		return tm;
+	}
 
     /**
      * Identifies how many connections can be opened based on Postgres recommended formula.
