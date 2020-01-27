@@ -39,8 +39,8 @@ public class HeroController {
 	}
 
 	@GetMapping("/{id}/compare/{id2}")
-	public CompareHeroDTO compare(@PathVariable("id1") UUID id1,@PathVariable("id2")  UUID id2) {
-		Hero hero = heroRepository.findById(id1).orElseThrow(NotFoundException::new);
+	public CompareHeroDTO compare(@PathVariable("id") UUID id,@PathVariable("id2")  UUID id2) {
+		Hero hero = heroRepository.findById(id).orElseThrow(NotFoundException::new);
 		Hero hero2 = heroRepository.findById(id2).orElseThrow(NotFoundException::new);
 
 		return heroService.compareHeros(hero,hero2);
