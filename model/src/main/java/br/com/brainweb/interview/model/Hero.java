@@ -1,20 +1,24 @@
 package br.com.brainweb.interview.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
+import java.util.UUID;
+
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
+@Setter
 @ToString
 public class Hero {
-    private long id;
+    private UUID id;
     private String name;
     private String race;
-    private long powerStatsId;
+    private UUID powerStatsId;
     private boolean enabled;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
 
 }

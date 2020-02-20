@@ -1,87 +1,94 @@
 package br.com.brainweb.interview.core.features.hero;
 
+import br.com.brainweb.interview.core.features.RepositoryGen;
 import br.com.brainweb.interview.model.Hero;
-import br.com.brainweb.interview.model.PowerStats;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
 import java.sql.ResultSet;
-import java.sql.Types;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public class HeroRepository {
-
-    // busca por ID
-    // busca por nome
-    //atualizar todos os campos
-    // excluzao
-
-
-    private JdbcTemplate jdbcTemplate;
+public class HeroRepository implements RepositoryGen<Hero> {
 
     @Autowired
-    public void setDataSource(DataSource dataSource) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+    private JdbcTemplate jdbcTemplate;
+
+    @Override
+    public int count() {
+        return jdbcTemplate
+                .queryForObject("select count(*) from hero", Integer.class);
+    }
+
+    @Override
+    public int saveAndUpdate(Hero h) {
+        return jdbcTemplate.update(
+                "insert into hero (" +
+                        "name," +
+                        "race," +
+                        "power_stats_id," +
+                        "enabled," +
+                        "created_at," +
+                        "updated_at) " +
+                        "values (?,?,?,?,?,?)",
+                h.getName(),
+                h.getRace(),
+                h.getPowerStatsId(),
+                h.isEnabled(),
+                h.getCreatedAt(),
+                h.getUpdatedAt());
     }
 
 
-    public List<Hero> findHeros() {
+    @Override
+    public int deleteById(UUID id) {
+        return jdbcTemplate.update(
+                "delete from hero where id = ?",
+                id);
+    }
+
+    @Override
+    public List<Hero> findAll() {
         return jdbcTemplate.query(
-                "select id, name, race, power_stats_id, enabled, createdAt, updated_at",
+                "select * from hero",
                 this::mapHero
         );
     }
 
-    public Hero findHeroById(Integer id) {
-        return jdbcTemplate.queryForObject(
-                "select id, name, race, power_stats_id, enabled, createdAt, updated_at where id = ?",
+    @Override
+    public List<Hero> findByName(String name) {
+        return jdbcTemplate.query(
+                "select * from hero where name like ?",
+                new Object[]{"%" + name + "%"}, this::mapHero
+        );
+    }
+
+    @Override
+    public Optional<Hero> findById(UUID id) {
+        return Optional.of(jdbcTemplate.queryForObject(
+                "select * where id = ?",
                 new Object[]{id},
                 this::mapHero
-        );
-    }
-
-    public int removeHeroById(Integer id) {
-        return jdbcTemplate.update(
-                "delete from hero where id = ?", id);
-    }
-
-    public void insertUpdatePowerStats(PowerStats powerStats) {
-
-        Object[] params = new Object[]{
-                powerStats.getStrength(),
-                powerStats.getDexterity(),
-                powerStats.getIntelligence(),
-                powerStats.getCreatedAt(),
-                powerStats.getUpdatedAt()
-
-        };
-        int[] types = new int[]{
-                Types.INTEGER,// strength
-                Types.INTEGER,// dexterity
-                Types.INTEGER,//intelligence
-                Types.DATE,
-                Types.DATE
-        };
-
-
-        int update = jdbcTemplate.update("insert into power_stats values(?,?,?,?,?,?)", params, types);
+        ));
     }
 
     @SneakyThrows
     private Hero mapHero(ResultSet resultSet, int i) {
         return new Hero(
-                resultSet.getLong("id"),
+                resultSet.getObject("id", UUID.class),
                 resultSet.getString("name"),
                 resultSet.getString("race"),
-                resultSet.getLong("power_stats_id"),
+                resultSet.getObject("power_stats_id", UUID.class),
                 resultSet.getBoolean("enabled"),
-                resultSet.getObject("createdAt", LocalDateTime.class),
-                resultSet.getObject("updated_at", LocalDateTime.class)
+                resultSet.getObject("created_at", OffsetDateTime.class),
+                resultSet.getObject("updated_at", OffsetDateTime.class)
         );
     }
 }

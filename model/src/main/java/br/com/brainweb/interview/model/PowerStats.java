@@ -1,20 +1,22 @@
 package br.com.brainweb.interview.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.util.UUID;
 
 @AllArgsConstructor
+@NoArgsConstructor
+@Setter
 @Getter
 @ToString
 public class PowerStats {
 
-    private long id;
+    private UUID id;
     private int strength;
+    private int agility;
     private int dexterity;
     private int intelligence;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
 }
