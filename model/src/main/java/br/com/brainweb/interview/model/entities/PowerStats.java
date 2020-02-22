@@ -16,11 +16,6 @@ import javax.validation.constraints.NotNull;
 @ToString
 public class PowerStats extends AbstractEntity {
 
-
-    @NotNull
-    @Column(name = "strength")
-    private Integer strength;
-
     @NotNull
     @Column(name = "agility")
     private Integer agility;
@@ -32,6 +27,11 @@ public class PowerStats extends AbstractEntity {
     @NotNull
     @Column(name = "intelligence")
     private Integer intelligence;
+
+    @NotNull
+    @Column(name = "strength")
+    private Integer strength;
+
 
 
 }

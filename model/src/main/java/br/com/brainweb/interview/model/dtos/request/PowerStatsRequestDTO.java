@@ -6,9 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class PowerStatsRequestDTO extends ResponseDTO {
-    @NotNull(message = "strength may not be null")
-    private Integer strength;
+public class PowerStatsRequestDTO {
 
     @NotNull(message = "agility may not be null")
     private Integer agility;
@@ -18,4 +16,7 @@ public class PowerStatsRequestDTO extends ResponseDTO {
 
     @NotNull(message = "intelligence may not be null")
     private Integer intelligence;
+
+    @NotNull(message = "strength may not be null")
+    private Integer strength;
 }

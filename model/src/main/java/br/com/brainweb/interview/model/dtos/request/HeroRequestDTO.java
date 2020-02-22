@@ -22,7 +22,7 @@ public class HeroRequestDTO {
     private Race race;
 
     @NotNull(message = "Power stats id may not be null")
-    private PowerStats powerStats;
+    private PowerStatsRequestDTO powerStats;
 
     @NotNull(message = "Enabled may not be null")
     private Boolean enabled;
