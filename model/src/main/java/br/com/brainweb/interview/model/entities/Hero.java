@@ -18,22 +18,22 @@ import javax.validation.constraints.NotNull;
 public class Hero extends AbstractEntity {
 
 
-    @NotNull(message = "Name may not be blank")
-    @NotEmpty(message = "Name may not be empty")
+    @NotNull
+    @NotEmpty
     @Length(max = 255)
     @Column(name = "name", unique = true)
     private String name;
 
-    @NotNull(message = "Race may not be blank")
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "race")
     private Race race;
 
-    @NotNull(message = "Power stats id may not be blank")
+    @NotNull
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "power_stats_id")
     private PowerStats powerStats;
 
-    @NotNull(message = "Enabled may not be blank")
+    @NotNull
     private Boolean enabled;
 }

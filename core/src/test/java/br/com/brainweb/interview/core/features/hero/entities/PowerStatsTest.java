@@ -1,6 +1,6 @@
 package br.com.brainweb.interview.core.features.hero.entities;
 
-import br.com.brainweb.interview.core.features.powerstats.PowerStatsRepository;
+import br.com.brainweb.interview.core.features.repositories.PowerStatsRepository;
 import br.com.brainweb.interview.model.entities.PowerStats;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

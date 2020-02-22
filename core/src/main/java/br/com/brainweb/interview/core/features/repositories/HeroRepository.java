@@ -1,4 +1,4 @@
-package br.com.brainweb.interview.core.features.hero;
+package br.com.brainweb.interview.core.features.repositories;
 
 import br.com.brainweb.interview.model.entities.Hero;
 import org.springframework.data.jpa.repository.JpaRepository;

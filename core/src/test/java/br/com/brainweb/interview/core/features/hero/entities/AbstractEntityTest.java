@@ -1,7 +1,7 @@
 package br.com.brainweb.interview.core.features.hero.entities;
 
-import br.com.brainweb.interview.core.features.hero.HeroRepository;
-import br.com.brainweb.interview.core.features.powerstats.PowerStatsRepository;
+import br.com.brainweb.interview.core.features.repositories.HeroRepository;
+import br.com.brainweb.interview.core.features.repositories.PowerStatsRepository;
 import br.com.brainweb.interview.model.entities.Hero;
 import br.com.brainweb.interview.model.entities.PowerStats;
 import br.com.brainweb.interview.model.enums.Race;
