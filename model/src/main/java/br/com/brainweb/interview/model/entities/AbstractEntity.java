@@ -13,7 +13,7 @@ import java.util.UUID;
 @Setter
 @ToString
 @EqualsAndHashCode(of = {"id"})
-public abstract class EntityBean {
+public abstract class AbstractEntity {
 
     @Id
     @Column(name = "id", columnDefinition = "user unique ID")

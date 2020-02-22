@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @ToString
-public class PowerStats extends EntityBean {
+public class PowerStats extends AbstractEntity {
 
 
     @NotNull(message = "strength may not be blank")

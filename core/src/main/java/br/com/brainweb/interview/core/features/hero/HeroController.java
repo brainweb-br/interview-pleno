@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @RestController
@@ -38,7 +37,7 @@ public class HeroController {
         hero = new Hero();
         hero.setName(UUID.randomUUID().toString());
         hero.setRace(Race.ALIEN);
-        hero.setPowerStatsId(powerStats);
+        hero.setPowerStats(powerStats);
         hero.setEnabled(true);
 
         heroRepository.save(hero);

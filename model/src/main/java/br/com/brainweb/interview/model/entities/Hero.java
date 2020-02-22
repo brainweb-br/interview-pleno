@@ -15,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @ToString
-public class Hero extends EntityBean {
+public class Hero extends AbstractEntity {
 
 
     @NotNull(message = "Name may not be blank")
@@ -32,7 +32,7 @@ public class Hero extends EntityBean {
     @NotNull(message = "Power stats id may not be blank")
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "power_stats_id")
-    private PowerStats powerStatsId;
+    private PowerStats powerStats;
 
     @NotNull(message = "Enabled may not be blank")
     private Boolean enabled;

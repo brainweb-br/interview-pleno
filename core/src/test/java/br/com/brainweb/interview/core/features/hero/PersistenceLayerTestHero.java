@@ -12,7 +12,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -46,7 +45,7 @@ public class PersistenceLayerTestHero {
         Hero superMan = new Hero();
         superMan.setName("SuperMan");
         superMan.setRace(Race.ALIEN);
-        superMan.setPowerStatsId(powerStats);
+        superMan.setPowerStats(powerStats);
         superMan.setEnabled(true);
         superMan.setCreated(LocalDateTime.now());
         superMan.setUpdated(LocalDateTime.now());
