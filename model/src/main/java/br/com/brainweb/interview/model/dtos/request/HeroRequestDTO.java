@@ -12,10 +12,9 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class HeroRequestDTO {
-    @NotNull(message = "Name may not be null")
-    @NotEmpty(message = "Name may not be empty")
-    @NotBlank(message = "Name may not be blank")
-    @Length(max = 255)
+
+    @NotBlank(message = "Name may not be blank, empty or null")
+    @Length(max = 255, message = "Name can't be longer then 255 char")
     private String name;
 
     @NotNull(message = "Race may not be null")
