@@ -13,7 +13,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/compareHeroes")
-public class compareHeroesController {
+public class CompareHeroesController {
 
     @Autowired
     private CompareHeroesService compareHeroesService;
