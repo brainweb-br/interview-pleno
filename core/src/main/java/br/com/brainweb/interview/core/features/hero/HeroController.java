@@ -70,7 +70,14 @@ public class HeroController {
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity delete(@PathVariable("id") UUID id){
-                
+        try{
+            boolean deleted = this.heroService.delete(id);
+            return deleted ?
+                    ResponseEntity.ok().build() :
+                    ResponseEntity.notFound().build();
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
     }
 
 

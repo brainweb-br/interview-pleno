@@ -62,5 +62,16 @@ public class HeroService {
         return new HeroDTO(hero, hero.getPowerStats());
     }
 
+    public boolean delete(UUID id){
+        Optional<Hero> heroOptional = this.heroRepository.findById(id);
+        if(heroOptional.isEmpty()){
+            return false;
+        }
+
+        this.heroRepository.delete(heroOptional.get());
+        return true;
+
+    }
+
 
 }

@@ -25,7 +25,7 @@ public class Hero {
     private Timestamp created_at;
     private Timestamp updated_at;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn
     private PowerStats powerStats;
 
