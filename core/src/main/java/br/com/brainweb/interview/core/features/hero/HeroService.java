@@ -25,6 +25,11 @@ public class HeroService {
      * @return HeroDTO
      */
     public HeroDTO create(HeroDTO heroDTO){
+        Optional<Hero> heroOptional = this.heroRepository.findByName(heroDTO.getName());
+        if(heroOptional.isPresent()){
+            return null;
+        }
+
         PowerStats powerStats = this.powerStatsService.create(heroDTO);
         ModelMapper modelMapper = new ModelMapper();
         Hero hero =  modelMapper.map(heroDTO, Hero.class);
