@@ -1,5 +1,7 @@
 package br.com.brainweb.interview.core.features.hero;
 
+import br.com.brainweb.interview.core.features.compareHeroes.CompareHeroesService;
+import br.com.brainweb.interview.model.DTO.ComparisonHeroesDTO;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
 import br.com.brainweb.interview.model.enums.Race;
@@ -11,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -20,18 +21,19 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.sql.Timestamp;
 import java.util.UUID;
 
+import static org.junit.Assert.assertNotNull;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-public class CompareHeroesControllerIT {
-
-    @LocalServerPort
-    private int port;
-
+public class CompareHeroesServiceTest {
     @MockBean
     private HeroRepository heroRepository;
+
+    @Autowired
+    private CompareHeroesService compareHeroesService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -84,15 +86,13 @@ public class CompareHeroesControllerIT {
 
     @Test
     public void getComparasionHeroesSuccess() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.
-                get("/api/v1/compareHeroes/6dcc3998-f510-404d-aac4-2ce8caae29b9/751776fc-2d07-4584-9dc9-00c2b7173fca"))
-                .andExpect(status().isOk());
+        ComparisonHeroesDTO comparisonHeroesDTO = compareHeroesService.getComparison(UUID.fromString("6dcc3998-f510-404d-aac4-2ce8caae29b9"), UUID.fromString("751776fc-2d07-4584-9dc9-00c2b7173fca"));
+        assertNotNull(comparisonHeroesDTO);
     }
 
     @Test
     public void getComparasionHeroesFailure() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.
-                get("/api/v1/compareHeroes/6dcc3998-f510-404d-aac4-2ce8caae29b9/89879a33-0ce0-492b-b3ec-0fd49d2e026d"))
-                .andExpect(status().isNotFound());
+        ComparisonHeroesDTO comparisonHeroesDTO = compareHeroesService.getComparison(UUID.fromString("6dcc3998-f510-404d-aac4-2ce8caae29b9"), UUID.fromString("9f72ac14-ef20-4cd7-98ca-89c047780b4a"));
+        assertNull(comparisonHeroesDTO);
     }
 }

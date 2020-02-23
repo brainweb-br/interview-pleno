@@ -4,7 +4,6 @@ import br.com.brainweb.interview.model.DTO.HeroDTO;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
 import br.com.brainweb.interview.model.enums.Race;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,26 +15,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 
 import java.net.URI;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
-import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -114,7 +104,7 @@ public class HeroControllerIT {
         return hero;
     }
 
-    private HeroDTO MockHeroDTOSucess(){
+    private HeroDTO MockHeroDTONonExistent(){
         return HeroDTO.builder()
                 .name("superMan")
                 .agility(3)
@@ -127,7 +117,7 @@ public class HeroControllerIT {
                 .build();
     }
 
-    private HeroDTO MockHeroDTOFailure(){
+    private HeroDTO MockHeroDTOExisting(){
         return HeroDTO.builder()
                 .name("batman")
                 .agility(3)
@@ -209,7 +199,7 @@ public class HeroControllerIT {
     @Test
     public void createHeroFailure() throws Exception{
         Hero hero = MockSaveHeroRepository();
-        HeroDTO heroDTO = MockHeroDTOFailure();
+        HeroDTO heroDTO = MockHeroDTOExisting();
         BDDMockito.when(heroRepository.save(hero)).thenReturn(hero);
         ResponseEntity<String> response = testRestTemplate.postForEntity("/api/v1/heroes", heroDTO, String.class);
         Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(400);
@@ -218,7 +208,7 @@ public class HeroControllerIT {
     @Test
     public void createHeroSuccess() throws Exception{
         Hero hero = MockSaveHeroRepository();
-        HeroDTO heroDTO = MockHeroDTOSucess();
+        HeroDTO heroDTO = MockHeroDTONonExistent();
         BDDMockito.when(heroRepository.save(hero)).thenReturn(hero);
         ResponseEntity<String> response = testRestTemplate.postForEntity("/api/v1/heroes", heroDTO, String.class);
         Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(201);
@@ -227,7 +217,7 @@ public class HeroControllerIT {
     @Test
     public void updateHeroFailure() throws Exception {
         Hero hero = MockSaveHeroRepository();
-        HeroDTO heroDTO = MockHeroDTOSucess();
+        HeroDTO heroDTO = MockHeroDTONonExistent();
         BDDMockito.when(heroRepository.save(hero)).thenReturn(hero);
 
         final String uri = "/api/v1/heroes/751776fc-2d07-4584-9dc9-00c2b7173fca";
@@ -239,7 +229,7 @@ public class HeroControllerIT {
     @Test
     public void updateHeroSuccess() throws Exception {
         Hero hero = MockUpdateHeroRepository();
-        HeroDTO heroDTO = MockHeroDTOSucess();
+        HeroDTO heroDTO = MockHeroDTONonExistent();
         BDDMockito.when(heroRepository.save(hero)).thenReturn(hero);
 
         final String uri = "/api/v1/heroes/6dcc3998-f510-404d-aac4-2ce8caae29b9";
