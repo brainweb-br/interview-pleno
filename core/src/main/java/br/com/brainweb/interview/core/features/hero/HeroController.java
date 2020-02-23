@@ -17,6 +17,11 @@ public class HeroController {
     @Autowired
     private HeroService heroService;
 
+    /**
+     * EndPoint de criação de heróis
+     * @param heroDTO
+     * @return ResponseEntity
+     */
     @PostMapping
     @Transactional
     public ResponseEntity create(@RequestBody HeroDTO heroDTO) {
@@ -29,6 +34,11 @@ public class HeroController {
         }
     }
 
+    /**
+     * EndPoint de busca de heróis por id
+     * @param id
+     * @return ResponseEntity
+     */
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") UUID id){
         try{
@@ -41,6 +51,11 @@ public class HeroController {
         }
     }
 
+    /**
+     * Endpoint de busca de heróis por nome
+     * @param name
+     * @return ResponseEntity
+     */
     @GetMapping("/name/{name}")
     public ResponseEntity get(@PathVariable("name") String name){
         try{
@@ -54,6 +69,12 @@ public class HeroController {
 
     }
 
+    /**
+     * Endpoint de alteração de informações de heróis
+     * @param id
+     * @param heroDTO
+     * @return ResponseEntity
+     */
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity update(@PathVariable("id") UUID id, @RequestBody HeroDTO heroDTO){
@@ -67,6 +88,11 @@ public class HeroController {
         }
     }
 
+    /**
+     * EndPoint de remoção de heróis
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity delete(@PathVariable("id") UUID id){

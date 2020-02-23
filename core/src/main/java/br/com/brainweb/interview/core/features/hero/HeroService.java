@@ -19,6 +19,11 @@ public class HeroService {
     @Autowired
     private PowerStatsService powerStatsService;
 
+    /**
+     * Método de criação de heróis
+     * @param heroDTO
+     * @return HeroDTO
+     */
     public HeroDTO create(HeroDTO heroDTO){
         PowerStats powerStats = this.powerStatsService.create(heroDTO);
         ModelMapper modelMapper = new ModelMapper();
@@ -28,6 +33,11 @@ public class HeroService {
         return new HeroDTO(hero, hero.getPowerStats());
     }
 
+    /**
+     * Método de busca de heróis por id
+     * @param id
+     * @return HeroDTO
+     */
     public HeroDTO get(UUID id){
         Optional<Hero> heroOptional = this.heroRepository.findById(id);
         if(heroOptional.isPresent()){
@@ -38,6 +48,11 @@ public class HeroService {
         return null;
     }
 
+    /**
+     * Método de busca de heróis por nome
+     * @param name
+     * @return HeroDTO
+     */
     public HeroDTO get(String name){
         Optional<Hero> heroOptional = this.heroRepository.findByName(name);
         if(heroOptional.isPresent()){
@@ -48,6 +63,12 @@ public class HeroService {
         return null;
     }
 
+    /**
+     * Método de alteração de informações dos heróis
+     * @param id
+     * @param heroDTO
+     * @return
+     */
     public HeroDTO update(UUID id, HeroDTO heroDTO){
         Optional<Hero> heroOptional = this.heroRepository.findById(id);
         if(heroOptional.isEmpty()){
@@ -62,6 +83,11 @@ public class HeroService {
         return new HeroDTO(hero, hero.getPowerStats());
     }
 
+    /**
+     * Método de remoção de heróis
+     * @param id
+     * @return
+     */
     public boolean delete(UUID id){
         Optional<Hero> heroOptional = this.heroRepository.findById(id);
         if(heroOptional.isEmpty()){

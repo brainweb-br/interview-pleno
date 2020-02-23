@@ -14,6 +14,11 @@ public class PowerStatsService {
     @Autowired
     private PowerStatsRepository powerStatsRepository;
 
+    /**
+     * Método de criação dos atributos dos heróis
+     * @param heroDTO
+     * @return PowerStats
+     */
     public PowerStats create(HeroDTO heroDTO){
         ModelMapper modelMapper = new ModelMapper();
         PowerStats powerStats =  modelMapper.map(heroDTO, PowerStats.class);
@@ -21,6 +26,12 @@ public class PowerStatsService {
         return powerStats;
     }
 
+    /**
+     * Método de alteração de informações dos atributos dos heróis
+     * @param powerStats
+     * @param heroDTO
+     * @return PowerStats
+     */
     public PowerStats update(PowerStats powerStats, HeroDTO heroDTO){
         ModelMapper modelMapper = new ModelMapper();
         powerStats.update(modelMapper.map(heroDTO, PowerStats.class));

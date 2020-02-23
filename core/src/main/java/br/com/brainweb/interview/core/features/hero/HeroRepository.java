@@ -8,5 +8,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface HeroRepository extends CrudRepository<Hero, UUID> {
+    /**
+     * Consulta heróis por nome
+     * @param name
+     * @return Optional<Hero>
+     */
     public Optional<Hero> findByName(String name);
 }
