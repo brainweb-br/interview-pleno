@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
 @JsonPropertyOrder({"id", "agility", "dexterity", "intelligence", "strength", "created", "updated"})
 public class PowerStatsResponseDTO extends ResponseDTO {
 

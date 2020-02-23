@@ -1,7 +1,5 @@
 package br.com.brainweb.interview.core.features.controllers;
 
-import br.com.brainweb.interview.core.features.repositories.HeroRepository;
-import br.com.brainweb.interview.core.features.repositories.PowerStatsRepository;
 import br.com.brainweb.interview.core.features.services.HeroService;
 import br.com.brainweb.interview.model.dtos.request.HeroRequestDTO;
 import br.com.brainweb.interview.model.dtos.response.HeroResponseDTO;
@@ -36,9 +34,11 @@ public class HeroController {
         return null;
     }
 
+    @DeleteMapping(path = "{uuid}")
+    public ResponseEntity<Void> delete(@PathVariable String uuid) {
 
-    public ResponseEntity<Void> delete(Object dto) throws Exception {
-        return null;
+        heroService.delete(uuid);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     public ResponseEntity<Void> delete(Long id) throws Exception {
@@ -48,7 +48,11 @@ public class HeroController {
     @GetMapping(path = "/{uuid:^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$}")
     public ResponseEntity<HeroResponseDTO> find(@PathVariable String uuid) {
 
-        return new ResponseEntity<>(heroService.find(uuid), HttpStatus.OK);
+        HeroResponseDTO heroResponseDTO = heroService.find(uuid);
+        if (heroResponseDTO != null) {
+            return new ResponseEntity<>(heroResponseDTO, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 

@@ -43,9 +43,10 @@ public class DTOToEntityDTOMappingTest {
     @Order(1)
     @DisplayName("Conversion PowerStats -> PowerStatsResponseDTO should be correct")
     public void whenConvertPowerStatsEntityToPowerStatsResponseDto_thenCorrect() {
+        System.out.println(powerStats);
 
         powerStatsResponseDTO = modelMapper.map(powerStats, PowerStatsResponseDTO.class);
-
+        System.out.println("modelMapper = " + modelMapper);
         assertAll("PowerStats and HeroResponseDTO have  to be equals",
                 () -> assertEquals(powerStats.getId(), powerStatsResponseDTO.getId()),
                 () -> assertEquals(powerStats.getAgility(), powerStatsResponseDTO.getAgility()),
@@ -139,11 +140,7 @@ public class DTOToEntityDTOMappingTest {
     @DisplayName("Conversion  PowerStatsRequestDTO -> PowerStats should be correct")
     public void whenConvertPowerStatsRequestDTOtoToPowerStatsEntity_thenCorrect() {
 
-        powerStatsRequestDTO = new PowerStatsRequestDTO();
-        powerStatsRequestDTO.setAgility(generateRandomNumber(1, 10));
-        powerStatsRequestDTO.setDexterity(generateRandomNumber(1, 10));
-        powerStatsRequestDTO.setIntelligence(generateRandomNumber(1, 10));
-        powerStatsRequestDTO.setStrength(generateRandomNumber(1, 10));
+        powerStatsRequestDTO = createPowerStatsRequestDTO();
 
         PowerStats powerStats = modelMapper.map(powerStatsRequestDTO, PowerStats.class);
 
@@ -159,11 +156,7 @@ public class DTOToEntityDTOMappingTest {
     @DisplayName("Conversion HeroRequestDTO ->  Hero should be correct")
     public void whenConvertHeroEntityHeroResponseDTOtoToHeroEntity_thenCorrect() {
 
-        HeroRequestDTO heroRequestDTO = new HeroRequestDTO();
-        heroRequestDTO.setName(generateRandomName(10));
-        heroRequestDTO.setRace(pickRandomRace());
-        heroRequestDTO.setPowerStats(powerStatsRequestDTO);
-        heroRequestDTO.setEnabled(generateRandomBoolean());
+        HeroRequestDTO heroRequestDTO = createHeroRequestDTO();
 
         Hero hero = modelMapper.map(heroRequestDTO, Hero.class);
 

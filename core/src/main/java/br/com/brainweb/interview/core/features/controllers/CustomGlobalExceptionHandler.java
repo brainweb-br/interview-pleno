@@ -2,6 +2,7 @@ package br.com.brainweb.interview.core.features.controllers;
 
 import br.com.brainweb.interview.model.exeptions.CustomErrorResponse;
 import br.com.brainweb.interview.model.exeptions.HeroNotFoundException;
+import br.com.brainweb.interview.model.exeptions.HeroWithNameAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,6 +24,18 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         errors.setStatus(HttpStatus.NOT_FOUND.value());
 
         return new ResponseEntity<>(errors, HttpStatus.NOT_FOUND);
+
+    }
+
+    @ExceptionHandler(HeroWithNameAlreadyExistsException.class)
+    public ResponseEntity<CustomErrorResponse> customHandleNameAlreadyExists(Exception ex, WebRequest request) {
+
+        CustomErrorResponse errors = new CustomErrorResponse();
+        errors.setTimestamp(LocalDateTime.now());
+        errors.setError(ex.getMessage());
+        errors.setStatus(HttpStatus.CONFLICT.value());
+
+        return new ResponseEntity<>(errors, HttpStatus.CONFLICT);
 
     }
 

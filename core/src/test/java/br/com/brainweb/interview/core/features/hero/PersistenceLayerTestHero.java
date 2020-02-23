@@ -53,7 +53,7 @@ public class PersistenceLayerTestHero {
         superMan.setUpdated(LocalDateTime.now());
 
         // when
-        Hero heroFoundByName = heroRepository.findByName(superMan.getName());
+        Hero heroFoundByName = heroRepository.findByName(superMan.getName()).get();
 
         // then
         assertThat(heroFoundByName.getName())

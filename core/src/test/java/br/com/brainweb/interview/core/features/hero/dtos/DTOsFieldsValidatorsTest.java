@@ -27,16 +27,16 @@ public class DTOsFieldsValidatorsTest {
     @Test
     public void testPowerStatsRequestDTOValidators() {
 
-        PowerStatsRequestDTO powerStatsRequestDTOAgilityNull = powerStatsRequestDTOCreator();
+        PowerStatsRequestDTO powerStatsRequestDTOAgilityNull = createPowerStatsRequestDTO();
         powerStatsRequestDTOAgilityNull.setAgility(null);
 
-        PowerStatsRequestDTO powerStatsRequestDTODexterityNull = powerStatsRequestDTOCreator();
+        PowerStatsRequestDTO powerStatsRequestDTODexterityNull = createPowerStatsRequestDTO();
         powerStatsRequestDTODexterityNull.setDexterity(null);
 
-        PowerStatsRequestDTO powerStatsRequestDTOIntelligenceNull = powerStatsRequestDTOCreator();
+        PowerStatsRequestDTO powerStatsRequestDTOIntelligenceNull = createPowerStatsRequestDTO();
         powerStatsRequestDTOIntelligenceNull.setIntelligence(null);
 
-        PowerStatsRequestDTO powerStatsRequestDTOStrengthNull = powerStatsRequestDTOCreator();
+        PowerStatsRequestDTO powerStatsRequestDTOStrengthNull = createPowerStatsRequestDTO();
         powerStatsRequestDTOStrengthNull.setStrength(null);
 
         assertAll("Validation ofPowerStatsRequestDTO has failed ",
@@ -51,22 +51,22 @@ public class DTOsFieldsValidatorsTest {
 
     @Test
     public void testHeroRequestDTOValidators() {
-        HeroRequestDTO heroRequestDTONameNull = heroRequestDTOCreator();
+        HeroRequestDTO heroRequestDTONameNull = createHeroRequestDTO();
         heroRequestDTONameNull.setName(null);
 
-        HeroRequestDTO heroRequestDTONameLargerThan255chars = heroRequestDTOCreator();
+        HeroRequestDTO heroRequestDTONameLargerThan255chars = createHeroRequestDTO();
         heroRequestDTONameLargerThan255chars.setName(generateRandomName(256));
 
-        HeroRequestDTO heroRequestDTONameEmptyName = heroRequestDTOCreator();
+        HeroRequestDTO heroRequestDTONameEmptyName = createHeroRequestDTO();
         heroRequestDTONameEmptyName.setName("");
 
-        HeroRequestDTO heroRequestDTORaceNull = heroRequestDTOCreator();
+        HeroRequestDTO heroRequestDTORaceNull = createHeroRequestDTO();
         heroRequestDTORaceNull.setRace(null);
 
-        HeroRequestDTO heroRequestDTOPowerStatsNull = heroRequestDTOCreator();
+        HeroRequestDTO heroRequestDTOPowerStatsNull = createHeroRequestDTO();
         heroRequestDTOPowerStatsNull.setPowerStats(null);
 
-        HeroRequestDTO heroRequestDTOEnabledNull = heroRequestDTOCreator();
+        HeroRequestDTO heroRequestDTOEnabledNull = createHeroRequestDTO();
         heroRequestDTOEnabledNull.setEnabled(null);
 
 
@@ -91,26 +91,5 @@ public class DTOsFieldsValidatorsTest {
         return validator.validate(heroRequestDTOWithNullField).iterator().next().getMessage();
     }
 
-    public PowerStatsRequestDTO powerStatsRequestDTOCreator() {
-
-        PowerStatsRequestDTO powerStatsRequestDTO = new PowerStatsRequestDTO();
-        powerStatsRequestDTO.setAgility(generateRandomNumber(1, 10));
-        powerStatsRequestDTO.setDexterity(generateRandomNumber(1, 10));
-        powerStatsRequestDTO.setIntelligence(generateRandomNumber(1, 10));
-        powerStatsRequestDTO.setStrength(generateRandomNumber(1, 10));
-
-        return powerStatsRequestDTO;
-    }
-
-    public HeroRequestDTO heroRequestDTOCreator() {
-
-        HeroRequestDTO heroRequestDTO = new HeroRequestDTO();
-        heroRequestDTO.setName(generateRandomName(10));
-        heroRequestDTO.setRace(pickRandomRace());
-        heroRequestDTO.setPowerStats(powerStatsRequestDTOCreator());
-        heroRequestDTO.setEnabled(generateRandomBoolean());
-
-        return heroRequestDTO;
-    }
 
 }

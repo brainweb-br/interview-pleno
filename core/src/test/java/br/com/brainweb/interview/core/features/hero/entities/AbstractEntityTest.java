@@ -6,6 +6,7 @@ import br.com.brainweb.interview.model.entities.Hero;
 import br.com.brainweb.interview.model.entities.PowerStats;
 import br.com.brainweb.interview.model.enums.Race;
 import org.junit.FixMethodOrder;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+import static br.com.brainweb.interview.core.features.hero.TestUtils.createHero;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -26,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Transactional
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AbstractEntityTest {
+
     private static PowerStats ps;
 
     private static Hero hero;
@@ -43,11 +46,7 @@ public class AbstractEntityTest {
 
     @Test
     public void timeStampTest() {
-        hero = new Hero();
-        hero.setName("SuperMan");
-        hero.setRace(Race.ALIEN);
-        hero.setEnabled(true);
-        hero.setPowerStats(ps);
+        hero = createHero();
 
         LocalDateTime initDateAndTime =
                 Instant.ofEpochMilli(System.currentTimeMillis())
@@ -65,11 +64,7 @@ public class AbstractEntityTest {
     @Test
     public void uuidTest() {
         // id is UUID type
-        ps = new PowerStats();
-        ps.setIntelligence(1);
-        ps.setDexterity(2);
-        ps.setAgility(3);
-        ps.setStrength(4);
+        ps = hero.getPowerStats();
         PowerStats psSaved = powerStatsRepository.save(ps);
         assertTrue(psSaved.getId()
                 .toString()

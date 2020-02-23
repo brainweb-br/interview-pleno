@@ -13,6 +13,8 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 
+import static br.com.brainweb.interview.core.features.hero.TestUtils.createHero;
+import static br.com.brainweb.interview.core.features.hero.TestUtils.createPowerStats;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
@@ -24,38 +26,21 @@ public class HeroTest {
     private HeroRepository heroRepository;
 
 
-    private static Hero hero;
+
 
     @BeforeAll
     public static void init() {
 
-        // given
-        PowerStats powerStats = new PowerStats();
-
-//        UUID id = UUID.randomUUID();
-////        powerStats.setId(id);
-
-        powerStats.setStrength(1);
-        powerStats.setAgility(2);
-        powerStats.setDexterity(3);
-        powerStats.setIntelligence(4);
-        powerStats.setCreated(LocalDateTime.now());
-        powerStats.setUpdated(LocalDateTime.now());
-
-        hero = new Hero();
-        hero.setName("SuperMan");
-        hero.setRace(Race.ALIEN);
-        hero.setPowerStats(powerStats);
-        hero.setEnabled(true);
-        hero.setCreated(LocalDateTime.now());
-        hero.setUpdated(LocalDateTime.now());
     }
 
 
     @Test
     public void shouldStoreEmployeeAndFindById() {
 
-
+        Hero hero = createHero();
+        PowerStats powerStats = hero.getPowerStats();
+        powerStats.setCreated(LocalDateTime.now());
+        powerStats.setUpdated(LocalDateTime.now());
         //testEntityManager.merge(hero);
         System.out.println("hhhh");
         // testEntityManager.merge(EMPLOYEE_2);

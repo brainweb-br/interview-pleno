@@ -5,11 +5,13 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
 @JsonPropertyOrder({"id", "name", "race", "powerStats", "enabled", "created", "updated"})
 public class HeroResponseDTO extends ResponseDTO {
 

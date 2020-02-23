@@ -1,13 +1,12 @@
 package br.com.brainweb.interview.model.dtos.request;
 
-import br.com.brainweb.interview.model.dtos.response.ResponseDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 
 @Data
+@AllArgsConstructor
 public class PowerStatsRequestDTO {
 
     @NotNull(message = "agility may not be null")
