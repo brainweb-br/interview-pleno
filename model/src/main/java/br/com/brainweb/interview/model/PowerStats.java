@@ -27,7 +27,7 @@ public class PowerStats {
     private Timestamp created_at;
     private Timestamp updated_at;
 
-    public void setValues(){
+    public void setValuesDefault(){
         this.setCreated_at(new Timestamp(System.currentTimeMillis()));
         this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
     }

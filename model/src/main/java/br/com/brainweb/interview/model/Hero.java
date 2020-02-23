@@ -6,10 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -24,15 +21,20 @@ public class Hero {
     private UUID id;
     private String name;
     private String race;
-    private UUID power_stats_id;
+    //private UUID power_stats_id;
     private boolean enabled;
     private Timestamp created_at;
     private Timestamp updated_at;
 
-    public void setValues (HeroDTO heroDTO, UUID powerStatsId){
-        this.setPower_stats_id(powerStatsId);
-        this.setRace(Race.values()[heroDTO.getRace()].name());
+    @OneToOne
+    @JoinColumn
+    private PowerStats powerStats;
+
+    public void setValuesDefault(HeroDTO heroDTO, PowerStats powerStats){
+        this.setPowerStats(powerStats);
+        this.setRace(Race.values()[heroDTO.getRaceValue()].name());
         this.setCreated_at(new Timestamp(System.currentTimeMillis()));
         this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+        this.setEnabled(true);
     }
 }

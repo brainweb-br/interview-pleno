@@ -4,14 +4,12 @@ import br.com.brainweb.interview.core.features.powerstats.PowerStatsService;
 import br.com.brainweb.interview.model.DTO.HeroDTO;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
-import br.com.brainweb.interview.model.enums.Race;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class HeroService {
@@ -25,9 +23,29 @@ public class HeroService {
         PowerStats powerStats = this.powerStatsService.create(heroDTO);
         ModelMapper modelMapper = new ModelMapper();
         Hero hero =  modelMapper.map(heroDTO, Hero.class);
-        hero.setValues(heroDTO, powerStats.getId());
+        hero.setValuesDefault(heroDTO, powerStats);
         hero = heroRepository.save(hero);
-        return new HeroDTO(hero, powerStats);
+        return new HeroDTO(hero, hero.getPowerStats());
+    }
+
+    public HeroDTO getHero(UUID id){
+        Optional<Hero> heroOptional = this.heroRepository.findById(id);
+        if(heroOptional.isPresent()){
+            HeroDTO heroDTO = new HeroDTO(heroOptional.get(), heroOptional.get().getPowerStats());
+            return heroDTO;
+        }
+
+        return null;
+    }
+
+    public HeroDTO getHero(String name){
+        Optional<Hero> heroOptional = this.heroRepository.findByName(name);
+        if(heroOptional.isPresent()){
+            HeroDTO heroDTO = new HeroDTO(heroOptional.get(), heroOptional.get().getPowerStats());
+            return heroDTO;
+        }
+
+        return null;
     }
 
 }
