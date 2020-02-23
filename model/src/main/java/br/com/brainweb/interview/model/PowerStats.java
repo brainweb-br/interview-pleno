@@ -27,9 +27,18 @@ public class PowerStats {
     private Timestamp created_at;
     private Timestamp updated_at;
 
-    public void setValuesDefault(){
-        this.setCreated_at(new Timestamp(System.currentTimeMillis()));
-        this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+    public void setValuesDefault(HeroDTO heroDTO){
+        if (heroDTO.getCreated_at() != null) {
+            this.setCreated_at(heroDTO.getCreated_at());
+        } else {
+            this.setCreated_at(new Timestamp(System.currentTimeMillis()));
+        }
+
+        if (heroDTO.getUpdated_at() != null) {
+            this.setUpdated_at(heroDTO.getUpdated_at());
+        } else {
+            this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+        }
     }
 
     public void update(PowerStats powerStats){
@@ -38,5 +47,23 @@ public class PowerStats {
         this.setIntelligence(powerStats.getIntelligence());
         this.setStrength(powerStats.getStrength());
         this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+    }
+
+    public PowerStats( UUID id,
+             int strength,
+             int agility,
+             int dexterity,
+             int intelligence,
+             Timestamp created_at,
+             Timestamp updated_at){
+
+        this.id = id;
+        this.strength = strength;
+        this.agility = agility;
+        this.dexterity = dexterity;
+        this.intelligence = intelligence;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+
     }
 }

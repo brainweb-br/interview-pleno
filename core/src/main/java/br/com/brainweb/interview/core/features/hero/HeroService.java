@@ -72,7 +72,7 @@ public class HeroService {
      * Método de alteração de informações dos heróis
      * @param id
      * @param heroDTO
-     * @return
+     * @return HeroDTO
      */
     public HeroDTO update(UUID id, HeroDTO heroDTO){
         Optional<Hero> heroOptional = this.heroRepository.findById(id);
@@ -91,7 +91,7 @@ public class HeroService {
     /**
      * Método de remoção de heróis
      * @param id
-     * @return
+     * @return boolean
      */
     public boolean delete(UUID id){
         Optional<Hero> heroOptional = this.heroRepository.findById(id);

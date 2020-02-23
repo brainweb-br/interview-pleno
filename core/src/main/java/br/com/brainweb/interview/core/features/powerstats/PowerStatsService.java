@@ -22,7 +22,7 @@ public class PowerStatsService {
     public PowerStats create(HeroDTO heroDTO){
         ModelMapper modelMapper = new ModelMapper();
         PowerStats powerStats =  modelMapper.map(heroDTO, PowerStats.class);
-        powerStats.setValuesDefault();
+        powerStats.setValuesDefault(heroDTO);
         return powerStats;
     }
 

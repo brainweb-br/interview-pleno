@@ -15,6 +15,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import java.sql.Timestamp;
 import java.util.UUID;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -53,6 +54,9 @@ public class HeroDTO {
     @NotNull(message = "message.powerstats.intelligence.mandatory")
     private int intelligence;
 
+    private Timestamp created_at;
+    private Timestamp updated_at;
+
     public HeroDTO(Hero hero, PowerStats powerStats){
         setId(hero.getId());
         setName(hero.getName());
@@ -61,5 +65,7 @@ public class HeroDTO {
         setDexterity(powerStats.getDexterity());
         setIntelligence(powerStats.getIntelligence());
         setStrength(powerStats.getStrength());
+        setCreated_at(hero.getCreated_at());
+        setUpdated_at(hero.getUpdated_at());
     }
 }

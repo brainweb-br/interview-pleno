@@ -32,8 +32,19 @@ public class Hero {
     public void setValuesDefault(HeroDTO heroDTO, PowerStats powerStats){
         this.setPowerStats(powerStats);
         this.setRace(heroDTO.getRace().name());
-        this.setCreated_at(new Timestamp(System.currentTimeMillis()));
-        this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+
+        if (heroDTO.getCreated_at() != null) {
+            this.setCreated_at(heroDTO.getCreated_at());
+        } else {
+            this.setCreated_at(new Timestamp(System.currentTimeMillis()));
+        }
+
+        if (heroDTO.getUpdated_at() != null) {
+            this.setUpdated_at(heroDTO.getUpdated_at());
+        } else {
+            this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+        }
+
         this.setEnabled(true);
     }
 
@@ -41,5 +52,14 @@ public class Hero {
         this.setName(hero.getName());
         this.setRace(heroDTO.getRace().name());
         this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+    }
+
+    public Hero(UUID id, String name, String race, boolean enabled, Timestamp created_at, Timestamp updated_at){
+        this.id = id;
+        this.name = name;
+        this.race = race;
+        this.enabled = enabled;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
     }
 }
