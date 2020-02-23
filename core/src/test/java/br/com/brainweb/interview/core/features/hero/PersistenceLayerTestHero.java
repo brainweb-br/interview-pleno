@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
 
+import static br.com.brainweb.interview.core.features.hero.TestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -44,10 +45,10 @@ public class PersistenceLayerTestHero {
         powerStats.setUpdated(LocalDateTime.now());
 
         Hero superMan = new Hero();
-        superMan.setName("SuperMan");
+        superMan.setName(generateRandomName(10));
         superMan.setRace(Race.ALIEN);
         superMan.setPowerStats(powerStats);
-        superMan.setEnabled(true);
+        superMan.setEnabled(generateRandomBoolean());
         superMan.setCreated(LocalDateTime.now());
         superMan.setUpdated(LocalDateTime.now());
 

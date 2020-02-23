@@ -2,9 +2,16 @@ package br.com.brainweb.interview.core.features.hero;
 
 import br.com.brainweb.interview.model.enums.Race;
 
-import java.util.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.Month;
+import java.util.Collections;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 public class TestUtils {
 
@@ -38,5 +45,24 @@ public class TestUtils {
 
     public static boolean generateRandomBoolean() {
         return System.currentTimeMillis() % 2 == 0 ? true : false;
+    }
+
+    public static LocalDateTime generateRandomDateTime() {
+
+        long startEpochDay = LocalDate.of(2020, Month.FEBRUARY, 17).toEpochDay();
+        long endEpochDay = LocalDate.now().toEpochDay();
+        long randomDay = ThreadLocalRandom
+                .current()
+                .nextLong(startEpochDay, endEpochDay);
+
+
+        int startSeconds = LocalTime.MIDNIGHT.toSecondOfDay();
+        int endSeconds = LocalTime.of(8, 30).toSecondOfDay();
+        int randomTime = ThreadLocalRandom
+                .current()
+                .nextInt(startSeconds, endSeconds);
+
+
+        return LocalDateTime.of(LocalDate.ofEpochDay(randomDay), LocalTime.ofSecondOfDay(randomTime));
     }
 }
