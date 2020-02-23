@@ -6,6 +6,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+
 @Service
 public class PowerStatsService {
 
@@ -16,6 +18,12 @@ public class PowerStatsService {
         ModelMapper modelMapper = new ModelMapper();
         PowerStats powerStats =  modelMapper.map(heroDTO, PowerStats.class);
         powerStats.setValuesDefault();
-        return this.powerStatsRepository.save(powerStats);
+        return powerStats;
+    }
+
+    public PowerStats update(PowerStats powerStats, HeroDTO heroDTO){
+        ModelMapper modelMapper = new ModelMapper();
+        powerStats.update(modelMapper.map(heroDTO, PowerStats.class));
+        return powerStats;
     }
 }

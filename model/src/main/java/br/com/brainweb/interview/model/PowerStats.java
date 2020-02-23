@@ -31,4 +31,12 @@ public class PowerStats {
         this.setCreated_at(new Timestamp(System.currentTimeMillis()));
         this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
     }
+
+    public void update(PowerStats powerStats){
+        this.setAgility(powerStats.getAgility());
+        this.setDexterity(powerStats.getDexterity());
+        this.setIntelligence(powerStats.getIntelligence());
+        this.setStrength(powerStats.getStrength());
+        this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+    }
 }

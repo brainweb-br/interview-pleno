@@ -1,7 +1,6 @@
 package br.com.brainweb.interview.core.features.hero;
 
 import br.com.brainweb.interview.model.DTO.HeroDTO;
-import br.com.brainweb.interview.model.Hero;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +8,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.transaction.Transactional;
 import java.net.URI;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -33,19 +31,48 @@ public class HeroController {
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") UUID id){
-        HeroDTO heroDTO = this.heroService.getHero(id);
-        return heroDTO != null ?
-            ResponseEntity.ok(heroDTO) :
-            ResponseEntity.notFound().build();
+        try{
+            HeroDTO heroDTO = this.heroService.get(id);
+            return heroDTO != null ?
+                ResponseEntity.ok(heroDTO) :
+                ResponseEntity.notFound().build();
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @GetMapping("/name/{name}")
     public ResponseEntity get(@PathVariable("name") String name){
-        HeroDTO heroDTO = this.heroService.getHero(name);
-        return heroDTO != null ?
-                ResponseEntity.ok(heroDTO) :
-                ResponseEntity.ok().build();
+        try{
+            HeroDTO heroDTO = this.heroService.get(name);
+            return heroDTO != null ?
+                    ResponseEntity.ok(heroDTO) :
+                    ResponseEntity.ok().build();
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+
     }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity update(@PathVariable("id") UUID id, @RequestBody HeroDTO heroDTO){
+        try{
+            HeroDTO heroDTOResponse = this.heroService.update(id, heroDTO);
+            return heroDTOResponse != null ?
+                    ResponseEntity.ok(heroDTOResponse) :
+                    ResponseEntity.notFound().build();
+        }catch (Exception e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity delete(@PathVariable("id") UUID id){
+                
+    }
+
 
     private URI getURI(UUID id) {
         return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();

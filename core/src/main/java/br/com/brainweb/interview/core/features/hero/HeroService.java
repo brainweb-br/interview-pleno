@@ -28,7 +28,7 @@ public class HeroService {
         return new HeroDTO(hero, hero.getPowerStats());
     }
 
-    public HeroDTO getHero(UUID id){
+    public HeroDTO get(UUID id){
         Optional<Hero> heroOptional = this.heroRepository.findById(id);
         if(heroOptional.isPresent()){
             HeroDTO heroDTO = new HeroDTO(heroOptional.get(), heroOptional.get().getPowerStats());
@@ -38,7 +38,7 @@ public class HeroService {
         return null;
     }
 
-    public HeroDTO getHero(String name){
+    public HeroDTO get(String name){
         Optional<Hero> heroOptional = this.heroRepository.findByName(name);
         if(heroOptional.isPresent()){
             HeroDTO heroDTO = new HeroDTO(heroOptional.get(), heroOptional.get().getPowerStats());
@@ -47,5 +47,20 @@ public class HeroService {
 
         return null;
     }
+
+    public HeroDTO update(UUID id, HeroDTO heroDTO){
+        Optional<Hero> heroOptional = this.heroRepository.findById(id);
+        if(heroOptional.isEmpty()){
+            return null;
+        }
+
+        PowerStats powerStats = this.powerStatsService.update(heroOptional.get().getPowerStats(), heroDTO);
+        heroOptional.get().setPowerStats(powerStats);
+        ModelMapper modelMapper = new ModelMapper();
+        heroOptional.get().update(modelMapper.map(heroDTO, Hero.class), heroDTO);
+        Hero hero = heroRepository.save(heroOptional.get());
+        return new HeroDTO(hero, hero.getPowerStats());
+    }
+
 
 }

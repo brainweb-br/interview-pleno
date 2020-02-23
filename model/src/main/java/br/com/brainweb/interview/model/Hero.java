@@ -21,7 +21,6 @@ public class Hero {
     private UUID id;
     private String name;
     private String race;
-    //private UUID power_stats_id;
     private boolean enabled;
     private Timestamp created_at;
     private Timestamp updated_at;
@@ -32,9 +31,15 @@ public class Hero {
 
     public void setValuesDefault(HeroDTO heroDTO, PowerStats powerStats){
         this.setPowerStats(powerStats);
-        this.setRace(Race.values()[heroDTO.getRaceValue()].name());
+        this.setRace(Race.values()[heroDTO.getRace()].name());
         this.setCreated_at(new Timestamp(System.currentTimeMillis()));
         this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
         this.setEnabled(true);
+    }
+
+    public void update(Hero hero, HeroDTO heroDTO){
+        this.setName(hero.getName());
+        this.setRace(Race.values()[heroDTO.getRace()].name());
+        this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
     }
 }
