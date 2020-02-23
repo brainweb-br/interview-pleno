@@ -31,7 +31,7 @@ public class Hero {
 
     public void setValuesDefault(HeroDTO heroDTO, PowerStats powerStats){
         this.setPowerStats(powerStats);
-        this.setRace(Race.values()[heroDTO.getRace()].name());
+        this.setRace(heroDTO.getRace().name());
         this.setCreated_at(new Timestamp(System.currentTimeMillis()));
         this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
         this.setEnabled(true);
@@ -39,7 +39,7 @@ public class Hero {
 
     public void update(Hero hero, HeroDTO heroDTO){
         this.setName(hero.getName());
-        this.setRace(Race.values()[heroDTO.getRace()].name());
+        this.setRace(heroDTO.getRace().name());
         this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
     }
 }

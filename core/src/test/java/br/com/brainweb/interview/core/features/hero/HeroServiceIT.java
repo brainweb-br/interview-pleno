@@ -4,4 +4,5 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("it")
 public class HeroServiceIT {
+
 }

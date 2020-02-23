@@ -31,9 +31,7 @@ public class HeroDTO {
     private String name;
 
     @NotNull(message = "message.race.mandatory")
-    private int race;
-
-    private String raceDescription;
+    private Race race;
 
     @Min(value = 0, message = "message.powerstats.strength.min")
     @Max(value = 10, message = "message.powerstats.strength.max")
@@ -58,7 +56,7 @@ public class HeroDTO {
     public HeroDTO(Hero hero, PowerStats powerStats){
         setId(hero.getId());
         setName(hero.getName());
-        setRaceDescription(hero.getRace());
+        setRace(Race.valueOf(hero.getRace()));
         setAgility(powerStats.getAgility());
         setDexterity(powerStats.getDexterity());
         setIntelligence(powerStats.getIntelligence());
