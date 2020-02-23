@@ -51,7 +51,16 @@ public class Hero {
     public void update(Hero hero, HeroDTO heroDTO){
         this.setName(hero.getName());
         this.setRace(heroDTO.getRace().name());
-        this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+
+        if (heroDTO.getUpdated_at() != null) {
+            this.setUpdated_at(heroDTO.getUpdated_at());
+        } else {
+            this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+        }
+
+        if (heroDTO.getCreated_at() != null) {
+            this.setCreated_at(heroDTO.getCreated_at());
+        }
     }
 
     public Hero(UUID id, String name, String race, boolean enabled, Timestamp created_at, Timestamp updated_at){

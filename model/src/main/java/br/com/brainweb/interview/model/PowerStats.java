@@ -41,12 +41,16 @@ public class PowerStats {
         }
     }
 
-    public void update(PowerStats powerStats){
+    public void update(PowerStats powerStats, HeroDTO heroDTO){
         this.setAgility(powerStats.getAgility());
         this.setDexterity(powerStats.getDexterity());
         this.setIntelligence(powerStats.getIntelligence());
         this.setStrength(powerStats.getStrength());
-        this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+        if (heroDTO.getUpdated_at() != null) {
+            this.setUpdated_at(heroDTO.getUpdated_at());
+        } else {
+            this.setUpdated_at(new Timestamp(System.currentTimeMillis()));
+        }
     }
 
     public PowerStats( UUID id,

@@ -18,6 +18,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,7 +27,10 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.net.URI;
 import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -81,6 +85,25 @@ public class HeroControllerIT {
                 Timestamp.valueOf("2020-02-22 21:29:59"),
                 Timestamp.valueOf("2020-02-22 21:29:59"));
         Hero hero = new Hero(null,
+                "superMan",
+                Race.ALIEN.name(),
+                true,
+                Timestamp.valueOf("2020-02-22 21:29:59"),
+                Timestamp.valueOf("2020-02-22 21:29:59"));
+
+        hero.setPowerStats(powerStats);
+        return hero;
+    }
+
+    private Hero MockUpdateHeroRepository() {
+        PowerStats powerStats = new PowerStats(UUID.fromString("fc248cc0-5a4a-489a-8987-749a14a1177f"),
+                3,
+                3,
+                2,
+                1,
+                Timestamp.valueOf("2020-02-22 21:29:59"),
+                Timestamp.valueOf("2020-02-22 21:29:59"));
+        Hero hero = new Hero(UUID.fromString("6dcc3998-f510-404d-aac4-2ce8caae29b9"),
                 "superMan",
                 Race.ALIEN.name(),
                 true,
@@ -199,6 +222,30 @@ public class HeroControllerIT {
         BDDMockito.when(heroRepository.save(hero)).thenReturn(hero);
         ResponseEntity<String> response = testRestTemplate.postForEntity("/api/v1/heroes", heroDTO, String.class);
         Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(201);
+    }
+
+    @Test
+    public void updateHeroFailure() throws Exception {
+        Hero hero = MockSaveHeroRepository();
+        HeroDTO heroDTO = MockHeroDTOSucess();
+        BDDMockito.when(heroRepository.save(hero)).thenReturn(hero);
+
+        final String uri = "/api/v1/heroes/751776fc-2d07-4584-9dc9-00c2b7173fca";
+
+        ResponseEntity<String> response = testRestTemplate.exchange(RequestEntity.put(new URI(uri)).body(heroDTO), String.class);
+        Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(404);
+    }
+
+    @Test
+    public void updateHeroSuccess() throws Exception {
+        Hero hero = MockUpdateHeroRepository();
+        HeroDTO heroDTO = MockHeroDTOSucess();
+        BDDMockito.when(heroRepository.save(hero)).thenReturn(hero);
+
+        final String uri = "/api/v1/heroes/6dcc3998-f510-404d-aac4-2ce8caae29b9";
+
+        ResponseEntity<String> response = testRestTemplate.exchange(RequestEntity.put(new URI(uri)).body(heroDTO), String.class);
+        Assertions.assertThat(response.getStatusCodeValue()).isEqualTo(200);
     }
 
 }

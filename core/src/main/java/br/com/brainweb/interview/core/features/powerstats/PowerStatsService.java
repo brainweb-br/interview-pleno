@@ -34,7 +34,7 @@ public class PowerStatsService {
      */
     public PowerStats update(PowerStats powerStats, HeroDTO heroDTO){
         ModelMapper modelMapper = new ModelMapper();
-        powerStats.update(modelMapper.map(heroDTO, PowerStats.class));
+        powerStats.update(modelMapper.map(heroDTO, PowerStats.class), heroDTO);
         return powerStats;
     }
 }
