@@ -8,5 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface PowerStatsRepository extends PagingAndSortingRepository<PowerStats, UUID> {
-    PowerStats findByAgility(Integer agility);
+
 }

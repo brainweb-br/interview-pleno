@@ -28,18 +28,14 @@ public class HeroService {
     @Autowired
     private HeroRepository heroRepository;
 
-    @Autowired
-    private PowerStatsService powerStatsService;
-
     private ModelMapper mapper = new ModelMapper();
 
     @Transactional
     public UUID save(HeroRequestDTO heroRequestDTO) {
-        Hero saved = null;
+        Hero saved;
         boolean exists = isNameExists(heroRequestDTO.getName());
 
         if (!exists) {
-            // powerStatsService.save(mapper.map(heroRequestDTO.getPowerStats(), PowerStats.class));
             saved = heroRepository.save(mapper.map(heroRequestDTO, Hero.class));
         } else {
             throw new NameAlreadyExistsException(heroRequestDTO.getName());
@@ -50,9 +46,10 @@ public class HeroService {
 
     @Transactional
     public UUID update(String uuid, HeroRequestDTO heroRequestDTO) {
-        Hero existingHero = fetchFromDB(UUID.fromString(uuid));
-        PowerStats existingHeroPowerStats = existingHero.getPowerStats();
 
+        Hero existingHero = fetchFromDB(UUID.fromString(uuid));
+
+        PowerStats existingHeroPowerStats = existingHero.getPowerStats();
 
         Hero heroUpdated = mapper.map(heroRequestDTO, Hero.class);
 
@@ -85,9 +82,9 @@ public class HeroService {
         System.out.println(name.isEmpty());
 
         return name.isEmpty()
-                ? StreamSupport.stream(heroRepository.findAll().spliterator(), false).
-                map(h -> mapper.map(h, HeroResponseDTO.class)).
-                collect(toCollection(ArrayList::new))
+                ? StreamSupport.stream(heroRepository.findAll().spliterator(), false)
+                .map(h -> mapper.map(h, HeroResponseDTO.class)).
+                        collect(toCollection(ArrayList::new))
                 :
                 fetchFromDB(name.get()).map(lh -> lh.stream().
                         map(h -> mapper.map(h, HeroResponseDTO.class)).

@@ -18,8 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.UUID;
 
 import static br.com.brainweb.interview.core.features.hero.TestUtils.createHeroRequestDTO;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,7 +41,8 @@ public class HeroControllerSaveUpdateDeleteTest {
     @Test
     public void saveEndpointSuccess() throws Exception {
 
-        doNothing().when(heroService).save(heroRequestDTO);
+
+        when(heroService.save(heroRequestDTO)).thenReturn(UUID.randomUUID());
 
         String json = mapper.writeValueAsString(heroRequestDTO);
         mockMvc.perform(post("/heroes")
@@ -71,7 +71,7 @@ public class HeroControllerSaveUpdateDeleteTest {
     public void updateEndpointSuccess() throws Exception {
 
         String uuid = UUID.randomUUID().toString();
-        doNothing().when(heroService).update(uuid, heroRequestDTO);
+        when(heroService.update(uuid, heroRequestDTO)).thenReturn(UUID.fromString(uuid));
 
         String json = mapper.writeValueAsString(heroRequestDTO);
         mockMvc.perform(patch("/heroes/" + uuid)
