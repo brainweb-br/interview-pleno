@@ -4,8 +4,10 @@ import br.com.brainweb.interview.core.features.controllers.HeroController;
 import br.com.brainweb.interview.core.features.services.HeroService;
 import br.com.brainweb.interview.model.dtos.response.HeroResponseDTO;
 import br.com.brainweb.interview.model.dtos.response.PowerStatsResponseDTO;
+import org.assertj.core.util.Arrays;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -13,8 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 
 import static br.com.brainweb.interview.core.features.hero.TestUtils.*;
 import static org.junit.Assert.assertEquals;
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(HeroController.class)
-public class HeroControllerFindByIdTest {
+public class HeroControllerFindTest {
     @Autowired
     private MockMvc mvc;
 
@@ -38,7 +39,7 @@ public class HeroControllerFindByIdTest {
     private PowerStatsResponseDTO powerStatsResponseDTO = heroResponseDTO.getPowerStats();
 
     @Test
-    public void shouldFetchHero() throws Exception {
+    public void shouldFetchHeroById() throws Exception {
 
         when(heroService.find(heroResponseDTO.getId().toString())).thenReturn(heroResponseDTO);
 
@@ -70,5 +71,50 @@ public class HeroControllerFindByIdTest {
 
         mvc.perform(get("/heroes/" + idDoesNotExist))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void shouldFetchHeroName() throws Exception {
+        List<HeroResponseDTO> heroesDTO = new ArrayList();
+        heroesDTO.add(heroResponseDTO);
+
+
+        when(heroService.find(Optional.of(heroResponseDTO.getName()))).thenReturn(heroesDTO);
+
+        String heroJson = mvc.perform(get("/heroes/names/" + heroResponseDTO.getName()))
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        HeroResponseDTO heroResponseDTO1 = heroesDTO.get(0);
+        PowerStatsResponseDTO powerStats = heroResponseDTO1.getPowerStats();
+
+        assertEquals("[{\"id\":\"" + heroResponseDTO1.getId() + "\"," +
+                "\"name\":\"" + heroResponseDTO1.getName() + "\"," +
+                "\"race\":\"" + heroResponseDTO1.getRace() + "\"," +
+
+                "\"power_stats\":{\"id\":\"" + powerStats.getId() + "\"," +
+                "\"agility\":" + powerStats.getAgility() + "," +
+                "\"dexterity\":" + powerStats.getDexterity() + "," +
+                "\"intelligence\":" + powerStats.getIntelligence() + "," +
+                "\"strength\":" + powerStats.getStrength() + "," +
+                "\"created\":\"" + FORMATTER.format(powerStats.getCreated()) + "\"," +
+                "\"updated\":\"" + FORMATTER.format(powerStats.getUpdated()) + "\"}," +
+                "\"enabled\":" + this.heroResponseDTO.getEnabled() + "," +
+
+                "\"created\":\"" + FORMATTER.format(heroResponseDTO1.getCreated()) + "\"," +
+                "\"updated\":\"" + FORMATTER.format(heroResponseDTO1.getUpdated()) + "\"}]", heroJson);
+    }
+
+    @Test
+    public void shouldReturnAllWhenNoNamePassed() throws Exception {
+        List<HeroResponseDTO> heroesDTO = new ArrayList<>();
+        heroesDTO.add(heroResponseDTO);
+
+        when(heroService.find(Optional.of(""))).thenReturn(heroesDTO);
+
+
+        mvc.perform(get("/heroes/names/" + heroResponseDTO.getName()))
+                .andExpect(status().isOk());
+
     }
 }

@@ -3,6 +3,7 @@ package br.com.brainweb.interview.core.features.hero;
 import br.com.brainweb.interview.model.dtos.request.HeroRequestDTO;
 import br.com.brainweb.interview.model.dtos.request.PowerStatsRequestDTO;
 import br.com.brainweb.interview.model.dtos.response.HeroResponseDTO;
+import br.com.brainweb.interview.model.dtos.response.PowerStatsDifferenceDTO;
 import br.com.brainweb.interview.model.dtos.response.PowerStatsResponseDTO;
 import br.com.brainweb.interview.model.entities.Hero;
 import br.com.brainweb.interview.model.entities.PowerStats;
@@ -119,5 +120,14 @@ public class TestUtils {
                 pickRandomRace(),
                 createPowerStats(),
                 generateRandomBoolean());
+    }
+
+    public static PowerStatsDifferenceDTO createPowerStatsDifferenceDTO() {
+
+        return new PowerStatsDifferenceDTO(UUID.randomUUID(), UUID.randomUUID(),
+                generateRandomNumber(1, 10) - generateRandomNumber(1, 10),
+                generateRandomNumber(1, 10) - generateRandomNumber(1, 10),
+                generateRandomNumber(1, 10) - generateRandomNumber(1, 10),
+                generateRandomNumber(1, 10) - generateRandomNumber(1, 10));
     }
 }

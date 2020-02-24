@@ -70,10 +70,11 @@ public class HeroControllerSaveUpdateDeleteTest {
     @Test
     public void updateEndpointSuccess() throws Exception {
 
-        doNothing().when(heroService).update(UUID.randomUUID().toString(), heroRequestDTO);
+        String uuid = UUID.randomUUID().toString();
+        doNothing().when(heroService).update(uuid, heroRequestDTO);
 
         String json = mapper.writeValueAsString(heroRequestDTO);
-        mockMvc.perform(patch("/heroes")
+        mockMvc.perform(patch("/heroes/" + uuid)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json)
                 .accept(MediaType.APPLICATION_JSON))
@@ -84,11 +85,12 @@ public class HeroControllerSaveUpdateDeleteTest {
     @Test
     public void shouldNotUpdateWithIdThatDoesNotExists() throws Exception {
 
+        String uuid = UUID.randomUUID().toString();
         doThrow(new NameAlreadyExistsException(heroRequestDTO.getName()))
-                .when(heroService).update(UUID.randomUUID().toString(), heroRequestDTO);
+                .when(heroService).update(uuid, heroRequestDTO);
 
         String json = mapper.writeValueAsString(heroRequestDTO);
-        mockMvc.perform(patch("/heroes")
+        mockMvc.perform(patch("/heroes" + uuid)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json)
                 .accept(MediaType.APPLICATION_JSON))

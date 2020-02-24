@@ -9,9 +9,6 @@ import br.com.brainweb.interview.model.entities.PowerStats;
 import org.junit.jupiter.api.*;
 import org.modelmapper.ModelMapper;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 import static br.com.brainweb.interview.core.features.hero.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,16 +24,10 @@ public class DTOToEntityDTOMappingTest {
 
     @BeforeAll
     private static void setUp() {
-        modelMapper = new ModelMapper();
 
-        powerStats = new PowerStats();
-        powerStats.setId(UUID.randomUUID());
-        powerStats.setAgility(generateRandomNumber(1, 10));
-        powerStats.setDexterity(generateRandomNumber(1, 10));
-        powerStats.setIntelligence(generateRandomNumber(1, 10));
-        powerStats.setStrength(generateRandomNumber(1, 10));
-        powerStats.setCreated(LocalDateTime.now());
-        powerStats.setUpdated(LocalDateTime.now());
+        modelMapper = new ModelMapper();
+        powerStats = createPowerStats();
+
     }
 
     @Test
@@ -62,14 +53,9 @@ public class DTOToEntityDTOMappingTest {
     @DisplayName("Conversion Hero -> HeroResponseDTO should be correct")
     public void whenConvertHeroEntityToHeroResponseDto_thenCorrect() {
 
-        heroEntity = new Hero();
-        heroEntity.setId(UUID.randomUUID());
-        heroEntity.setName(generateRandomName(35));
-        heroEntity.setRace(pickRandomRace());
+        heroEntity = createHero();
+
         heroEntity.setPowerStats(powerStats);
-        heroEntity.setEnabled(generateRandomBoolean());
-        heroEntity.setCreated(LocalDateTime.now());
-        heroEntity.setUpdated(LocalDateTime.now());
 
         heroResponseDTO = modelMapper.map(heroEntity, HeroResponseDTO.class);
 

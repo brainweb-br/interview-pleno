@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
+
 @RestController
 @RequestMapping(path = "/heroes")
 public class HeroController {
@@ -26,13 +29,13 @@ public class HeroController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PatchMapping(path = "/{uuid}")
+    @RequestMapping(path = "/{uuid}", method = PATCH, consumes = "application/json", produces = "application/json")
     public ResponseEntity<Void> update(@PathVariable String uuid, @RequestBody HeroRequestDTO heroRequestDTO) {
         heroService.update(uuid, heroRequestDTO);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping(path = "{uuid}")
+    @DeleteMapping(path = "/{uuid}")
     public ResponseEntity<Void> delete(@PathVariable String uuid) {
 
         heroService.delete(uuid);
@@ -50,17 +53,14 @@ public class HeroController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping(path = "/names/{name}")
+    @GetMapping(value = {"/names/{name}", "/names"})
     public ResponseEntity<List<HeroResponseDTO>> findByName(@PathVariable Optional<String> name) {
-
-        heroService.find(name);
-
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(heroService.find(name), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/difference/firstHeroUUID/{firstHeroUUID}/secondHeroUUID/{secondHeroUUID}")
-    public ResponseEntity<PowerStatsDifferenceDTO> compare(@RequestParam final String firstHeroUUID,
-                                                           @RequestParam final String secondHeroUUID) {
+    @GetMapping(path = "/difference")
+    public ResponseEntity<PowerStatsDifferenceDTO> compare(@RequestParam("first-hero-id") final String firstHeroUUID,
+                                                           @RequestParam("second-hero-id") final String secondHeroUUID) {
         PowerStatsDifferenceDTO powerStatsDifferenceDTO = heroService.calculateDifference(firstHeroUUID, secondHeroUUID);
 
         return new ResponseEntity<>(powerStatsDifferenceDTO, HttpStatus.OK);
