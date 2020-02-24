@@ -13,9 +13,7 @@ public class PowerStatsService {
 
     private ModelMapper mapper = new ModelMapper();
 
-
     public void save(PowerStats ps) {
-
         powerStatsRepository.save(ps);
     }
 }

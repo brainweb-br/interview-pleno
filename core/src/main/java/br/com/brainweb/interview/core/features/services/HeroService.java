@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -33,29 +34,40 @@ public class HeroService {
     private ModelMapper mapper = new ModelMapper();
 
     @Transactional
-    public void save(HeroRequestDTO heroRequestDTO) {
-
+    public UUID save(HeroRequestDTO heroRequestDTO) {
+        Hero saved = null;
         boolean exists = isNameExists(heroRequestDTO.getName());
 
         if (!exists) {
             // powerStatsService.save(mapper.map(heroRequestDTO.getPowerStats(), PowerStats.class));
-            heroRepository.save(mapper.map(heroRequestDTO, Hero.class));
+            saved = heroRepository.save(mapper.map(heroRequestDTO, Hero.class));
         } else {
             throw new NameAlreadyExistsException(heroRequestDTO.getName());
         }
-
+        return saved.getId();
     }
 
 
     @Transactional
-    public void update(String uuid, HeroRequestDTO heroRequestDTO) {
-        Hero heroById = fetchFromDB(UUID.fromString(uuid));
-        //if (heroById != null) {
-        Hero hero = mapper.map(heroRequestDTO, Hero.class);
-        hero.setId(UUID.fromString(uuid));
-        // powerStatsService.save(hero.getPowerStats());
-        heroRepository.save(hero);
-        //}
+    public UUID update(String uuid, HeroRequestDTO heroRequestDTO) {
+        Hero existingHero = fetchFromDB(UUID.fromString(uuid));
+        PowerStats existingHeroPowerStats = existingHero.getPowerStats();
+
+
+        Hero heroUpdated = mapper.map(heroRequestDTO, Hero.class);
+
+        heroUpdated.setId(UUID.fromString(uuid));
+        heroUpdated.setCreated(existingHero.getCreated());
+
+
+        PowerStats powerStatsUpdated = mapper.map(heroRequestDTO.getPowerStats(), PowerStats.class);
+        powerStatsUpdated.setId(existingHeroPowerStats.getId());
+        powerStatsUpdated.setCreated(existingHeroPowerStats.getCreated());
+
+        heroUpdated.setPowerStats(powerStatsUpdated);
+        Hero save = heroRepository.save(heroUpdated);
+
+        return save.getId();
     }
 
     @Transactional
@@ -69,6 +81,8 @@ public class HeroService {
     }
 
     public List<HeroResponseDTO> find(Optional<String> name) {
+
+        System.out.println(name.isEmpty());
 
         return name.isEmpty()
                 ? StreamSupport.stream(heroRepository.findAll().spliterator(), false).
