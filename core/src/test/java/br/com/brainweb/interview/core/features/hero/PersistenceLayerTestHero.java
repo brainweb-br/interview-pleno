@@ -13,8 +13,10 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-import static br.com.brainweb.interview.core.features.hero.TestUtils.*;
+import static br.com.brainweb.interview.core.features.hero.TestUtils.generateRandomBoolean;
+import static br.com.brainweb.interview.core.features.hero.TestUtils.generateRandomName;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
@@ -53,10 +55,10 @@ public class PersistenceLayerTestHero {
         superMan.setUpdated(LocalDateTime.now());
 
         // when
-        Hero heroFoundByName = heroRepository.findByName(superMan.getName()).get();
+        List<Hero> heroFoundByName = heroRepository.findByName(superMan.getName()).get();
 
         // then
-        assertThat(heroFoundByName.getName())
+        assertThat(heroFoundByName.stream().anyMatch(h -> h.getName().equals(superMan.getName())))
                 .isEqualTo(superMan.getName());
     }
 

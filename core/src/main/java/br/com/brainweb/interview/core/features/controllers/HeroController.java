@@ -3,17 +3,14 @@ package br.com.brainweb.interview.core.features.controllers;
 import br.com.brainweb.interview.core.features.services.HeroService;
 import br.com.brainweb.interview.model.dtos.request.HeroRequestDTO;
 import br.com.brainweb.interview.model.dtos.response.HeroResponseDTO;
-import br.com.brainweb.interview.model.entities.Hero;
-import br.com.brainweb.interview.model.entities.PowerStats;
-import br.com.brainweb.interview.model.enums.Race;
+import br.com.brainweb.interview.model.dtos.response.PowerStatsDifferenceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/heroes")
@@ -29,9 +26,10 @@ public class HeroController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-
-    public ResponseEntity update(Object dto) throws Exception {
-        return null;
+    @PatchMapping(path = "/{uuid}")
+    public ResponseEntity<Void> update(@PathVariable String uuid, @RequestBody HeroRequestDTO heroRequestDTO) {
+        heroService.update(uuid, heroRequestDTO);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(path = "{uuid}")
@@ -41,9 +39,6 @@ public class HeroController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public ResponseEntity<Void> delete(Long id) throws Exception {
-        return null;
-    }
 
     @GetMapping(path = "/{uuid:^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$}")
     public ResponseEntity<HeroResponseDTO> find(@PathVariable String uuid) {
@@ -55,32 +50,20 @@ public class HeroController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping(path = "/names/{name}")
+    public ResponseEntity<List<HeroResponseDTO>> findByName(@PathVariable Optional<String> name) {
 
-    public ResponseEntity<Page> findAll(Pageable pageable) throws Exception {
-        return null;
+        heroService.find(name);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @GetMapping(path = "/difference/firstHeroUUID/{firstHeroUUID}/secondHeroUUID/{secondHeroUUID}")
+    public ResponseEntity<PowerStatsDifferenceDTO> compare(@RequestParam final String firstHeroUUID,
+                                                           @RequestParam final String secondHeroUUID) {
+        PowerStatsDifferenceDTO powerStatsDifferenceDTO = heroService.calculateDifference(firstHeroUUID, secondHeroUUID);
 
-    //@PostMapping
-    public void save1() {
-
-        Hero hero;
-        // given
-        PowerStats powerStats = new PowerStats();
-
-        powerStats.setStrength(1);
-        powerStats.setAgility(2);
-        powerStats.setDexterity(3);
-        powerStats.setIntelligence(4);
-        // powerStatsRepository.save(powerStats);
-
-        hero = new Hero();
-        hero.setName(UUID.randomUUID().toString());
-        hero.setRace(Race.ALIEN);
-        hero.setPowerStats(powerStats);
-        hero.setEnabled(true);
-
-        // heroRepository.save(hero);
+        return new ResponseEntity<>(powerStatsDifferenceDTO, HttpStatus.OK);
     }
 }
 

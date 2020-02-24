@@ -4,7 +4,7 @@ import br.com.brainweb.interview.core.features.controllers.HeroController;
 import br.com.brainweb.interview.core.features.services.HeroService;
 import br.com.brainweb.interview.model.dtos.request.HeroRequestDTO;
 import br.com.brainweb.interview.model.exeptions.HeroNotFoundException;
-import br.com.brainweb.interview.model.exeptions.HeroWithNameAlreadyExistsException;
+import br.com.brainweb.interview.model.exeptions.NameAlreadyExistsException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,13 +20,12 @@ import java.util.UUID;
 import static br.com.brainweb.interview.core.features.hero.TestUtils.createHeroRequestDTO;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(HeroController.class)
-public class HeroControllerSaveDeleteTest {
+public class HeroControllerSaveUpdateDeleteTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -56,7 +55,7 @@ public class HeroControllerSaveDeleteTest {
     @Test
     public void shouldNotSaveWithNameThatExists() throws Exception {
 
-        doThrow(new HeroWithNameAlreadyExistsException(heroRequestDTO.getName()))
+        doThrow(new NameAlreadyExistsException(heroRequestDTO.getName()))
                 .when(heroService).save(heroRequestDTO);
 
         String json = mapper.writeValueAsString(heroRequestDTO);
@@ -65,6 +64,35 @@ public class HeroControllerSaveDeleteTest {
                 .content(json)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isConflict());
+    }
+
+
+    @Test
+    public void updateEndpointSuccess() throws Exception {
+
+        doNothing().when(heroService).update(UUID.randomUUID().toString(), heroRequestDTO);
+
+        String json = mapper.writeValueAsString(heroRequestDTO);
+        mockMvc.perform(patch("/heroes")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
+    public void shouldNotUpdateWithIdThatDoesNotExists() throws Exception {
+
+        doThrow(new NameAlreadyExistsException(heroRequestDTO.getName()))
+                .when(heroService).update(UUID.randomUUID().toString(), heroRequestDTO);
+
+        String json = mapper.writeValueAsString(heroRequestDTO);
+        mockMvc.perform(patch("/heroes")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -89,7 +117,7 @@ public class HeroControllerSaveDeleteTest {
                 .when(heroService).delete(heroId);
 
         String json = mapper.writeValueAsString(heroRequestDTO);
-        mockMvc.perform(delete("/heroes/"+heroId)
+        mockMvc.perform(delete("/heroes/" + heroId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json)
                 .accept(MediaType.APPLICATION_JSON))
