@@ -3,32 +3,23 @@ package br.com.brainweb.interview.core.features.services;
 import br.com.brainweb.interview.core.features.repositories.HeroRepository;
 import br.com.brainweb.interview.core.features.repositories.PowerStatsRepository;
 import br.com.brainweb.interview.model.dtos.request.HeroRequestDTO;
-import br.com.brainweb.interview.model.dtos.request.PowerStatsRequestDTO;
 import br.com.brainweb.interview.model.dtos.response.HeroResponseDTO;
-import br.com.brainweb.interview.model.dtos.response.PowerStatsResponseDTO;
 import br.com.brainweb.interview.model.entities.Hero;
 import br.com.brainweb.interview.model.entities.PowerStats;
-import br.com.brainweb.interview.model.enums.Race;
 import br.com.brainweb.interview.model.exeptions.HeroNotFoundException;
-import org.junit.Assert;
-import org.junit.FixMethodOrder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Commit;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static br.com.brainweb.interview.core.features.hero.TestUtils.*;
+import static br.com.brainweb.interview.core.features.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest

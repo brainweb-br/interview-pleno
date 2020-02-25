@@ -9,7 +9,7 @@ import br.com.brainweb.interview.model.entities.PowerStats;
 import org.junit.jupiter.api.*;
 import org.modelmapper.ModelMapper;
 
-import static br.com.brainweb.interview.core.features.hero.TestUtils.*;
+import static br.com.brainweb.interview.core.features.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

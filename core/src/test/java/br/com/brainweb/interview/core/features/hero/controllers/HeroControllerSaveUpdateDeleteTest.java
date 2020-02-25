@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
-import static br.com.brainweb.interview.core.features.hero.TestUtils.createHeroRequestDTO;
+import static br.com.brainweb.interview.core.features.TestUtils.createHeroRequestDTO;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

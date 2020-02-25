@@ -9,7 +9,7 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 
-import static br.com.brainweb.interview.core.features.hero.TestUtils.*;
+import static br.com.brainweb.interview.core.features.TestUtils.*;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

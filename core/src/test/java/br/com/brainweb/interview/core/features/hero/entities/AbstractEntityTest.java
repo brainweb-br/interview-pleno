@@ -4,9 +4,7 @@ import br.com.brainweb.interview.core.features.repositories.HeroRepository;
 import br.com.brainweb.interview.core.features.repositories.PowerStatsRepository;
 import br.com.brainweb.interview.model.entities.Hero;
 import br.com.brainweb.interview.model.entities.PowerStats;
-import br.com.brainweb.interview.model.enums.Race;
 import org.junit.FixMethodOrder;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +17,7 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-import static br.com.brainweb.interview.core.features.hero.TestUtils.createHero;
+import static br.com.brainweb.interview.core.features.TestUtils.createHero;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
