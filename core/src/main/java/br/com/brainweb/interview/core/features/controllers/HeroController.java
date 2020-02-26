@@ -34,7 +34,7 @@ public class HeroController {
     @RequestMapping(path = "/{uuid}", method = PATCH, consumes = "application/json", produces = "application/json")
     public ResponseEntity<Void> update(@PathVariable String uuid, @RequestBody HeroRequestDTO heroRequestDTO) {
         heroService.update(uuid, heroRequestDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping(path = "/{uuid}")
