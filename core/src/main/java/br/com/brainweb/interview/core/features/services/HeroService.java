@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -79,8 +78,6 @@ public class HeroService {
 
     public List<HeroResponseDTO> find(Optional<String> name) {
 
-        System.out.println(name.isEmpty());
-
         return name.isEmpty()
                 ? StreamSupport.stream(heroRepository.findAll().spliterator(), false)
                 .map(h -> mapper.map(h, HeroResponseDTO.class)).
@@ -122,13 +119,8 @@ public class HeroService {
     }
 
     private boolean isNameExists(String name) {
-        Optional<List<Hero>> heroes = fetchFromDB(name);
-        if (heroes.isPresent()) {
-            return heroes.get().stream()
-                    .anyMatch(h -> h.getName().equals(name));
-        }
-        return false;
+        return fetchFromDB(name).map(hl -> hl.stream()
+                .anyMatch(h -> h.getName().equals(name)))
+                .orElse(false);
     }
-
-
 }
