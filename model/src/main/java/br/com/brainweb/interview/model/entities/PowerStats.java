@@ -33,5 +33,4 @@ public class PowerStats extends AbstractEntity {
     private Integer strength;
 
 
-
 }

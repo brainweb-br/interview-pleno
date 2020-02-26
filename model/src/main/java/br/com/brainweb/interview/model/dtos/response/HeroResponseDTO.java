@@ -2,7 +2,6 @@ package br.com.brainweb.interview.model.dtos.response;
 
 import br.com.brainweb.interview.model.enums.Race;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
