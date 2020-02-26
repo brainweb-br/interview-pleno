@@ -42,14 +42,16 @@ public class HeroControllerSaveUpdateDeleteTest {
     public void saveEndpointSuccess() throws Exception {
 
 
-        when(heroService.save(heroRequestDTO)).thenReturn(UUID.randomUUID());
+        UUID uuid = UUID.randomUUID();
+        when(heroService.save(heroRequestDTO)).thenReturn(uuid);
 
         String json = mapper.writeValueAsString(heroRequestDTO);
         mockMvc.perform(post("/heroes")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json)
+                .header("Location", uuid)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test

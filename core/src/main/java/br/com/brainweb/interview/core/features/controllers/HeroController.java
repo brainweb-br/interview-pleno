@@ -5,12 +5,14 @@ import br.com.brainweb.interview.model.dtos.request.HeroRequestDTO;
 import br.com.brainweb.interview.model.dtos.response.HeroResponseDTO;
 import br.com.brainweb.interview.model.dtos.response.PowerStatsDifferenceDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.springframework.web.bind.annotation.RequestMethod.PATCH;
 
@@ -24,8 +26,9 @@ public class HeroController {
 
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody HeroRequestDTO heroRequestDTO) {
-        heroService.save(heroRequestDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", "/heroes/" + heroService.save(heroRequestDTO).toString());
+        return new ResponseEntity<>(httpHeaders, HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "/{uuid}", method = PATCH, consumes = "application/json", produces = "application/json")
