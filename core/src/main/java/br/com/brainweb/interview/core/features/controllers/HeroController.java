@@ -38,10 +38,9 @@ public class HeroController {
     }
 
     @DeleteMapping(path = "/{uuid}")
-    public ResponseEntity<Void> delete(@PathVariable String uuid) {
-
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable String uuid) {
         heroService.delete(uuid);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
