@@ -4,11 +4,11 @@
         <Property name="MICRO_SERVICE_HOME">.</Property>
         <Property name="DEFAULT_PATTERN">%highlight{[%-5level]} %style{[%date{ISO8601}] [%t] [%c{1}]}{Magenta} %msg %n
         </Property>
-        <!-- DEFAULT log path if not specified as parameter: -D LOG_PATH -->
+        DEFAULT log path if not specified as parameter: -D LOG_PATH
         <Property name="LOG_PATH">${sys:MICRO_SERVICE_HOME}/logs</Property>
         <Property name="LOG_JSON">${sys:LOG_PATH}/stdout.json</Property>
         <Property name="LOG_JSON_GZIP">${sys:LOG_PATH}/stdout-%d{yyyy-MM-dd}-%i.log.gz</Property>
-        <!-- to be indexed -->
+        to be indexed
         <Property name="LOG_FILE">${sys:LOG_PATH}/application.log</Property>
         <Property name="LOG_FILE_GZIP">${sys:LOG_PATH}/application-%d{yyyy-MM-dd}-%i.log.gz</Property>
     </Properties>

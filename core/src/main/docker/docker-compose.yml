@@ -1,0 +1,25 @@
+version:  '3'
+services:
+  postgresql:
+    image: postgresql
+    restart: always
+    container_name: interview_postgresql
+    environment:
+      - POSTGRES_DATABASE=postgres
+      - POSTGRES_USER=brainweb
+      - POSTGRES_PASSWORD=brainweb
+      - POSTGRES_PASSWORD=brainweb
+      - POSTGRES_SCHEMA=interview_service
+    volumes:
+      - "./data/postgres:/var/lib/postgresql/data"
+    ports:
+      - 5432:5432
+  web:
+    image: interview
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    depends_on:
+      - mysql 
+    ports:
+      - 8180:8080
