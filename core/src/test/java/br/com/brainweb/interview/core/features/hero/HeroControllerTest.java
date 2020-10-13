@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -46,7 +47,7 @@ public class HeroControllerTest {
     @Test
     public void getHeroByIdSuccessTest() throws Exception {
 
-        when(heroService.getById(1l)).thenReturn(Optional.of(new Hero()));
+        when(heroService.getById(any())).thenReturn(Optional.of(new HeroModel()));
 
         this.mockMvc.perform(MockMvcRequestBuilders.get("/heros/1"))
                 .andExpect(status().is2xxSuccessful());

@@ -1,33 +1,40 @@
 package br.com.brainweb.interview.core.features.hero;
 
+import br.com.brainweb.interview.core.features.adapters.HeroAdapter;
 import br.com.brainweb.interview.model.Hero;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class HeroService {
 
+    @Autowired
+    private HeroRepository heroRepository;
 
-    public Optional<List<Hero>> listAll() {
-        return Optional.empty();
+    public Optional<Iterable<HeroModel>> listAll(Optional<String> name) {
+        if(name.isPresent()){
+            return Optional.of(heroRepository.findByName(name.get()));
+        }
+        return Optional.of(heroRepository.findAll());
     }
 
-    public Optional<Hero> getById(Long id) {
-        return Optional.empty();
+    public Optional<HeroModel> getById(UUID id) {
+        return heroRepository.findById(id);
     }
 
-    public Optional<Hero> save() {
-        return Optional.empty();
+    public HeroModel save(Hero hero) {
+        return heroRepository.save(HeroAdapter.heroToHeroModelWithoutId(hero));
     }
 
-    public Optional<Hero> update() {
-        return Optional.empty();
+    public HeroModel update(Hero hero) {
+        return heroRepository.save(HeroAdapter.heroToHeroModel(hero));
     }
 
-    public Optional<Hero> remove() {
-        return Optional.empty();
+    public void remove(UUID id) {
+        heroRepository.deleteById(id);
     }
 
 }
