@@ -1,6 +1,7 @@
 package br.com.brainweb.interview.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,40 +20,38 @@ import lombok.Setter;
 @Entity
 @Table(name = "power_stats")
 public class PowerStats {
-	
-	
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id", nullable = false)
-	private int id;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id", updatable = false, unique = true, nullable = false)
+	private UUID id;
+
 	@Column(name = "strength", nullable = false)
 	@NotNull(message = "strength nao pode ser nullo")
 	private int strength;
-	
+
 	@Column(name = "agility", nullable = false)
 	@NotNull(message = "agility nao pode ser nullo")
 	private int agility;
-	
+
 	@Column(name = "dexterity", nullable = false)
 	@NotNull(message = "dexterity nao pode ser nullo")
 	private int dexterity;
-	
+
 	@Column(name = "intelligence", nullable = false)
 	@NotNull(message = "intelligence nao pode ser nullo")
 	private int intelligence;
-	
+
 	@Column(name = "created_at", nullable = false, updatable = false)
-	@NotNull(message = "created_at nao pode ser nullo")
 	private Date createdAt;
 
-	@Column(name = "updated_at")
-	@NotNull(message = "updated_at nao pode ser nullo")
+	@Column(name = "updated_at", nullable = false)
 	private Date updatedAt;
-	
+
 	@PrePersist
 	public void prePersist() {
+		createdAt = new Date();
 		updatedAt = new Date();
 	}
-	
+
 }

@@ -1,5 +1,9 @@
 package br.com.brainweb.interview.core.features.hero.controller;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +31,10 @@ public class HeroController {
 
 	@RequestMapping(value = "id/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Recupera heroi por ID")
-	public ResponseEntity<Object> findById(@PathVariable("id") int id) {
+	public ResponseEntity<Object> findById(@PathVariable UUID id) { 
 		try {
-			Hero hero = heroService.findById(id);
-			if (hero != null) {
+			Optional<Hero> hero = heroService.findById(id);
+			if (hero.isPresent()) {
 				return new ResponseEntity<Object>(hero, HttpStatus.OK);
 			} else {
 				return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
@@ -44,7 +48,7 @@ public class HeroController {
 	@ApiOperation(value = "Recupera heroi por nome")
 	public ResponseEntity<Object> findByName(@PathVariable("name") String name) {
 		try {
-			Hero hero = heroService.findByName(name);
+			List<Hero> hero = heroService.findByName(name);
 			return new ResponseEntity<Object>(hero, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<Object>("Ocorreu um erro ao procurar o heroi", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -55,8 +59,39 @@ public class HeroController {
 	@ApiOperation(value = "Salvar heroi")
 	public ResponseEntity<Object> saveHero(@Valid @RequestBody Hero hero) {
 		try {
+			List<Hero> listHero = heroService.findByName(hero.getName());
+			if (!listHero.isEmpty()) {
+				return new ResponseEntity<Object>("Nome de heroi duplicado", HttpStatus.BAD_REQUEST);
+			}
 			Hero h = heroService.saveHero(hero);
 			return new ResponseEntity<Object>(h, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<Object>("Ocorreu um erro ao salvar o heroi", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	@PostMapping(value = "edit")
+	@ApiOperation(value = "Editar heroi")
+	public ResponseEntity<Object> editHero(@Valid @RequestBody Hero hero) {
+		try {
+			Optional<Hero> existHero = heroService.findById(hero.getId());
+			if (existHero.isPresent()) {
+				Hero h = heroService.editHero(hero);
+				return new ResponseEntity<Object>(h, HttpStatus.OK);
+			}
+			return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<Object>("Ocorreu um erro ao salvar o heroi", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	@PostMapping(value = "delete")
+	@ApiOperation(value = "Deletar heroi")
+	public ResponseEntity<Object> deleteHero(@RequestBody Hero hero) {
+		try {
+			heroService.deleteHero(hero);
+			return new ResponseEntity<Object>("Heroi deletado com sucesso", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<Object>("Ocorreu um erro ao salvar o heroi", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
