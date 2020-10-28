@@ -46,17 +46,21 @@ public class HeroService {
 		return heroRepository.save(hero);
 	}
 
-	public void deleteHero(@RequestBody Hero hero) {
+	public String deleteHero(@RequestBody Hero hero) {
 		heroRepository.delete(hero);
 		powerRepository.delete(hero.getPower());
+		String msg = "Heroi deletado com sucesso - id: "+hero.getId();
+		return msg;
 	}
 
-	public void compareHero(CompareHero compareHero, Optional<Hero> hero, Optional<Hero> hero2) {
+	public CompareHero compareHero(CompareHero compareHero, Optional<Hero> hero, Optional<Hero> hero2) {
 		PowerStats p = hero.get().getPower();
 		PowerStats p2 = hero2.get().getPower();
 		compareHero.setStrength(p.getStrength()-p2.getStrength());
 		compareHero.setAgility(p.getAgility()-p2.getAgility());
 		compareHero.setDexterity(p.getDexterity()-p2.getDexterity());
 		compareHero.setIntelligence(p.getIntelligence()-p2.getIntelligence());
+		
+		return compareHero;
 	}
 }

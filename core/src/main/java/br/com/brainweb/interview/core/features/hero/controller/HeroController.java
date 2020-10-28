@@ -91,8 +91,8 @@ public class HeroController {
 	@ApiOperation(value = "Deletar heroi")
 	public ResponseEntity<Object> deleteHero(@RequestBody Hero hero) {
 		try {
-			heroService.deleteHero(hero);
-			return new ResponseEntity<Object>("Heroi deletado com sucesso", HttpStatus.OK);
+			String msg = heroService.deleteHero(hero);
+			return new ResponseEntity<Object>(msg, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<Object>("Ocorreu um erro ao salvar o heroi", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -100,14 +100,14 @@ public class HeroController {
 
 	@PostMapping(value = "compare")
 	@ApiOperation(value = "Compara dois heroi por ID")
-	public ResponseEntity<Object> compareHero(@RequestBody CompareHero comparehero) {
+	public ResponseEntity<Object> compareHero(@RequestBody CompareHero compareHero) {
 		try {
-			Optional<Hero> hero = heroService.findById(comparehero.getHero1());
+			Optional<Hero> hero = heroService.findById(compareHero.getHero1());
 			if (hero.isPresent()) {
-				Optional<Hero> hero2 = heroService.findById(comparehero.getHero2());
+				Optional<Hero> hero2 = heroService.findById(compareHero.getHero2());
 				if (hero2.isPresent()) {
-					heroService.compareHero(comparehero, hero, hero2);
-					return new ResponseEntity<Object>(comparehero, HttpStatus.OK);
+					heroService.compareHero(compareHero, hero, hero2);
+					return new ResponseEntity<Object>(compareHero, HttpStatus.OK);
 				}
 				return new ResponseEntity<Object>("ID2 nao encontrado", HttpStatus.NOT_FOUND);
 			} else {
