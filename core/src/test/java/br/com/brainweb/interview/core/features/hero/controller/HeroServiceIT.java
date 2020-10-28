@@ -1,4 +1,4 @@
-package br.com.brainweb.interview.core.features.hero;
+package br.com.brainweb.interview.core.features.hero.controller;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

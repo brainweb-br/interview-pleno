@@ -106,7 +106,7 @@ public class HeroController {
 			if (hero.isPresent()) {
 				Optional<Hero> hero2 = heroService.findById(compareHero.getHero2());
 				if (hero2.isPresent()) {
-					heroService.compareHero(compareHero, hero, hero2);
+					heroService.compareHero(compareHero, hero.get(), hero2.get());
 					return new ResponseEntity<Object>(compareHero, HttpStatus.OK);
 				}
 				return new ResponseEntity<Object>("ID2 nao encontrado", HttpStatus.NOT_FOUND);
