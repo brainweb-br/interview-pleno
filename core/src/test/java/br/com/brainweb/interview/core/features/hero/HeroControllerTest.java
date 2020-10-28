@@ -1,6 +1,7 @@
 package br.com.brainweb.interview.core.features.hero;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -64,19 +65,52 @@ public class HeroControllerTest {
 	@Test
 	public void testSave() throws Exception {
 		Hero h = createHero();
-		when(heroService.saveHero(h)).thenReturn(h);
+		when(heroService.saveHero(h)).thenThrow(NullPointerException.class);
 		assertNotNull(heroController.saveHero(h), "Mensagem não e nula");
-
-		List<Hero> listHero = new ArrayList<Hero>();
-		listHero.add(h);
-		String name = "Heroi 1";
-		when(heroService.findByName(name)).thenReturn(listHero);
-		assertNotNull(heroController.saveHero(h), "Mensagem não e nula");
-
+		
 		Hero h2 = createHero();
-		when(heroService.saveHero(h2)).thenThrow(NullPointerException.class);
+		when(heroService.saveHero(h2)).thenReturn(h2);
 		assertNotNull(heroController.saveHero(h2), "Mensagem não e nula");
 
+		List<Hero> listHero = new ArrayList<Hero>();
+		listHero.add(h2);
+		String name = "Heroi 1";
+		when(heroService.findByName(name)).thenReturn(listHero);
+		assertNotNull(heroController.saveHero(h2), "Mensagem não e nula");
+	}
+	
+	@Test
+	public void testEdit() throws Exception {
+		Hero h = createHero();
+		Optional<Hero> optHero = Optional.of(h);
+		when(heroService.findById(h.getId())).thenReturn(optHero);
+		when(heroService.editHero(h)).thenThrow(NullPointerException.class);
+		assertNotNull(heroController.editHero(h), "Mensagem não e nula");
+		
+		Hero h2 = createHero();
+		Optional<Hero> optHero2 = Optional.of(h2);
+		when(heroService.findById(h2.getId())).thenReturn(optHero2);
+		when(heroService.editHero(h2)).thenReturn(h2);
+		assertNotNull(heroController.editHero(h2), "Mensagem não e nula");
+		
+		Hero h3 = createHero();
+		when(heroService.findById(h3.getId())).thenReturn(Optional.empty());
+		assertNotNull(heroController.editHero(h3), "Mensagem não e nula");
+	}
+	
+	@Test
+	public void testDelete() throws Exception {
+		Hero h = createHero();
+		doNothing().when(heroService.deleteHero(h)).thenThrow(NullPointerException.class);
+		assertNotNull(heroController.deleteHero(h), "Mensagem não e nula");
+		
+		Hero h2 = createHero();
+		doNothing().when(heroService.deleteHero((h2));
+		assertNotNull(heroController.editHero(h2), "Mensagem não e nula");
+		
+		Hero h3 = createHero();
+		when(heroService.findById(h3.getId())).thenReturn(Optional.empty());
+		assertNotNull(heroController.editHero(h3), "Mensagem não e nula");
 	}
 
 	public Hero createHero() {
