@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.brainweb.interview.core.features.hero.service.HeroService;
 import br.com.brainweb.interview.model.Hero;
+import br.com.brainweb.interview.model.bean.CompareHero;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
@@ -31,7 +32,7 @@ public class HeroController {
 
 	@RequestMapping(value = "id/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Recupera heroi por ID")
-	public ResponseEntity<Object> findById(@PathVariable UUID id) { 
+	public ResponseEntity<Object> findById(@PathVariable UUID id) {
 		try {
 			Optional<Hero> hero = heroService.findById(id);
 			if (hero.isPresent()) {
@@ -69,7 +70,7 @@ public class HeroController {
 			return new ResponseEntity<Object>("Ocorreu um erro ao salvar o heroi", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
 	@PostMapping(value = "edit")
 	@ApiOperation(value = "Editar heroi")
 	public ResponseEntity<Object> editHero(@Valid @RequestBody Hero hero) {
@@ -97,4 +98,23 @@ public class HeroController {
 		}
 	}
 
+	@PostMapping(value = "compare")
+	@ApiOperation(value = "Compara dois heroi por ID")
+	public ResponseEntity<Object> compareHero(@RequestBody CompareHero comparehero) {
+		try {
+			Optional<Hero> hero = heroService.findById(comparehero.getHero1());
+			if (hero.isPresent()) {
+				Optional<Hero> hero2 = heroService.findById(comparehero.getHero2());
+				if (hero2.isPresent()) {
+					heroService.compareHero(comparehero, hero, hero2);
+					return new ResponseEntity<Object>(comparehero, HttpStatus.OK);
+				}
+				return new ResponseEntity<Object>("ID2 nao encontrado", HttpStatus.NOT_FOUND);
+			} else {
+				return new ResponseEntity<Object>("ID nao encontrado", HttpStatus.NOT_FOUND);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<Object>("Ocorreu um erro ao procurar o heroi", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

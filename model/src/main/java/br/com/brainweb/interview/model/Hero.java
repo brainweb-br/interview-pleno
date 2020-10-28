@@ -56,8 +56,15 @@ public class Hero {
 
 	@PrePersist
 	public void prePersist() {
-		createdAt = new Date();
-		updatedAt = new Date();
+		setCreatedAt(new Date());
+		setUpdatedAt(new Date());
 	}
+
+	@Override
+	public String toString() {
+		return "Hero [getId()=" + getId() + ", getName()=" + getName() + ", getRace()=" + getRace() + ", getPower()=" + getPower() + ", isEnabled()=" + isEnabled() + ", getCreatedAt()=" + getCreatedAt() + ", getUpdatedAt()=" + getUpdatedAt() + "]";
+	}
+
+	
 
 }

@@ -50,8 +50,12 @@ public class PowerStats {
 
 	@PrePersist
 	public void prePersist() {
-		createdAt = new Date();
-		updatedAt = new Date();
+		setCreatedAt(new Date());
+		setUpdatedAt(new Date());
 	}
 
+	@Override
+	public String toString() {
+		return "PowerStats [getId()=" + getId() + ", getStrength()=" + getStrength() + ", getAgility()=" + getAgility() + ", getDexterity()=" + getDexterity() + ", getIntelligence()=" + getIntelligence() + ", getCreatedAt()=" + getCreatedAt() + ", getUpdatedAt()=" + getUpdatedAt() + "]";
+	}
 }

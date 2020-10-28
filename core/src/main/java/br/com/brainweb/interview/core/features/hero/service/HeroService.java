@@ -13,6 +13,7 @@ import br.com.brainweb.interview.core.features.hero.repository.HeroRepository;
 import br.com.brainweb.interview.core.features.powerstats.repository.PowerStatsRepository;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
+import br.com.brainweb.interview.model.bean.CompareHero;
 
 @Service
 public class HeroService {
@@ -48,5 +49,14 @@ public class HeroService {
 	public void deleteHero(@RequestBody Hero hero) {
 		heroRepository.delete(hero);
 		powerRepository.delete(hero.getPower());
+	}
+
+	public void compareHero(CompareHero compareHero, Optional<Hero> hero, Optional<Hero> hero2) {
+		PowerStats p = hero.get().getPower();
+		PowerStats p2 = hero2.get().getPower();
+		compareHero.setStrength(p.getStrength()-p2.getStrength());
+		compareHero.setAgility(p.getAgility()-p2.getAgility());
+		compareHero.setDexterity(p.getDexterity()-p2.getDexterity());
+		compareHero.setIntelligence(p.getIntelligence()-p2.getIntelligence());
 	}
 }
