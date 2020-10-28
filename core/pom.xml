@@ -110,22 +110,78 @@
 					</systemPropertyVariables>
 				</configuration>
 			</plugin>
-			<!-- <plugin> <groupId>io.fabric8</groupId> <artifactId>docker-maven-plugin</artifactId> 
-				<version>0.31.0</version> <configuration> <images> <image> <name>brainweb/interview-postgres-it</name> 
-				<alias>interview-postgres-it</alias> <build> <dockerFileDir>${project.basedir}/src/main/resources/db/schema</dockerFileDir> 
-				<filter>@</filter> </build> <run> <ports> <port>brainweb-interview-postgres-it.port:5432</port> 
-				</ports> </run> </image> </images> </configuration> <executions> <execution> 
-				<id>start</id> <phase>pre-integration-test</phase> <goals> <goal>build</goal> 
-				<goal>start</goal> </goals> </execution> <execution> <id>stop</id> <phase>post-integration-test</phase> 
-				<goals> <goal>stop</goal> </goals> </execution> </executions> </plugin> <plugin> 
-				<groupId>io.fabric8</groupId> <artifactId>fabric8-maven-plugin</artifactId> 
-				<version>3.5.31</version> <configuration> <mode>kubernetes</mode> <images> 
-				<image> <name>brainweb/interview</name> <alias>interview-api</alias> <build> 
-				<dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir> <assembly> 
-				<descriptorRef>artifact</descriptorRef> </assembly> </build> </image> </images> 
-				</configuration> <executions> <execution> <id>fabric8</id> <goals> <goal>resource</goal> 
-				<goal>build</goal> <goal>helm</goal> </goals> </execution> </executions> 
-				</plugin> -->
+			<!-- 
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.31.0</version>
+				<configuration>
+					<images>
+						<image>
+							<name>brainweb/interview-postgres-it</name>
+							<alias>interview-postgres-it</alias>
+							<build>
+								<dockerFileDir>${project.basedir}/src/main/resources/db/schema</dockerFileDir>
+								<filter>@</filter>
+							</build>
+							<run>
+								<ports>
+									<port>brainweb-interview-postgres-it.port:5432</port>
+								</ports>
+							</run>
+						</image>
+					</images>
+				</configuration>
+				<executions>
+					<execution>
+						<id>start</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>build</goal>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>stop</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>fabric8-maven-plugin</artifactId>
+				<version>3.5.31</version>
+				<configuration>
+					<mode>kubernetes</mode>
+					<images>
+						<image>
+							<name>brainweb/interview</name>
+							<alias>interview-api</alias>
+							<build>
+								<dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
+							</build>
+						</image>
+					</images>
+				</configuration>
+				<executions>
+					<execution>
+						<id>fabric8</id>
+						<goals>
+							<goal>resource</goal>
+							<goal>build</goal>
+							<goal>helm</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			 -->
 		</plugins>
 	</build>
 
