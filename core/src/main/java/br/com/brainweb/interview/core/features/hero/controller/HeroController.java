@@ -83,7 +83,7 @@ public class HeroController {
 			return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<Object>("Ocorreu um erro ao salvar o heroi", HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<Object>("Ocorreu um erro ao editar o heroi", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -94,7 +94,7 @@ public class HeroController {
 			String msg = heroService.deleteHero(hero);
 			return new ResponseEntity<Object>(msg, HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<Object>("Ocorreu um erro ao salvar o heroi", HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<Object>("Ocorreu um erro ao deletar o heroi", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
@@ -114,7 +114,7 @@ public class HeroController {
 				return new ResponseEntity<Object>("ID nao encontrado", HttpStatus.NOT_FOUND);
 			}
 		} catch (Exception e) {
-			return new ResponseEntity<Object>("Ocorreu um erro ao procurar o heroi", HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<Object>("Ocorreu um erro ao comparar os herois", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 }
