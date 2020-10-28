@@ -69,7 +69,7 @@ public class HeroControllerTest {
 
 		List<Hero> listHero = new ArrayList<Hero>();
 		listHero.add(h);
-		String name = "teste";
+		String name = "Heroi 1";
 		when(heroService.findByName(name)).thenReturn(listHero);
 		assertNotNull(heroController.saveHero(h), "Mensagem não e nula");
 
