@@ -1,0 +1,19 @@
+version: "3"
+services:
+
+    spring-app:
+      build: .
+      ports:
+        - "8080:8080"
+      networks:
+        - app-network
+    postgres-app:
+      build: brainweb/interview-postgres-it
+      ports:
+        - "5432:5432"
+      networks:
+        - app-network
+
+networks:
+  app-network:
+        driver: bridge
