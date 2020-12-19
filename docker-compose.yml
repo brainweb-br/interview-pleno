@@ -1,19 +1,23 @@
-version: "3"
+version: "3.7"
 services:
-
     spring-app:
-      build: .
+      build:
+        context: .
+        dockerfile: ./core/src/main/docker/Dockerfile
       ports:
         - "8080:8080"
-      networks:
-        - app-network
     postgres-app:
-      build: brainweb/interview-postgres-it
+      build: ./core/src/main/resources/db/schema
       ports:
         - "5432:5432"
-      networks:
-        - app-network
-
-networks:
-  app-network:
-        driver: bridge
+    pgadmin:
+      image: dpage/pgadmin4
+      container_name: pgadmin
+      depends_on:
+        - postgres-app
+      environment:
+        - PGADMIN_DEFAULT_EMAIL=admin
+        - PGADMIN_DEFAULT_PASSWORD=admin
+        - PGADMIN_LISTEN_PORT=5050
+      ports:
+        - "5050:5050"
