@@ -1,38 +1,44 @@
 package br.com.brainweb.interview.model;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
 @Entity
-@Builder
+@AllArgsConstructor
 public class PowerStats {
 
     @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
     private UUID id;
     @Column(nullable = false)
-    private Short strength;
+    private int strength;
     @Column(nullable = false)
-    private Short agility;
+    private int agility;
     @Column(nullable = false)
-    private Short dexterity;
+    private int dexterity;
     @Column(nullable = false)
-    private Short intelligence;
-    private Timestamp created_at;
-    private Timestamp updated_at;
+    private int intelligence;
+    private OffsetDateTime created_at;
+    private OffsetDateTime updated_at;
+
+    public PowerStats() {
+    }
 
     @PrePersist
-    public void addingValues(){
-        this.id = UUID.randomUUID();
-        this.created_at = new Timestamp(System.currentTimeMillis());
+    public void addingValues() {
+        this.created_at = OffsetDateTime.now();
+        this.updated_at = OffsetDateTime.now();
     }
 
     @PreUpdate
-    public void updatingValues(){
-        this.updated_at = new Timestamp(System.currentTimeMillis());
+    public void updatingValues() {
+        this.updated_at = OffsetDateTime.now();
     }
-
 }

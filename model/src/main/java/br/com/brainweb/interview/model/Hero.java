@@ -1,17 +1,23 @@
 package br.com.brainweb.interview.model;
 
-import br.com.brainweb.interview.enums.EnumRace;
+import br.com.brainweb.interview.model.enums.EnumRace;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
 @Entity
-@Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Hero {
 
     @Id
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Column(name = "id", unique = true, nullable = false)
     private UUID id;
     @Column(nullable = false)
     private String name;
@@ -21,9 +27,8 @@ public class Hero {
     @Column(nullable = false)
     private Boolean enabled;
     @Column(updatable = false)
-    private Timestamp created_at;
-    @Column(insertable = false)
-    private Timestamp updated_at;
+    private OffsetDateTime created_at;
+    private OffsetDateTime updated_at;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(nullable = false,
             name = "power_stats_id",
@@ -33,13 +38,13 @@ public class Hero {
 
     @PrePersist
     public void addingValues(){
-        this.id = UUID.randomUUID();
-        this.created_at = new Timestamp(System.currentTimeMillis());
+        this.created_at = OffsetDateTime.now();
+        this.updated_at = OffsetDateTime.now();
     }
 
     @PreUpdate
     public void updatingValues(){
-        this.updated_at = new Timestamp(System.currentTimeMillis());
+        this.updated_at = OffsetDateTime.now();
     }
 
     public void activate(){
@@ -49,5 +54,4 @@ public class Hero {
     public void deactivate(){
         this.enabled = false;
     }
-
 }

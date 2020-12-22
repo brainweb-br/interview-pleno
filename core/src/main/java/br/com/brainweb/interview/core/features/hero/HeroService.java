@@ -4,6 +4,7 @@ import br.com.brainweb.interview.model.Hero;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -14,16 +15,13 @@ public class HeroService {
     @Autowired
     private HeroRepository heroRepository;
 
-    public HeroService(HeroRepository heroRepository) {
-        this.heroRepository = heroRepository;
-    }
-
     public List<Hero> findAllHeroes() {
-        return heroRepository.findAll();
+        List<Hero> heroes = heroRepository.findAll();
+        return heroes;
     }
 
     public Optional<Hero> findHeroById(UUID idHero) {
-    return null;
+        return heroRepository.findById(idHero);
     }
 
     public Optional<Hero> findHeroByName(String name) {
@@ -32,29 +30,36 @@ public class HeroService {
 
     public List<Hero> findHeroFilterByName(String name) {
         return heroRepository.findAll(Specification.where(HeroSpecification.nameFilter(name)));
+
     }
 
-    public Optional<Hero> findHeroByNameAndId(UUID id, String name) {
-        return heroRepository.findOne(Specification.where(HeroSpecification.nameEq(name)).and(HeroSpecification.idEq(id.toString())));
+    public Optional<Hero> findHeroByNameAndId(Hero hero) {
+        return heroRepository
+                .findOne(Specification.where(HeroSpecification.nameEq(hero.getName()))
+                        .and((Specification.not(HeroSpecification.idEq(hero.getId())))));
+
     }
 
+    @Transactional
     public Hero saveHero(Hero hero) {
         return heroRepository.save(hero);
     }
 
-
+    @Transactional
     public void removeHero(Hero hero) {
         heroRepository.delete(hero);
     }
 
+    @Transactional
     public void active(Hero hero) {
         hero.activate();
         heroRepository.save(hero);
     }
 
+    @Transactional
     public void deactivate(Hero hero) {
-    hero.deactivate();
-    heroRepository.save(hero);
+        hero.deactivate();
+        heroRepository.save(hero);
     }
-
 }
+

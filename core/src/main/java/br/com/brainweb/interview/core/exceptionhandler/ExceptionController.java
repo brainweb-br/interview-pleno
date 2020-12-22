@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 @Getter
 public class ExceptionController  extends RuntimeException {
 
+    private static final long serialVersionUID = 1L;
+
     @Autowired
     private final HttpStatus status;
 
