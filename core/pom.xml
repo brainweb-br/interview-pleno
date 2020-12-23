@@ -12,6 +12,8 @@
 
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
+        <modelmapper.version>2.3.0</modelmapper.version>
+
     </properties>
 
     <dependencies>
@@ -56,6 +58,17 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>${modelmapper.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.16</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -111,7 +124,7 @@
                             </build>
                             <run>
                                 <ports>
-                                    <port>brainweb-interview-postgres-it.port:5432</port>
+                                        <port>brainweb-interview-postgres-it.port:5432</port>
                                 </ports>
                             </run>
                         </image>
