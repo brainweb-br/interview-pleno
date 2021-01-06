@@ -25,12 +25,17 @@ public class HeroController {
     }
 
     @RequestMapping(value = "/heroes", method = RequestMethod.GET)
-    public ResponseEntity<List<DtoHeroResponse>> filterHeroesByName(@RequestParam(value = "names") List<String> heroesNames) {
-        return ResponseEntity.status(HttpStatus.OK).body(heroService.filterHeroesByName(heroesNames));
+    public ResponseEntity<DtoHeroResponse> filterHeroesByName(@RequestParam(value = "name") String heroName) {
+        return ResponseEntity.status(HttpStatus.OK).body(heroService.filterHeroesByName(heroName));
     }
 
     @RequestMapping(value = "/heroes/{id}", method = RequestMethod.PUT)
     public ResponseEntity<DtoHeroResponse> updateHero(@RequestBody Hero newHero, @PathVariable String id) {
         return ResponseEntity.status(HttpStatus.OK).body(heroService.updateHero(newHero, id));
+    }
+
+    @RequestMapping(value = "/heroes/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Object> deleteHero(@PathVariable String id) {
+        return heroService.deleteHero(id);
     }
 }

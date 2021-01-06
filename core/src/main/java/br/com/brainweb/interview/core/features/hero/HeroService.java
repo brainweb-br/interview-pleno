@@ -6,6 +6,7 @@ import br.com.brainweb.interview.model.Hero;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -53,19 +54,15 @@ public class HeroService {
         return new DtoHeroResponse(hero.get());
     }
 
-    public List<DtoHeroResponse> filterHeroesByName(List<String> heroesNames) {
-        logger.info("Hero id: {}", heroesNames);
+    public DtoHeroResponse filterHeroesByName(String heroName) {
+        logger.info("Hero name: {}", heroName);
 
-        List<DtoHeroResponse> heroesList = new ArrayList<>();
-        heroesNames.forEach(name -> {
-            Optional<Hero> hero = heroRepository.findByName(name);
+            Optional<Hero> hero = heroRepository.findByName(heroName);
 
             if (hero.isEmpty()) {
-                throw new NotFoundEntity("Herói " + name + " nao encontrado");
+                throw new NotFoundEntity("Heroi com o nome: " + heroName + " nao encontrado");
             }
-            heroesList.add(new DtoHeroResponse(hero.get()));
-        });
-        return heroesList;
+             return new DtoHeroResponse(hero.get());
     }
 
     public DtoHeroResponse updateHero(Hero newHero, String id) {
@@ -103,6 +100,15 @@ public class HeroService {
     private void validateId(String id) {
         if ((id == null || (" ").equalsIgnoreCase(id) || ("").equalsIgnoreCase(id))) {
             throw new NoContentError("Id não pode ser nulo, vazio ou apenas um espaço em branco");
+        }
+    }
+
+    public ResponseEntity<Object> deleteHero(String id) {
+        try {
+            heroRepository.deleteById(UUID.fromString(id));
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            throw new NotFoundEntity("Herói com id " + id + " não encontrado");
         }
     }
 }
