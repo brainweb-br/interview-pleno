@@ -7,14 +7,30 @@ services:
       POSTGRES_PASSWORD: brainweb
     ports:
       - "5432:5432"
+    networks:
+      - services-network
 
   app:
     image: brainweb/interview:latest
     restart: always
     ports:
     - "8080-8090:8080"
+    depends_on:
+      - db
+    networks:
+      - services-network
   app1:
     image: brainweb/interview:latest
     restart: always
     ports:
       - "8091-9000:8080"
+    depends_on:
+      - db
+    networks:
+      - services-network
+
+networks:
+  services-network:
+    driver: bridge
+
+
