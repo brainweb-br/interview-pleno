@@ -63,6 +63,14 @@
             <artifactId>maven-failsafe-plugin</artifactId>
             <version>2.22.2</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-actuator -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>2.4.1</version>
+        </dependency>
+
     </dependencies>
 
     <build>

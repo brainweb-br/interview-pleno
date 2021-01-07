@@ -121,6 +121,10 @@ public class HeroService {
             throw  new BadRequestError("Voce deve inserir o nome de 2 heróis para que a comparação possa ser feita");
         }
 
+        if (heroesNames.size() > 2) {
+            throw  new BadRequestError("São permitidos apenas 2 heróis por vez na comparação de status");
+        }
+
         for (String name : heroesNames) {
             Optional<Hero> hero = heroRepository.findByName(name);
 
