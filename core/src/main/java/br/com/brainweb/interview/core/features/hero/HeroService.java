@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -104,11 +102,12 @@ public class HeroService {
     }
 
     public ResponseEntity<Object> deleteHero(String id) {
-        try {
-            heroRepository.deleteById(UUID.fromString(id));
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
+        Optional<Hero> hero = heroRepository.findById(UUID.fromString(id));
+
+        if (hero.isEmpty()) {
             throw new NotFoundEntity("Herói com id " + id + " não encontrado");
         }
+        heroRepository.delete(hero.get());
+        return ResponseEntity.ok().build();
     }
 }
