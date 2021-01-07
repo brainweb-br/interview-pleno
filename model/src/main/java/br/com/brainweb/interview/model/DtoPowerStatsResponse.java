@@ -4,9 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.UUID;
@@ -16,18 +13,25 @@ import java.util.UUID;
 @NoArgsConstructor
 public class DtoPowerStatsResponse {
     private UUID id;
-
     private Integer strength;
-
     private Integer agility;
-
     private Integer dexterity;
-
     private Integer intelligence;
-
     private String creationDate;
-
     private String updateDate;
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id=" + id +
+                ", strength=" + strength +
+                ", agility=" + agility +
+                ", dexterity=" + dexterity +
+                ", intelligence=" + intelligence +
+                ", creationDate='" + creationDate + '\'' +
+                ", updateDate='" + updateDate + '\'' +
+                '}';
+    }
 
     public DtoPowerStatsResponse(PowerStats stats) {
         this.id = stats.getId();

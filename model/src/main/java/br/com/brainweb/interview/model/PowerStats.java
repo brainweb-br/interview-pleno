@@ -39,4 +39,16 @@ public class PowerStats {
     @Column(name = "updated_at", columnDefinition = "TIME WITH TIME ZONE")
     private OffsetDateTime updateDate;
 
+    @Override
+    public String toString() {
+        return "{" +
+                "id=" + id +
+                ", strength=" + strength +
+                ", agility=" + agility +
+                ", dexterity=" + dexterity +
+                ", intelligence=" + intelligence +
+                ", creationDate=" + creationDate +
+                ", updateDate=" + updateDate +
+                '}';
+    }
 }

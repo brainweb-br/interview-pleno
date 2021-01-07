@@ -1,6 +1,8 @@
 package br.com.brainweb.interview.core.features.hero;
 
+import br.com.brainweb.interview.core.features.hero.exception.BadRequestError;
 import br.com.brainweb.interview.core.features.hero.exception.NotFoundEntity;
+import br.com.brainweb.interview.model.ComparativeResponse;
 import br.com.brainweb.interview.model.DtoHeroResponse;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
@@ -17,6 +19,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -97,6 +101,10 @@ public class HeroControllerTest {
         when(heroRepository.findByName(any(String.class))).thenReturn(Optional.ofNullable(hero));
     }
 
+    public void setFindByInvalidName() {
+        when(heroRepository.findByName(any(String.class))).thenReturn(Optional.empty());
+    }
+
     public void setFindByNameAndBreed() {
         when(heroRepository.findByNameAndBreed(any(String.class), any(String.class))).thenReturn(Optional.ofNullable(hero));
     }
@@ -169,7 +177,7 @@ public class HeroControllerTest {
     public void shouldReturnAHeroObjectWhenFilterHeroesByNameTest() {
         logger.info("FindByName Built");
         setFindByName();
-        logger.info("Iniciando teste da classe service (filterHeroesByName");
+        logger.info("Iniciando teste da classe service (filterHeroesByName)");
 
         DtoHeroResponse dtoHeroResponse = heroService.filterHeroesByName("superman");
         DtoHeroResponse objectToBeCompared = new DtoHeroResponse(hero);
@@ -179,7 +187,7 @@ public class HeroControllerTest {
 
     @Test
     public void shouldThrowExceptionWhenFilterHeroesByInvalidTest() {
-        logger.info("Iniciando teste da classe service (filterHeroesByName");
+        logger.info("Iniciando teste da classe service (filterHeroesByName)");
 
         Exception exception = assertThrows(RuntimeException.class, () -> heroService.filterHeroesByName("supermann"));
 
@@ -191,7 +199,7 @@ public class HeroControllerTest {
 
     @Test
     public void shouldThrowExceptionWhenWhenUpdateHeroWithInvalidIdTest() {
-        logger.info("Iniciando teste da classe service (updateHero");
+        logger.info("Iniciando teste da classe service (updateHero)");
 
         setUpdateHero();
         DtoHeroResponse dtoHeroResponse = heroService.updateHero(updatedHero, heroId);
@@ -207,7 +215,7 @@ public class HeroControllerTest {
 
     @Test
     public void shouldReturnHeroObjectWhenUpdateHeroTest() {
-        logger.info("Iniciando teste da classe service (updateHero");
+        logger.info("Iniciando teste da classe service (updateHero)");
 
         heroId = UUID.randomUUID().toString();
         setFindByInvalidId();
@@ -221,7 +229,8 @@ public class HeroControllerTest {
 
     @Test
     public void shouldReturnOkWhenDeleteHeroWithValidIdTest() {
-        logger.info("Iniciando teste da classe service (deleteHero");
+
+        logger.info("Iniciando teste da classe service (deleteHero)");
 
         ResponseEntity<Object> response = heroService.deleteHero(heroId);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -229,12 +238,57 @@ public class HeroControllerTest {
 
     @Test
     public void shouldReturnOkWhenDeleteHeroWithInvalidIdTest() {
-        logger.info("Iniciando teste da classe service (deleteHero");
+        logger.info("Iniciando teste da classe service (deleteHero)");
 
         setFindByInvalidId();
         Exception exception = assertThrows(NotFoundEntity.class, () -> heroService.deleteHero(heroId));
 
         String expectedMessage = "Herói com id " + heroId + " não encontrado";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(expectedMessage.contains(actualMessage));
+    }
+
+    @Test
+    public void shouldReturnComparativeObjectWhenSendTwoValidHeroesName() {
+        List<String> heroesNames = new ArrayList<>();
+        heroesNames.add("superman");
+        heroesNames.add("batman");
+
+        setFindByName();
+        ComparativeResponse response = heroService.compareHeroesStats(heroesNames);
+
+        assertThat(response.getAgilityHeroOne()).isEqualTo(0);
+        assertThat(response.getAgilityHeroTwo()).isEqualTo(0);
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenSendOnlyOneHeroNameTest() {
+        logger.info("Iniciando teste da classe service (compareHeroesStats)");
+
+        List<String> heroesNames = new ArrayList<>();
+        heroesNames.add("superman");
+
+        Exception exception = assertThrows(BadRequestError.class, () -> heroService.compareHeroesStats(heroesNames));
+
+        String expectedMessage = "Voce deve inserir o nome de 2 heróis para que a comparação possa ser feita";
+        String actualMessage = exception.getMessage();
+
+        assertTrue(expectedMessage.contains(actualMessage));
+    }
+
+    @Test
+    public void shouldThrowExceptionWhenSendInvalidHeroNameTest() {
+
+        List<String> heroesNames = new ArrayList<>();
+        heroesNames.add("superman");
+        heroesNames.add("batman");
+
+        setFindByInvalidName();
+
+        Exception exception = assertThrows(NotFoundEntity.class, () -> heroService.compareHeroesStats(heroesNames));
+
+        String expectedMessage = "Herói com nome: superman não encontrado";
         String actualMessage = exception.getMessage();
 
         assertTrue(expectedMessage.contains(actualMessage));

@@ -45,4 +45,17 @@ public class Hero {
     @Column(name = "updated_at", columnDefinition = "TIME WITH TIME ZONE")
     @JsonProperty("data_atualizacao")
     private OffsetDateTime updateDate;
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", breed='" + breed + '\'' +
+                ", powerStats=" + powerStats +
+                ", isEnabled=" + isEnabled +
+                ", creationDate=" + creationDate +
+                ", updateDate=" + updateDate +
+                '}';
+    }
 }

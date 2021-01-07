@@ -4,7 +4,7 @@ LABEL maintainer="Brainweb"
 LABEL version="1.0"
 
 ENV DB_NAME="postgres"
-ENV DB_HOSTNAME="localhost"
+ENV DB_HOSTNAME="172.17.0.1"
 ENV DB_PORT="5432"
 ENV DB_USERNAME="brainweb"
 ENV DB_PWD="brainweb"

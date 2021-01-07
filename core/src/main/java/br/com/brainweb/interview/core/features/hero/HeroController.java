@@ -1,5 +1,6 @@
 package br.com.brainweb.interview.core.features.hero;
 
+import br.com.brainweb.interview.model.ComparativeResponse;
 import br.com.brainweb.interview.model.DtoHeroResponse;
 import br.com.brainweb.interview.model.Hero;
 import lombok.RequiredArgsConstructor;
@@ -37,5 +38,10 @@ public class HeroController {
     @RequestMapping(value = "/heroes/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> deleteHero(@PathVariable String id) {
         return heroService.deleteHero(id);
+    }
+
+    @RequestMapping(value = "/heroes/compare", method = RequestMethod.GET)
+    public ResponseEntity<ComparativeResponse> deleteHero(@RequestParam(value = "names") List<String> heroesNames) {
+        return ResponseEntity.status(HttpStatus.OK).body(heroService.compareHeroesStats(heroesNames));
     }
 }

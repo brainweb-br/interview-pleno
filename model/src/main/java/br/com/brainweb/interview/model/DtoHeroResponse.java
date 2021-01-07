@@ -33,6 +33,19 @@ public class DtoHeroResponse {
     @JsonProperty("data_atualizacao")
     private String updateDate;
 
+    @Override
+    public String toString() {
+        return "{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", breed='" + breed + '\'' +
+                ", powerStats=" + powerStats +
+                ", isEnabled=" + isEnabled +
+                ", creationDate='" + creationDate + '\'' +
+                ", updateDate='" + updateDate + '\'' +
+                '}';
+    }
+
     public DtoHeroResponse(Hero hero) {
         this.id = hero.getId();
         this.name = hero.getName();

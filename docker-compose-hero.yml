@@ -1,0 +1,20 @@
+version: '3.1'
+services:
+  db:
+    image: brainweb/interview-postgres-it:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: brainweb
+    ports:
+      - "5432:5432"
+
+  app:
+    image: brainweb/interview:latest
+    restart: always
+    ports:
+    - "8080-8090:8080"
+  app1:
+    image: brainweb/interview:latest
+    restart: always
+    ports:
+      - "8091-9000:8080"

@@ -49,4 +49,16 @@ public class ApiHandlerException extends ResponseEntityExceptionHandler {
 
         return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
     }
+
+    @ExceptionHandler(BadRequestError.class)
+    public ResponseEntity<Object> notFoundEntity(BadRequestError ex, WebRequest request) {
+        var status = HttpStatus.BAD_REQUEST;
+
+        var error = new ErrorResponse();
+        error.setStatus(status.value());
+        error.setTitle(ex.getMessage());
+        error.setDate(OffsetDateTime.now(ZoneId.of("America/Sao_Paulo")).toString());
+
+        return handleExceptionInternal(ex, error, new HttpHeaders(), status, request);
+    }
 }

@@ -1,6 +1,7 @@
 package br.com.brainweb.interview.core.features.hero;
 
 import br.com.brainweb.interview.core.features.hero.exception.*;
+import br.com.brainweb.interview.model.ComparativeResponse;
 import br.com.brainweb.interview.model.DtoHeroResponse;
 import br.com.brainweb.interview.model.Hero;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
@@ -109,5 +111,32 @@ public class HeroService {
         }
         heroRepository.delete(hero.get());
         return ResponseEntity.ok().build();
+    }
+
+    public ComparativeResponse compareHeroesStats(List<String> heroesNames) {
+        Hero heroOne = new Hero();
+        Hero heroTwo = new Hero();
+        int counter = 0;
+        if (heroesNames.size() < 2) {
+            throw  new BadRequestError("Voce deve inserir o nome de 2 heróis para que a comparação possa ser feita");
+        }
+
+        for (String name : heroesNames) {
+            Optional<Hero> hero = heroRepository.findByName(name);
+
+            if (hero.isEmpty()) {
+                throw new NotFoundEntity("Herói com nome: " + name + " não encontrado");
+            }
+
+            if (counter == 0) {
+                heroOne = hero.get();
+
+            } else {
+                heroTwo = hero.get();
+            }
+            counter++;
+        }
+        ComparativeResponse comparativeResponse = new ComparativeResponse();
+        return comparativeResponse.compare(heroOne, heroTwo);
     }
 }
