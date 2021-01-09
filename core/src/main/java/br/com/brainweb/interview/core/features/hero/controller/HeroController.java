@@ -1,12 +1,13 @@
-package br.com.brainweb.interview.core.features.hero;
+package br.com.brainweb.interview.core.features.hero.controller;
 
+import br.com.brainweb.interview.core.features.hero.service.HeroService;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.CompareHero;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.annotations.ApiOperation;
 
 import javax.validation.Valid;
 import java.util.UUID;
@@ -15,13 +16,13 @@ import static br.com.brainweb.interview.core.constants.ApiConstants.*;
 
 @RestController
 @RequestMapping("/")
+@Component
 public class HeroController {
 
     @Autowired
     HeroService heroService;
 
     @PostMapping(value = "save")
-    @ApiOperation(value = "Salvar heroi")
     public ResponseEntity<Object> createHero(@Valid @RequestBody Hero hero) {
         if (!heroService.findByName(hero.getName()).isEmpty()) {
             return new ResponseEntity<>(HERO_NAME_EXISTS, HttpStatus.BAD_REQUEST);
@@ -29,8 +30,7 @@ public class HeroController {
         return new ResponseEntity<>(heroService.saveHero(hero),HttpStatus.OK);
     }
 
-    @RequestMapping(value = "id/{id}", method = RequestMethod.GET)
-    @ApiOperation(value = "Recupera heroi por ID")
+    @GetMapping(value = "id/{id}")
     public ResponseEntity<Object> findById(@PathVariable UUID id) {
         if (heroService.findById(id).isPresent()) {
             return new ResponseEntity<>(heroService.findById(id), HttpStatus.OK);
@@ -38,8 +38,7 @@ public class HeroController {
         return new ResponseEntity<>(HERO_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "name/{name}", method = RequestMethod.GET)
-    @ApiOperation(value = "Recupera heroi por nome")
+    @GetMapping(value = "name/{name}")
     public ResponseEntity<Object> findByName(@PathVariable("name") String name) {
 
         return new ResponseEntity<>(heroService.findByName(name), HttpStatus.OK);
@@ -47,7 +46,6 @@ public class HeroController {
     }
 
     @PostMapping(value = "edit")
-    @ApiOperation(value = "Editar heroi")
     public ResponseEntity<Object> editHero(@Valid @RequestBody Hero hero) {
 
         if (heroService.findById(hero.getId()).isPresent()) {
@@ -68,7 +66,6 @@ public class HeroController {
     }
 
     @DeleteMapping(value = "delete")
-    @ApiOperation(value = "Deletar heroi")
     public ResponseEntity<Object> deleteHero(@RequestBody UUID hero) {
         if (heroService.findById(hero).isPresent()) {
             heroService.deleteHero(heroService.findById(hero).get());

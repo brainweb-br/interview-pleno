@@ -16,6 +16,7 @@ import java.util.UUID;
 @Setter
 @Entity
 @NoArgsConstructor
+@Table(name = "HERO")
 public class Hero {
 
     @Id

@@ -1,5 +1,6 @@
 package br.com.brainweb.interview.core.features.hero;
 
+import br.com.brainweb.interview.core.features.hero.service.HeroService;
 import br.com.brainweb.interview.core.repository.HeroRepository;
 import br.com.brainweb.interview.core.repository.PowerStatsRepository;
 import br.com.brainweb.interview.model.CompareHero;

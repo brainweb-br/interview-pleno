@@ -21,6 +21,7 @@ import lombok.Setter;
 @Setter
 @Entity
 @NoArgsConstructor
+@Table(name = "POWER_STATS")
 public class PowerStats {
 
     @Id

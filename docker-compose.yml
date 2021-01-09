@@ -2,7 +2,6 @@ version: "3.7"
 services:
   spring-app:
     build:
-      context: .
       dockerfile: ./core/src/main/docker/Dockerfile
     ports:
       - "8080:8080"
@@ -13,7 +12,7 @@ services:
   postgres-app:
     build: ./core/src/main/resources/db/schema
     ports:
-      - "5431:5432"
+      - "5432:5432"
     environment:
       POSTGRES_PASSWORD: brainweb
       POSTGRES_USER: brainweb

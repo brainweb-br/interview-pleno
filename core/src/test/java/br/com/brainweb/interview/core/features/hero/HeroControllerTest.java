@@ -1,5 +1,7 @@
 package br.com.brainweb.interview.core.features.hero;
 
+import br.com.brainweb.interview.core.features.hero.controller.HeroController;
+import br.com.brainweb.interview.core.features.hero.service.HeroService;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
 import br.com.brainweb.interview.model.CompareHero;

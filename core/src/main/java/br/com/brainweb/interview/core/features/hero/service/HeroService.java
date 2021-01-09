@@ -1,4 +1,4 @@
-package br.com.brainweb.interview.core.features.hero;
+package br.com.brainweb.interview.core.features.hero.service;
 
 import java.util.Date;
 import java.util.List;
@@ -8,12 +8,13 @@ import java.util.UUID;
 import br.com.brainweb.interview.core.repository.HeroRepository;
 import br.com.brainweb.interview.core.repository.PowerStatsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.CompareHero;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Component
 public class HeroService {
 
     @Autowired
@@ -22,28 +23,28 @@ public class HeroService {
     @Autowired
     private PowerStatsRepository powerRepository;
 
-    @Transactional
+
     public Hero saveHero(Hero hero){
         powerRepository.save(hero.getPower());
         heroRepository.save(hero);
         return hero;
     }
-    @Transactional
+
     public Optional<Hero> findById(UUID id) {
         return heroRepository.findById(id);
     }
-    @Transactional
+
     public List<Hero> findByName(String name) {
         return heroRepository.findByNameIgnoreCase(name);
     }
-    @Transactional
+
     public Hero editHero(Hero hero) {
         hero.getPower().setUpdatedAt(new Date());
         hero.setUpdatedAt(new Date());
         hero.setPower(powerRepository.save(hero.getPower()));
         return heroRepository.save(hero);
     }
-    @Transactional
+
     public CompareHero compareHeroes(UUID idHeroA, UUID idHeroB)  {
         Hero heroA = heroRepository.findById(idHeroA).get();
         Hero heroB = heroRepository.findById(idHeroB).get();
@@ -82,7 +83,7 @@ public class HeroService {
         compareHero.setSamePower(sameForce);
         return compareHero;
     }
-    @Transactional
+
     public void deleteHero(Hero hero) {
         heroRepository.delete(hero);
         powerRepository.delete(hero.getPower());
