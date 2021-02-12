@@ -31,7 +31,7 @@ public class HeroRepository {
 	    ResultSet rs = pst.executeQuery();
 	    
 	    while(rs.next()) {
-		Hero hero = new Hero();
+		Hero hero = new Hero("BigGirl", "HUMAN", null);
 		    
 		    
 		heroes.add(hero);

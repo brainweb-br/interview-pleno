@@ -10,6 +10,8 @@ import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import br.com.brainweb.interview.model.Hero;
+
 
 @Component
 public class HeroRoutes extends RouteBuilder{
@@ -31,7 +33,7 @@ public class HeroRoutes extends RouteBuilder{
 	
 	rest("/v1/heroes")
 	
-        	.get("/id/{id}")
+        	.get("/{id}")
                 	.responseMessage().code(404).message("Hero not found").endResponseMessage()
                 	.route()
                 	.to("bean:heroController?method=findById(${header.id})")
@@ -45,10 +47,37 @@ public class HeroRoutes extends RouteBuilder{
         	
         	.get("/name/{name}")
         		.to("bean:heroController?method=findByName(${header.name})")
+        		.route()
+        		.process(exchange -> {
+        		    exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, 200);
+        		}).endRest()
         	
         	.post()
+        		.type(Hero.class)
         		.to("bean:heroController?method=create(${body})")
-        	
+        		
+        	.put()
+        		.type(Hero.class)
+        		.responseMessage().code(404).message("Hero not found").endResponseMessage()
+        		.route()
+        		.to("bean:heroController?method=update(${body})")
+        		.onException(HeroNotFoundException.class).process(exchange -> { 
+                	    	exchange.getMessage().setHeader(Exchange.HTTP_RESPONSE_CODE, 404);
+                	    	exchange.getMessage().setBody(new Error("Not found"), Error.class);
+                	    })
+                	.handled(true)
+                	.endRest()
+                	
+                .delete("/id/{id}")
+        		.responseMessage().code(404).message("Hero not found").endResponseMessage()
+        		.route()
+        		.to("bean:heroController?method=delete(${header.id})")
+        		.onException(HeroNotFoundException.class).process(exchange -> { 
+                	    	exchange.getMessage().setHeader(Exchange.HTTP_RESPONSE_CODE, 404);
+                	    	exchange.getMessage().setBody(new Error("Not found"), Error.class);
+                	    })
+                	.handled(true)
+                	.endRest()
         	
         	;
 	
