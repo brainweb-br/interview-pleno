@@ -1,7 +1,5 @@
 package br.com.brainweb.interview.core.features.hero;
 
-import java.util.UUID;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +46,7 @@ public class HeroController {
 	 if(StringUtils.isEmpty(id)) throw new IllegalArgumentException("Id is required");
 	 Hero hero = null;
 	 try {
-	    hero = service.findById(UUID.fromString(id));
+	    hero = service.findById(id);
 	 } catch (Exception e) {
 	     LOGGER.error("{}", e.getMessage(), e);
 	     throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -69,19 +67,19 @@ public class HeroController {
 	}
     }
     
-    public Hero update(Hero hero) {
+    public void update(Hero hero) {
 	if(hero == null) throw new IllegalArgumentException("Hero cannot be null.");
 	if(hero.getId() == null) throw new IllegalArgumentException("Id cannot be null.");
 	Hero heroFound = this.findById(hero.getIdString());
 	if(heroFound == null) throw new HeroNotFoundException();
 	if(StringUtils.isEmpty(hero.getName())) throw new IllegalArgumentException("Name is required.");
 	Hero other = this.findByName(hero.getName());
-	if(other != null && (other.getId() != hero.getId())) throw new IllegalArgumentException("A hero with name " + hero.getName() + " already exists.");
+	if(other != null && !StringUtils.equals(other.getIdString(), hero.getIdString())) throw new IllegalArgumentException("Another hero with name " + hero.getName() + " already exists.");
 	if(StringUtils.isEmpty(hero.getRace())) throw new IllegalArgumentException("Race is required.");
 	if(hero.getPowerStats() == null) throw new IllegalArgumentException("PowerStats is required.");
 	
 	try {
-	    return service.update(hero);
+	    service.update(hero);
 	} catch (Exception e) {
 	    LOGGER.error("{}", e.getMessage(), e);
 	    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -94,7 +92,7 @@ public class HeroController {
 	if(heroFound == null) throw new HeroNotFoundException();
 
 	try {
-	    service.delete(UUID.fromString(id));
+	    service.delete(id);
 	} catch (Exception e) {
 	    LOGGER.error("{}", e.getMessage(), e);
 	    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);

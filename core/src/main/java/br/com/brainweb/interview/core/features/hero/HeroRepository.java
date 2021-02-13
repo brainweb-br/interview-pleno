@@ -9,7 +9,6 @@ import java.util.UUID;
 
 import javax.sql.DataSource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,22 +28,42 @@ public class HeroRepository {
     
     public Hero findByName(String name){
 	Hero hero = null;
-	String query = "select * from hero where name= '" + name+ "' limit 1";
+	String query = "select * from hero inner join power_stats on hero.power_stats_id = power_stats.id where name= '" + name+ "' limit 1";
 	
 	try {
 	    Connection con = dataSource.getConnection();
 	    PreparedStatement st = con.prepareStatement(query);
 	    ResultSet rs = st.executeQuery();
 	    if(rs.next()){
+		PowerStats powerStats = new PowerStats(UUID.fromString(rs.getString("power_stats_id")), rs.getInt("strength"), rs.getInt("agility"), rs.getInt("dexterity"), rs.getInt("intelligence"));
 		String id = rs.getString("id");
-		hero = new Hero(UUID.fromString(id), rs.getString("name"), rs.getString("race"), null);
-		
-		String powerStatsId = rs.getString("power_stats_id");
-		PowerStats powerStats = this.getPowerStatsFor(powerStatsId);
-		LOGGER.info("PowerStats::::{}", powerStats );
-		hero.setPowerStats(powerStats);
+		hero = new Hero(UUID.fromString(id), rs.getString("name"), rs.getString("race"), powerStats);
 	    }
-	    
+	    st.close();
+	    con.close();
+	    return hero;
+	} catch (SQLException e) {
+	    LOGGER.error("{}", e.getMessage(), e);
+	    e.printStackTrace();
+	    return null;
+	}
+    }
+    
+    public Hero findById(String id){
+	Hero hero = null;
+	String query = "select * from hero inner join power_stats on hero.power_stats_id = power_stats.id where hero.id= ? limit 1";
+	
+	try {
+	    Connection con = dataSource.getConnection();
+	    PreparedStatement st = con.prepareStatement(query);
+	    st.setObject(1, UUID.fromString(id));
+	    ResultSet rs = st.executeQuery();
+	    if(rs.next()){
+		PowerStats powerStats = new PowerStats(UUID.fromString(rs.getString("power_stats_id")), rs.getInt("strength"), rs.getInt("agility"), rs.getInt("dexterity"), rs.getInt("intelligence"));
+		hero = new Hero(UUID.fromString(rs.getString("id")), rs.getString("name"), rs.getString("race"), powerStats);
+	    }
+	    st.close();
+	    con.close();
 	    return hero;
 	} catch (SQLException e) {
 	    LOGGER.error("{}", e.getMessage(), e);
@@ -54,26 +73,71 @@ public class HeroRepository {
     }
     
     public void create(Hero hero) {
-	this.createPowerStatsFor(hero);
-	
-	Connection con;
 	try {
-	    con = dataSource.getConnection();
+	    Connection con = dataSource.getConnection();
+	    this.createPowerStatsFor(hero, con);
 	    PreparedStatement st = con.prepareStatement("insert into hero (name, race, power_stats_id) values (?, ?, ?)");
 	    st.setString(1, hero.getName());
 	    st.setString(2,  hero.getRace());
 	    st.setObject(3, hero.getPowerStats().getId());
 	    st.executeUpdate();
 	    st.close();
+	    con.close();
 	} catch (SQLException e) {
 	    LOGGER.error("{}", e.getMessage(), e);
 	    e.printStackTrace();
 	}
     }
     
-    private void createPowerStatsFor(Hero hero) {
-	
-   	Connection con;
+    public void update(Hero hero) {
+	try {
+	    Connection con = dataSource.getConnection();
+	    this.updatePowerStatsFor(hero, con);
+	    PreparedStatement st = con.prepareStatement("update hero set name=?, race=? where id=?");
+	    st.setString(1, hero.getName());
+	    st.setString(2,  hero.getRace());
+	    st.setObject(3,  hero.getId());
+	    st.executeUpdate();
+	    st.close();
+	    con.close();
+	} catch (SQLException e) {
+	    LOGGER.error("{}", e.getMessage(), e);
+	    e.printStackTrace();
+	}
+    }
+    
+    public void delete(String id) {
+	try {
+	    Connection con = dataSource.getConnection();
+	    Hero hero = this.findById(id, con);
+	    if (hero == null) {
+		LOGGER.warn("Hero not found.");
+		return;
+	    }
+	    PreparedStatement st = con.prepareStatement("delete from hero where id=?");
+	    st.setObject(1, UUID.fromString(id));
+	    st.executeUpdate();
+	    st.close();
+
+	    this.deletePowerStatsFor(hero, con);
+	    con.close();
+	} catch (Exception e) {
+	    LOGGER.error("{}", e.getMessage(), e);
+	}
+    }
+    
+    private void deletePowerStatsFor(Hero hero, Connection con) {
+	try {
+	    con = dataSource.getConnection();
+	    PreparedStatement st = con.prepareStatement("delete from power_stats where id=?");
+	    st.setObject(1, hero.getPowerStats().getId());
+	    st.executeUpdate();
+	    st.close();
+	} catch (Exception e) {
+	    LOGGER.error("{}", e.getMessage(), e);
+	}
+    }
+    private void createPowerStatsFor(Hero hero, Connection con) {
    	try {
    	    con = dataSource.getConnection();
    	    PreparedStatement st = con.prepareStatement("insert into power_stats (strength, agility, dexterity, intelligence) values (?, ?, ?, ?)",  Statement.RETURN_GENERATED_KEYS);
@@ -98,27 +162,43 @@ public class HeroRepository {
    	}
        }
     
-    private PowerStats getPowerStatsFor(String id){
-	LOGGER.info("Invoking getPowerStatsFor(id), values({})", StringUtils.join(new Object[] { id }, ", "));
-	PowerStats powerStats = null;
-   	String query = "select * from power_stats where id= '" + id+ "' limit 1";
+   
+    private Hero findById(String id, Connection con){
+   	Hero hero = null;
+   	String query = "select * from hero inner join power_stats on hero.power_stats_id = power_stats.id where hero.id= ? limit 1";
    	
    	try {
-   	    Connection con = dataSource.getConnection();
    	    PreparedStatement st = con.prepareStatement(query);
+   	    st.setObject(1, UUID.fromString(id));
    	    ResultSet rs = st.executeQuery();
-   	    if(rs.next()){		
-   		int strength = rs.getInt("strength");
-   		int agility = rs.getInt("agility");
-   		int dexterity = rs.getInt("dexterity");
-   		int intelligence = rs.getInt("intelligence");
-   		powerStats = new PowerStats(UUID.fromString(rs.getString("id")),strength, agility, dexterity, intelligence);
+   	    if(rs.next()){
+   		PowerStats powerStats = new PowerStats(UUID.fromString(rs.getString("power_stats_id")), rs.getInt("strength"), rs.getInt("agility"), rs.getInt("dexterity"), rs.getInt("intelligence"));
+   		hero = new Hero(UUID.fromString(rs.getString("id")), rs.getString("name"), rs.getString("race"), powerStats);
    	    }
-   	    
+   	    st.close();
+   	    return hero;
+   	} catch (SQLException e) {
+   	    LOGGER.error("{}", e.getMessage(), e);
+   	    e.printStackTrace();
+   	    return null;
+   	}
+       }
+       
+    
+ private void updatePowerStatsFor(Hero hero, Connection con) {
+   	try {
+   	    con = dataSource.getConnection();
+   	    PreparedStatement st = con.prepareStatement("update power_stats set strength=?, agility=?, dexterity=?, intelligence=? where id=?");
+   	    st.setInt(1, hero.getPowerStats().getStrength());
+   	    st.setInt(2, hero.getPowerStats().getAgility());
+   	    st.setInt(3, hero.getPowerStats().getDexterity());
+   	    st.setInt(4, hero.getPowerStats().getIntelligence());
+   	    st.setObject(5, hero.getPowerStats().getId());
+   	    st.executeUpdate();
+   	    st.close();
    	} catch (SQLException e) {
    	    LOGGER.error("{}", e.getMessage(), e);
    	    e.printStackTrace();
    	}
-   	return powerStats;
-    }
+       }
 }

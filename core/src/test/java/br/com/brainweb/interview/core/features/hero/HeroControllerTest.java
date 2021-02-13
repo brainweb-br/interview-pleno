@@ -147,13 +147,11 @@ public class HeroControllerTest {
 	Hero heroMock = new Hero("AmazingGirl", "", null);
 	HeroService service = Mockito.mock(HeroService.class);
 	Mockito.when(service.findById(Mockito.any())).thenReturn(heroMock);
-	Mockito.when(service.update(Mockito.anyObject())).thenReturn(heroMock);
 	
 	HeroController controller = new HeroController(service);
 	Hero hero = new Hero(UUID.randomUUID(), "AmazingGirl", "HUMAN", new PowerStats(strength, agility, dexterity, intelligence));
 	
-	Hero result = controller.update(hero);
-	assertNotNull(result);
+	controller.update(hero);
     }
     
     @Test
@@ -176,7 +174,6 @@ public class HeroControllerTest {
 	Hero heroMock = new Hero("AmazingGirl", "", null);
 	HeroService service = Mockito.mock(HeroService.class);
 	Mockito.when(service.findById(Mockito.any())).thenReturn(heroMock);
-	Mockito.when(service.update(Mockito.anyObject())).thenReturn(heroMock);
 	HeroController controller = new HeroController(service);
 	controller.delete(UUID.randomUUID().toString());
     }
