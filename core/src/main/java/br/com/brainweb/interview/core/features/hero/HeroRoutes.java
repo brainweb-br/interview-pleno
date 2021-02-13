@@ -46,8 +46,9 @@ public class HeroRoutes extends RouteBuilder{
         	
         	
         	.get("/name/{name}")
-        		.to("bean:heroController?method=findByName(${header.name})")
         		.route()
+        		.outputType(Hero.class)
+        		.to("bean:heroController?method=findByName(${header.name})")
         		.process(exchange -> {
         		    exchange.getIn().setHeader(Exchange.HTTP_RESPONSE_CODE, 200);
         		}).endRest()

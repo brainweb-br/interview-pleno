@@ -24,7 +24,7 @@ public class HeroController {
 	this.service = service;
     }
 
-    public Hero create(Hero hero){
+    public void create(Hero hero){
 	LOGGER.info("Invoking create(hero), values({})", StringUtils.join(new Object[] { hero }, ", "));
 	if(hero == null) throw new IllegalArgumentException("Hero cannot be null.");
 	if(StringUtils.isEmpty(hero.getName())) throw new IllegalArgumentException("Name is required.");
@@ -32,10 +32,10 @@ public class HeroController {
 	Hero other = this.findByName(hero.getName());
 	if(other != null) throw new IllegalArgumentException("A hero with name " + hero.getName() + " already exists.");
 	if(StringUtils.isEmpty(hero.getRace())) throw new IllegalArgumentException("Race is required.");
-	if(hero.getPowerStatsId() == null) throw new IllegalArgumentException("PowerStatsId is required.");
+	if(hero.getPowerStats() == null) throw new IllegalArgumentException("PowerStats is required.");
 	
 	try {
-	    return service.createHero(hero);
+	    service.create(hero);
 	} catch (Exception e) {
 	    LOGGER.error("{}", e.getMessage(), e);
 	    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -78,7 +78,7 @@ public class HeroController {
 	Hero other = this.findByName(hero.getName());
 	if(other != null && (other.getId() != hero.getId())) throw new IllegalArgumentException("A hero with name " + hero.getName() + " already exists.");
 	if(StringUtils.isEmpty(hero.getRace())) throw new IllegalArgumentException("Race is required.");
-	if(hero.getPowerStatsId() == null) throw new IllegalArgumentException("PowerStatsId is required.");
+	if(hero.getPowerStats() == null) throw new IllegalArgumentException("PowerStats is required.");
 	
 	try {
 	    return service.update(hero);

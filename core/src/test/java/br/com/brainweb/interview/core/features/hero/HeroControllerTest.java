@@ -10,9 +10,15 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import br.com.brainweb.interview.model.Hero;
+import br.com.brainweb.interview.model.PowerStats;
 
 public class HeroControllerTest {
     
+    private static final int strength = 0;
+    private static final int agility = 0;
+    private static final int dexterity = 0;
+    private static final int intelligence = 0;
+
     @Test
     public void shouldNotCreateHeroBecauseHeroIsNull() {
 	HeroController controller = new HeroController(null);
@@ -57,28 +63,14 @@ public class HeroControllerTest {
     }
     
     @Test
-    public void shouldNotCreateHeroBecausePowerStatsIdIsNull() {
-	HeroService service = Mockito.mock(HeroService.class);
-	Mockito.when(service.findByName("AmazingGirl")).thenReturn(null );
-	
-	HeroController controller = new HeroController(service);
-	Hero hero = new Hero("AmazingGirl", "HUMAN", null);
-	
-	Throwable exception = assertThrows(IllegalArgumentException.class, () -> controller.create(hero));
-	assertEquals(exception.getMessage(), "PowerStatsId is required.");
-    }
-    
-    @Test
     public void shouldCreateHero() {
-	Hero heroMock = new Hero("AmazingGirl", "", null);
 	HeroService service = Mockito.mock(HeroService.class);
-	Mockito.when(service.createHero(Mockito.anyObject())).thenReturn(heroMock);
+	Mockito.doNothing().when(service).create(Mockito.any());
 	
 	HeroController controller = new HeroController(service);
-	Hero hero = new Hero("AmazingGirl", "HUMAN", UUID.randomUUID());
+	Hero hero = new Hero("AmazingGirl", "HUMAN", new PowerStats(strength, agility, dexterity, intelligence));
 	
-	Hero result = controller.create(hero);
-	assertNotNull(result);
+	controller.create(hero);
     }
     
     @Test
@@ -111,7 +103,7 @@ public class HeroControllerTest {
     
     @Test
     public void shouldFindHeroByName() {
-	Hero heroMock = new Hero("AmazingGirl", "HUMAN", UUID.randomUUID());
+	Hero heroMock = new Hero("AmazingGirl", "HUMAN", new PowerStats(strength, agility, dexterity, intelligence));
 	
 	HeroService service = Mockito.mock(HeroService.class);
 	Mockito.when(service.findByName(Mockito.anyString())).thenReturn(heroMock);
@@ -146,7 +138,7 @@ public class HeroControllerTest {
 	Mockito.when(service.findById(Mockito.any())).thenReturn(null);
 	HeroController controller = new HeroController(service);
 	
-	Hero hero = new Hero(UUID.randomUUID(), "AmazingGirl", "HUMAN", UUID.randomUUID());
+	Hero hero = new Hero(UUID.randomUUID(), "AmazingGirl", "HUMAN", new PowerStats(strength, agility, dexterity, intelligence));
 	assertThrows(HeroNotFoundException.class, () -> controller.update(hero));
     }
     
@@ -158,7 +150,7 @@ public class HeroControllerTest {
 	Mockito.when(service.update(Mockito.anyObject())).thenReturn(heroMock);
 	
 	HeroController controller = new HeroController(service);
-	Hero hero = new Hero(UUID.randomUUID(), "AmazingGirl", "HUMAN", UUID.randomUUID());
+	Hero hero = new Hero(UUID.randomUUID(), "AmazingGirl", "HUMAN", new PowerStats(strength, agility, dexterity, intelligence));
 	
 	Hero result = controller.update(hero);
 	assertNotNull(result);
