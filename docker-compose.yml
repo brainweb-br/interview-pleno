@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  spring-app:
+    build:
+      dockerfile: ./core/src/main/docker/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres-app
+    networks:
+      - default
+  postgres-app:
+    build: ./core/src/main/resources/db/schema
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: brainweb
+      POSTGRES_USER: brainweb
+      POSTGRES_DB: postgres
