@@ -1,4 +1,4 @@
-package br.com.brainweb.interview.core.features.powerstats;
-
-public class PowerStatsService {
-}
+//package br.com.brainweb.interview.core.features.powerstats;
+//
+//public class PowerStatsService {
+//}

@@ -5,46 +5,33 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.time.OffsetDateTime;
+import java.time.ZoneId;
 import java.util.UUID;
 
-@Entity
-@Table(name = "hero")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Hero {
-
-    @Id
-    @GeneratedValue( generator = "UUID" )
-    @Column(name = "id", updatable = false, nullable = false)
+public class DtoHeroResponse {
     private UUID id;
 
-    @Column(name = "name")
     @JsonProperty("nome")
     private String name;
 
-    @Column(name = "race")
     @JsonProperty("raca")
     private String breed;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "power_stats_id")
     @JsonProperty("atributos")
-    private PowerStats powerStats;
+    private DtoPowerStatsResponse powerStats;
 
-    @Column(name = "enabled")
     @JsonProperty("habilitado")
     private Boolean isEnabled;
 
-    @Column(name = "created_at", columnDefinition = "TIME WITH TIME ZONE")
     @JsonProperty("data_criação")
-    private OffsetDateTime creationDate;
+    private String creationDate;
 
-    @Column(name = "updated_at", columnDefinition = "TIME WITH TIME ZONE")
     @JsonProperty("data_atualizacao")
-    private OffsetDateTime updateDate;
+    private String updateDate;
 
     @Override
     public String toString() {
@@ -54,8 +41,18 @@ public class Hero {
                 ", breed='" + breed + '\'' +
                 ", powerStats=" + powerStats +
                 ", isEnabled=" + isEnabled +
-                ", creationDate=" + creationDate +
-                ", updateDate=" + updateDate +
+                ", creationDate='" + creationDate + '\'' +
+                ", updateDate='" + updateDate + '\'' +
                 '}';
+    }
+
+    public DtoHeroResponse(Hero hero) {
+        this.id = hero.getId();
+        this.name = hero.getName();
+        this.breed = hero.getBreed();
+        this.powerStats = new DtoPowerStatsResponse(hero.getPowerStats());
+        this.isEnabled = hero.getIsEnabled();
+        this.creationDate = OffsetDateTime.ofInstant(hero.getCreationDate().toInstant(), ZoneId.of("America/Sao_Paulo")).toString();
+        this.updateDate = OffsetDateTime.ofInstant(hero.getUpdateDate().toInstant(), ZoneId.of("America/Sao_Paulo")).toString();
     }
 }
