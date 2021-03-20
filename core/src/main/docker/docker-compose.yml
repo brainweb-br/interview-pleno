@@ -1,0 +1,26 @@
+version: "3"
+services:
+  db:
+    image: postgres:latest
+    environment:
+      - LC_ALL=C.UTF-8
+      - TZ=GMT
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=brainweb
+      - POSTGRES_PASSWORD=brainweb
+    volumes:
+      - "./src/main/resources/db/migration:/docker-entrypoint-initdb.d"
+    ports:
+      - 5432:5432
+    networks:
+      - teste
+  interview-core:
+    image: brainweb/interview
+    ports:
+      - 8080:8080
+    networks:
+      - teste
+    restart: always
+networks:
+  teste:
+    driver: bridge
