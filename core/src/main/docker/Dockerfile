@@ -9,7 +9,7 @@ ENV DB_PORT="5432"
 ENV DB_USERNAME="brainweb"
 ENV DB_PWD="brainweb"
 
-EXPOSE 8080
+EXPOSE 8180
 
 COPY maven/*.jar interview.jar
 
