@@ -11,22 +11,23 @@ import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 import java.util.concurrent.TimeUnit;
 
-@Configuration
+//@Configuration
 public class JdbcConfiguration {
 
-    @Value("${jdbc.url}")
+    //@Value("${jdbc.url}")
     private String jdbcUrl;
 
-    @Value("${jdbc.username}")
+    //@Value("${jdbc.username}")
     private String username;
 
-    @Value("${jdbc.password}")
+    //@Value("${jdbc.password}")
     private String password;
 
-    @Value("${jdbc.schema}")
+    //@Value("${jdbc.schema}")
     private String schema;
 
-    @Bean
+    //@Bean
+    /*
     public DataSource dataSource() {
 
         HikariDataSource dataSource = new HikariDataSource();
@@ -41,16 +42,16 @@ public class JdbcConfiguration {
         return dataSource;
     }
 
-    @Bean
+    //@Bean
     public PlatformTransactionManager platformTransactionManager() {
         return new DataSourceTransactionManager(dataSource());
     }
 
-    @Bean
+    //@Bean
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
         return new NamedParameterJdbcTemplate(dataSource());
     }
-
+*/
     /**
      * Identifies how many connections can be opened based on Postgres recommended formula.
      *
