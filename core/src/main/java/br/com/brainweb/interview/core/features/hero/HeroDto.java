@@ -36,4 +36,9 @@ public class HeroDto {
 				.updated_at(LocalDateTime.now())
 				.build();
 	}
+	
+	public static HeroDto emptyBody() {
+		return HeroDto.builder()
+				.build();
+	}
 }
