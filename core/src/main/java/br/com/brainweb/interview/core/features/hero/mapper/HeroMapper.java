@@ -12,7 +12,7 @@ public class HeroMapper {
 	
 	public static HeroDto toDto(Hero hero) {
 		return HeroDto.builder()
-				.id(hero.getId().toString())
+				.id(hero.getId())
 				.name(hero.getName())
 				.race(hero.getRace())
 				.powerStats(PowerStatsDto.builder()
@@ -28,7 +28,7 @@ public class HeroMapper {
 	public static List<HeroDto> toDto(List<Hero> heroes) {
 		return heroes.stream().map(hero -> {
 			return HeroDto.builder()
-					.id(hero.getId().toString())
+					.id(hero.getId())
 					.name(hero.getName())
 					.race(hero.getRace())
 					.powerStats(PowerStatsDto.builder()

@@ -3,6 +3,9 @@ package br.com.brainweb.interview.core.features.hero;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import br.com.brainweb.interview.model.Hero;
@@ -17,11 +20,17 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 public class HeroDto {
 	
-	private String id;
+	private UUID id;
+	
+	@NotEmpty(message = "Informe o atributo name")
 	private String name;
+	
+	@NotEmpty(message = "Informe o atributo race")
 	private String race;
+	
 	private boolean enable;
 	
+	@Valid
 	@JsonProperty("powerStats")
 	private PowerStatsDto powerStats;
 	

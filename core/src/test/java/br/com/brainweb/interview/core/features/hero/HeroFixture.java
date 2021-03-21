@@ -32,5 +32,21 @@ public class HeroFixture implements TemplateLoader {
             add("created_at", LocalDateTime.now());
             add("updated_at", LocalDateTime.now());
         }});
+		
+		Fixture.of(HeroDto.class).addTemplate("valid-hero-dto", new Rule() {{
+            add("id", UUID.fromString("aa16b7f1-3ea5-4776-ac4a-5c054d148dd3"));
+            add("name", "Batman");
+            add("race", "HUMAN");
+            add("enable", true);
+            add("powerStats",  one(PowerStatsDto.class, "valid-powerstats-dto"));
+        }});
+		
+		Fixture.of(PowerStatsDto.class).addTemplate("valid-powerstats-dto", new Rule() {{
+            add("id", UUID.fromString("aa16b7f1-3ea5-4776-ac4a-5c054d148dd3"));
+            add("strength", 5);
+            add("agility", 5);
+            add("dexterity", 5);
+            add("intelligence", 5);
+        }});
 	}
 }
