@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.zaxxer.hikari.HikariDataSource;
 
 import br.com.brainweb.interview.core.features.hero.repository.HeroRepository;
+import br.com.brainweb.interview.core.features.hero.service.HeroService;
 import br.com.brainweb.interview.core.features.powerstats.PowerStatsRepository;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;

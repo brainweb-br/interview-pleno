@@ -1,4 +1,4 @@
-package br.com.brainweb.interview.core.features.hero;
+package br.com.brainweb.interview.core.features.hero.dto;
 
 import java.util.ArrayList;
 import java.util.List;

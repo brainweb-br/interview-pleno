@@ -2,6 +2,7 @@ package br.com.brainweb.interview.core.features.hero;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -14,16 +15,20 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import br.com.brainweb.interview.core.features.hero.dto.HeroDto;
 import br.com.brainweb.interview.core.features.hero.exception.GlobalHandler;
+import br.com.brainweb.interview.core.features.hero.service.HeroService;
 import br.com.brainweb.interview.model.Hero;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 
+@ActiveProfiles("it")
 public class HeroControllerTest {
 	
 	@InjectMocks
@@ -45,6 +50,46 @@ public class HeroControllerTest {
     }
 	
 	@Test
+	public void deveCriarHero() throws Exception {
+		Hero hero = Fixture.from(Hero.class).gimme("valid-hero");
+		HeroDto heroDto = Fixture.from(HeroDto.class).gimme("valid-hero-dto");
+		
+		Mockito.when(heroService.save(Mockito.any(Hero.class))).thenReturn(hero);
+		
+		this.mockMvc.perform(post("/api/v1/heroes")
+				.content(asJsonString(heroDto))
+				.contentType(MediaType.APPLICATION_JSON))
+		.andExpect(status().isCreated())
+		.andExpect(jsonPath("name").value("Batman"))
+		.andExpect(jsonPath("race").value("HUMAN"))
+		.andExpect(jsonPath("enable").value(true))
+		.andExpect(jsonPath("powerStats.agility").value(5))
+		.andExpect(jsonPath("powerStats.dexterity").value(5))
+		.andExpect(jsonPath("powerStats.intelligence").value(5));
+	}
+	
+	@Test
+	public void deveAtualizarHero() throws Exception {
+		String id = "aa16b7f1-3ea5-4776-ac4a-5c054d148dd3";
+		
+		Hero hero = Fixture.from(Hero.class).gimme("valid-hero");
+		HeroDto heroDto = Fixture.from(HeroDto.class).gimme("valid-hero-dto");
+		
+		Mockito.when(heroService.update(Mockito.any(Hero.class), Mockito.anyString())).thenReturn(Optional.of(hero));
+		
+		this.mockMvc.perform(put("/api/v1/heroes/{id}", id)
+				.content(asJsonString(heroDto))
+				.contentType(MediaType.APPLICATION_JSON))
+		.andExpect(status().isOk())
+		.andExpect(jsonPath("name").value("Batman"))
+		.andExpect(jsonPath("race").value("HUMAN"))
+		.andExpect(jsonPath("enable").value(true))
+		.andExpect(jsonPath("powerStats.agility").value(5))
+		.andExpect(jsonPath("powerStats.dexterity").value(5))
+		.andExpect(jsonPath("powerStats.intelligence").value(5));
+	}
+	
+	@Test
 	public void deveBuscarHeroById() throws Exception {
 		String id = "aa16b7f1-3ea5-4776-ac4a-5c054d148dd3";
 		Hero hero = Fixture.from(Hero.class).gimme("valid-hero");
@@ -54,7 +99,12 @@ public class HeroControllerTest {
 		this.mockMvc.perform(get("/api/v1/heroes/{id}", id))
 		.andExpect(status().isOk())
 		.andExpect(jsonPath("id").value("aa16b7f1-3ea5-4776-ac4a-5c054d148dd3"))
-		.andExpect(jsonPath("name").value("Batman"));
+		.andExpect(jsonPath("name").value("Batman"))
+		.andExpect(jsonPath("race").value("HUMAN"))
+		.andExpect(jsonPath("enable").value(true))
+		.andExpect(jsonPath("powerStats.agility").value(5))
+		.andExpect(jsonPath("powerStats.dexterity").value(5))
+		.andExpect(jsonPath("powerStats.intelligence").value(5));
 	}
 	
 	@Test
@@ -67,23 +117,7 @@ public class HeroControllerTest {
 		.andExpect(status().isNotFound());
 	}
 	
-	@Test
-	public void v2() throws Exception {
-		String id = "aa16b7f1-3ea5-4776-ac4a-5c054d148dd3";
-		
-		Hero hero = Fixture.from(Hero.class).gimme("valid-hero");
-		hero.setName("");
-		
-		//Mockito.when(heroService.findById(Mockito.anyString())).thenReturn(Optional.empty());
-		
-		this.mockMvc.perform(post("/api/v1/heroes")
-				.content(asJsonString(hero))
-				.contentType(MediaType.APPLICATION_JSON))
-		.andExpect(status().isBadRequest())
-		.andExpect(jsonPath("messages[0]").value("Informe o atributo name"));
-	}
-	
-	public String asJsonString(Hero hero) {
+	public String asJsonString(HeroDto hero) {
 	    try {
 	        return new ObjectMapper().writeValueAsString(hero);
 	    } catch (Exception e) {

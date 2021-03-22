@@ -3,6 +3,8 @@ package br.com.brainweb.interview.core.features.hero;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import br.com.brainweb.interview.core.features.hero.dto.HeroDto;
+import br.com.brainweb.interview.core.features.hero.dto.PowerStatsDto;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
 import br.com.six2six.fixturefactory.Fixture;

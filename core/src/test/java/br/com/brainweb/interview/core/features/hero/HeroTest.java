@@ -10,10 +10,13 @@ import javax.validation.ValidatorFactory;
 import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
+import br.com.brainweb.interview.core.features.hero.dto.HeroDto;
 import br.com.six2six.fixturefactory.Fixture;
 import br.com.six2six.fixturefactory.loader.FixtureFactoryLoader;
 
+@ActiveProfiles("it")
 public class HeroTest {
 	
 	private Validator validator;

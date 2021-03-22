@@ -21,4 +21,20 @@ public class Hero {
 	private PowerStats powerStats;
 	private LocalDateTime created_at;
 	private LocalDateTime updated_at;
+	
+	public void atualizarPowerStatsId(UUID uuid) {
+		if (powerStats != null) {
+			powerStats.setId(uuid);
+		}
+	}
+	
+	public void atualizarDataCriacaoAtualizacao(LocalDateTime periodo) {
+		this.created_at = periodo;
+		this.updated_at = periodo;
+		
+		if (powerStats != null) {
+			powerStats.setCreated_at(periodo);
+			powerStats.setUpdated_at(periodo);
+		}
+	}
 }

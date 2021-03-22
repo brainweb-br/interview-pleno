@@ -1,4 +1,4 @@
-package br.com.brainweb.interview.core.features.hero;
+package br.com.brainweb.interview.core.features.hero.dto;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -45,6 +45,16 @@ public class PowerStatsDto {
 				.strength(1)
 				.created_at(LocalDateTime.now())
 				.updated_at(LocalDateTime.now())
+				.build();
+	}
+	
+	public PowerStats toUpdatedEntity() {
+		return PowerStats.builder()
+				.id(this.id)
+				.agility(this.agility)
+				.dexterity(this.dexterity)
+				.intelligence(this.intelligence)
+				.strength(this.strength)
 				.build();
 	}
 }

@@ -18,8 +18,8 @@ import br.com.brainweb.interview.model.PowerStats;
 public class HeroRepository {
 	
 	public static final String INSERT_HERO = "insert into hero(id, name, race, power_stats_id, enabled, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?)";
-	public static final String SELECT_HERO = "select * from hero where id = ?";
-	public static final String SELECT_HERO2 = "select h.*, ps.agility, ps.intelligence, ps.strength, ps.dexterity, ps.created_at as power_st_created, ps.updated_at as power_st_updated from hero h, power_stats ps where h.id = ? and h.power_stats_id = ps.id";
+	public static final String UPDATE_HERO = "update hero set name = ?, race = ?, enabled = ?, updated_at = ? where id = ?";
+	public static final String SELECT_HERO = "select h.*, ps.agility, ps.intelligence, ps.strength, ps.dexterity, ps.created_at as power_st_created, ps.updated_at as power_st_updated from hero h, power_stats ps where h.id = ? and h.power_stats_id = ps.id";
 	
 	public static final String SELECT_HERO_BY_NAME = "select * from hero where name like ?";
 	public static final String DELETE_HERO = "delete from hero where id = ?";
@@ -44,9 +44,23 @@ public class HeroRepository {
 		}
 	}
 	
+	public void update(Hero hero) {
+		try {
+			jdbcTemplate.update(UPDATE_HERO,
+					hero.getName(),
+					hero.getRace(),
+					hero.isEnable(),
+					hero.getUpdated_at(),
+					hero.getId());
+		} catch (Exception e) {
+			throw new GeneralFailureException("Erro ao atualizar hero");
+		}
+	}
+	
+	
 	public Optional<Hero> findById(UUID id) {
 		try {
-			return Optional.of((Hero) jdbcTemplate.queryForObject(SELECT_HERO2,
+			return Optional.of((Hero) jdbcTemplate.queryForObject(SELECT_HERO,
 					new Object[]{id},
 					new HeroRowMapper()));
 		} catch (EmptyResultDataAccessException e) {
