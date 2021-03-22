@@ -35,26 +35,4 @@ public class PowerStatsDto {
 	
 	private LocalDateTime created_at;
 	private LocalDateTime updated_at;
-	
-	public PowerStats toEntity() {
-		return PowerStats.builder()
-				.id(UUID.randomUUID())
-				.agility(1)
-				.dexterity(1)
-				.intelligence(1)
-				.strength(1)
-				.created_at(LocalDateTime.now())
-				.updated_at(LocalDateTime.now())
-				.build();
-	}
-	
-	public PowerStats toUpdatedEntity() {
-		return PowerStats.builder()
-				.id(this.id)
-				.agility(this.agility)
-				.dexterity(this.dexterity)
-				.intelligence(this.intelligence)
-				.strength(this.strength)
-				.build();
-	}
 }
