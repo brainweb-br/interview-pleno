@@ -1,6 +1,5 @@
 package br.com.brainweb.interview.core.features.hero;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -70,12 +69,17 @@ public class HeroController {
 	}
 	
 	@GetMapping
-	public @ResponseBody ResponseEntity<List<HeroDto>> findByName(@RequestParam(name = "name") String name) {
-		List<Hero> heroes = heroService.findByName(name);
+	public @ResponseBody ResponseEntity<HeroDto> findByName(@RequestParam(name = "name") String name) {
+		Optional<Hero> optionalHero = heroService.findByName(name);
+		
+		if (optionalHero.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(HeroMapper.emptyBody());
+		}
 		
 		return ResponseEntity
 				.status(HttpStatus.OK)
-				.body(HeroMapper.toDto(heroes));
+				.body(HeroMapper.toDto(optionalHero.get()));
 	}
 	
 	@DeleteMapping(path = "/{id}")

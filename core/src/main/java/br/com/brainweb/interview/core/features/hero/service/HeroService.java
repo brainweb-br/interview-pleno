@@ -1,7 +1,6 @@
 package br.com.brainweb.interview.core.features.hero.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -84,16 +83,36 @@ public class HeroService {
 	}
 	
 	public Optional<Hero> findById(String id) {
-		return heroRepository.findById(UUID.fromString(id));
+		log.info("Consultando hero com id: %s", id);
+		
+		return heroRepository.findById(StringHelper.createUUID(id));
 	}
 	
-	public List<Hero> findByName(String name) {
+	public Optional<Hero> findByName(String name) {
+		log.info("Consultando hero com o nome: %s", name);
 		return heroRepository.findByName(name);
 	}
 	
+	@Transactional
 	public void delete(String id) {
-		heroRepository.delete(id);
+		log.info("Deletando hero com id: %s", id);
+		
+		UUID heroId = StringHelper.createUUID(id);
+		
+		Optional<Hero> optionalHero = heroRepository.findById(heroId);
+		
+		if (optionalHero.isEmpty()) {
+			log.info("Hero nao encontrado com id: [%s", id);
+			
+			throw BusinessException.create(HttpStatus.NOT_FOUND, "Hero nao encontrado");
+		}
+		
+		Hero hero = optionalHero.get();
+		UUID powerStatsId = hero.getPowerStatsId();
+		
+		heroRepository.delete(heroId);
+		powerStatsRepository.delete(powerStatsId);
+		
+		log.info("Hero deletado com sucesso.");
 	}
-	
-	
 }

@@ -37,4 +37,12 @@ public class Hero {
 			powerStats.setUpdated_at(periodo);
 		}
 	}
+	
+	public UUID getPowerStatsId() {
+		if (powerStats != null) {
+			return powerStats.getId();
+		}
+		
+		return null;
+	}
 }

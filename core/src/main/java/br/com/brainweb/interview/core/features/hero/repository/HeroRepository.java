@@ -1,13 +1,13 @@
 package br.com.brainweb.interview.core.features.hero.repository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import br.com.brainweb.interview.core.features.hero.exception.GeneralFailureException;
@@ -22,12 +22,14 @@ public class HeroRepository {
 	public static final String INSERT_HERO = "insert into hero(id, name, race, power_stats_id, enabled, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?)";
 	public static final String UPDATE_HERO = "update hero set name = ?, race = ?, enabled = ?, updated_at = ? where id = ?";
 	public static final String SELECT_HERO = "select h.*, ps.agility, ps.intelligence, ps.strength, ps.dexterity, ps.created_at as power_st_created, ps.updated_at as power_st_updated from hero h, power_stats ps where h.id = ? and h.power_stats_id = ps.id";
-	
-	public static final String SELECT_HERO_BY_NAME = "select * from hero where name like ?";
-	public static final String DELETE_HERO = "delete from hero where id = ?";
+	public static final String SELECT_HERO_BY_NAME = "select h.*, ps.agility, ps.intelligence, ps.strength, ps.dexterity, ps.created_at as power_st_created, ps.updated_at as power_st_updated from hero h, power_stats ps where h.name like :name  and h.power_stats_id = ps.id";
+	public static final String DELETE_HERO = "delete from hero where id = :id";
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 	
 	public void save(Hero hero) {
 		try {
@@ -63,7 +65,6 @@ public class HeroRepository {
 		}
 	}
 	
-	
 	public Optional<Hero> findById(UUID id) {
 		try {
 			return Optional.of((Hero) jdbcTemplate.queryForObject(SELECT_HERO,
@@ -78,11 +79,14 @@ public class HeroRepository {
 		}
 	}
 	
-	public List<Hero> findByName(String name) {
+	public Optional<Hero> findByName(String name) {
 		try {
-			return jdbcTemplate.query(SELECT_HERO_BY_NAME,
-					new Object[]{name},
-					new HeroRowMapper());
+			MapSqlParameterSource sqlSource = new MapSqlParameterSource();
+			sqlSource.addValue("name", name);
+			
+			return Optional.of(namedParameterJdbcTemplate.queryForObject(SELECT_HERO_BY_NAME,
+					sqlSource,
+					new HeroRowMapper()));
 		} catch (Exception e) {
 			log.info("Erro ao consultar hero by name ", e);
 			
@@ -90,12 +94,12 @@ public class HeroRepository {
 		}
 	}
 	
-	public int delete(String id) {
-		UUID uuid = UUID.fromString(id);
-		
+	public void delete(UUID id) {
 		try {
-			return jdbcTemplate.update(DELETE_HERO,
-					new Object[]{uuid});
+			MapSqlParameterSource sqlSource = new MapSqlParameterSource();
+			sqlSource.addValue("id", id);
+			
+			namedParameterJdbcTemplate.update(DELETE_HERO, sqlSource);
 		} catch (Exception e) {
 			log.info("Erro ao deletar hero ", e);
 			
