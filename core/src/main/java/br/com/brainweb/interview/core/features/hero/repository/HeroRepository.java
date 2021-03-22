@@ -13,7 +13,9 @@ import org.springframework.stereotype.Repository;
 import br.com.brainweb.interview.core.features.hero.exception.GeneralFailureException;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Repository
 public class HeroRepository {
 	
@@ -40,6 +42,8 @@ public class HeroRepository {
 					hero.getCreated_at(),
 					hero.getUpdated_at());
 		} catch (Exception e) {
+			log.info("Erro ao salvar hero. ", e);
+			
 			throw new GeneralFailureException("Erro ao inserir hero");
 		}
 	}
@@ -53,6 +57,8 @@ public class HeroRepository {
 					hero.getUpdated_at(),
 					hero.getId());
 		} catch (Exception e) {
+			log.info("Erro ao atualizar hero. ", e);
+			
 			throw new GeneralFailureException("Erro ao atualizar hero");
 		}
 	}
@@ -66,7 +72,9 @@ public class HeroRepository {
 		} catch (EmptyResultDataAccessException e) {
 			return Optional.empty();
 		} catch (Exception e) {
-			throw new GeneralFailureException("Erro ao consultar hero.");
+			log.info("Erro ao consultar hero. ", e);
+			
+			throw new GeneralFailureException("Erro ao consultar hero by id.");
 		}
 	}
 	
@@ -76,6 +84,8 @@ public class HeroRepository {
 					new Object[]{name},
 					new HeroRowMapper());
 		} catch (Exception e) {
+			log.info("Erro ao consultar hero by name ", e);
+			
 			throw new GeneralFailureException("Erro ao consultar hero pelo nome.");
 		}
 	}
@@ -87,7 +97,9 @@ public class HeroRepository {
 			return jdbcTemplate.update(DELETE_HERO,
 					new Object[]{uuid});
 		} catch (Exception e) {
-			throw new GeneralFailureException("Erro ao consultar hero pelo nome.");
+			log.info("Erro ao deletar hero ", e);
+			
+			throw new GeneralFailureException("Erro ao deletar hero.");
 		}
 	}
 }

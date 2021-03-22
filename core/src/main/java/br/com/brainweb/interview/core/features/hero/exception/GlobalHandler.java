@@ -32,11 +32,21 @@ public class GlobalHandler extends ResponseEntityExceptionHandler {
     }
 	
 	@ExceptionHandler({BusinessException.class})
-	protected ResponseEntity<Object> handleMethodArgumentNotValid(BusinessException ex, WebRequest request) {
+	protected ResponseEntity<Object> handleBusinessException(BusinessException ex, WebRequest request) {
 		ResponseDto response = new ResponseDto();
 
         response.addMessage(ex.getMessage());
         HttpStatus httpStatus = ex.getHttpStatus();	
+        
+        return super.handleExceptionInternal(ex, response, new HttpHeaders(), httpStatus, request);
+    }
+	
+	@ExceptionHandler({GeneralFailureException.class})
+	protected ResponseEntity<Object> handleGeneralFailureException(GeneralFailureException ex, WebRequest request) {
+		ResponseDto response = new ResponseDto();
+
+        response.addMessage(ex.getMessage());
+        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;	
         
         return super.handleExceptionInternal(ex, response, new HttpHeaders(), httpStatus, request);
     }

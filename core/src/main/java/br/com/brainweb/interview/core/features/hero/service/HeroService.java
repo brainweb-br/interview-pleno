@@ -16,7 +16,9 @@ import br.com.brainweb.interview.core.features.hero.util.StringHelper;
 import br.com.brainweb.interview.core.features.powerstats.PowerStatsRepository;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class HeroService {
 	
@@ -28,6 +30,8 @@ public class HeroService {
 	
 	@Transactional
 	public Hero save(Hero hero) {
+		log.info("Salvando hero.");
+		
 		hero.setId(StringHelper.createUUID());
 		hero.atualizarPowerStatsId(StringHelper.createUUID());
 		hero.atualizarDataCriacaoAtualizacao(LocalDateTime.now());
@@ -36,6 +40,8 @@ public class HeroService {
 		
 		powerStatsRepository.save(powerStats);
 		heroRepository.save(hero);
+		
+		log.info("Hero salvo com sucesso.");
 		return hero;
 	}
 	
@@ -44,12 +50,15 @@ public class HeroService {
 		UUID idAtual = StringHelper.createUUID(id);
 		
 		if (!idAtual.equals(heroRequest.getId())) {
+			log.info("Recursos com identificadores diferentes.");
+			
 			throw BusinessException.create(HttpStatus.UNPROCESSABLE_ENTITY, "Os identicadores do recurso sao diferentes.");
 		}
 		
 		Optional<Hero> optionalHero = findById(idAtual.toString());
 		
 		if (optionalHero.isEmpty()) {
+			log.info("Hero com o id: %s nao encontrado", id);
 			return optionalHero;
 		}
 		
@@ -69,6 +78,8 @@ public class HeroService {
 		
 		powerStatsRepository.update(powerAtual);
 		heroRepository.update(heroAtual);
+		
+		log.info("Hero atualizado com sucesso.");
 		return Optional.of(heroAtual);
 	}
 	
