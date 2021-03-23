@@ -87,6 +87,10 @@ public class HeroRepository {
 			return Optional.of(namedParameterJdbcTemplate.queryForObject(SELECT_HERO_BY_NAME,
 					sqlSource,
 					new HeroRowMapper()));
+		} catch (EmptyResultDataAccessException e) {
+			log.info("Nao foram encontrados registros");
+			
+			return Optional.empty();
 		} catch (Exception e) {
 			log.info("Erro ao consultar hero by name ", e);
 			

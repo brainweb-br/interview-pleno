@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.brainweb.interview.core.features.hero.dto.HeroDto;
+import br.com.brainweb.interview.core.features.hero.dto.HeroEmptyDto;
 import br.com.brainweb.interview.core.features.hero.dto.PowerStatsDto;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
@@ -68,6 +69,7 @@ public class HeroMapper {
 				.intelligence(heroDto.getPowerStats().getIntelligence())
 				.dexterity(heroDto.getPowerStats().getDexterity())
 				.agility(heroDto.getPowerStats().getAgility())
+				.strength(heroDto.getPowerStats().getStrength())
 				.build();
 		
 		Hero hero = Hero.builder()
@@ -83,7 +85,7 @@ public class HeroMapper {
 	}
 
 	public static HeroDto emptyBody() {
-		return HeroDto.builder()
+		return HeroEmptyDto.builder()
 				.build();
 	}
 }
