@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: ./core
+      dockerfile: ./src/main/docker/Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+
+  database:
+    build:
+      context: ./core/src/main/resources/db/schema/
+      dockerfile: Dockerfile
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "brainweb"
+
