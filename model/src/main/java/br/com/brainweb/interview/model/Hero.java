@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -19,9 +20,10 @@ public class Hero {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    @NotNull
     private String name;
     @Enumerated(EnumType.STRING)
-    private RaceType race; //todo validation
+    private RaceType race;
     private Boolean enable;
     private Timestamp createdAt;
     private Timestamp updatedAt;
