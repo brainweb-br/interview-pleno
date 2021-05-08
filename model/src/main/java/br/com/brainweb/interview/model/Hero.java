@@ -1,22 +1,22 @@
 package br.com.brainweb.interview.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.UUID;
 
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Hero {
+@Table(name = "hero")
+public class Hero implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
@@ -27,6 +27,9 @@ public class Hero {
     private Boolean enable;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+
+    @OneToOne
+    @JoinColumn(name = "power_stats_id", nullable = false)
     private PowerStats powerStats;
 
     public enum RaceType {

@@ -13,15 +13,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("hero")
+@RequestMapping("heros")
 public class HeroController {
 
-//    @Autowired
-//    private HeroService heroService;
+    @Autowired
+    private HeroService heroService;
 
     @PostMapping
     public ResponseEntity<Hero> create(@RequestBody Hero hero) {
-        //return new ResponseEntity<Hero>(heroService.createHero(hero), HttpStatus.CREATED);
-        return null;
+        return new ResponseEntity<Hero>(heroService.createHero(hero), HttpStatus.CREATED);
     }
 }

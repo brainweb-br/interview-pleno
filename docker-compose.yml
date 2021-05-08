@@ -17,4 +17,6 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_PASSWORD: "brainweb"
+      POSTGRES_USER: "root"
+      POSTGRES_DB: "postgres"
 
