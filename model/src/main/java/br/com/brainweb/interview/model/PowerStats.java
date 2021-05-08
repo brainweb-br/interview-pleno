@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -21,9 +22,9 @@ public class PowerStats {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private Integer strength;
-    private Integer agility;
-    private Integer intelligence;
+    @NotNull private Integer strength;
+    @NotNull private Integer agility;
+    @NotNull private Integer intelligence;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 }
