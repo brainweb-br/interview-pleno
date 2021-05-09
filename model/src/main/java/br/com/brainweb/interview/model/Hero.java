@@ -24,7 +24,7 @@ public class Hero implements Serializable {
     private String name;
     @Enumerated(EnumType.STRING)
     private RaceType race;
-    private Boolean enable;
+    private Boolean enabled;
     private Timestamp createdAt;
     private Timestamp updatedAt;
 

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.UUID;
+
 @Service
 public class HeroService {
 
@@ -15,6 +17,7 @@ public class HeroService {
 
     public Hero createHero(Hero hero) throws ResponseStatusException {
         try {
+            hero.setId(UUID.randomUUID());
             hero = heroRepository.save(hero);
         } catch(IllegalArgumentException ex) {
             // todo https://www.baeldung.com/spring-exceptions-json
