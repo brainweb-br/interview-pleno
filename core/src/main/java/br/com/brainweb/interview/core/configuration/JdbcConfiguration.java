@@ -58,21 +58,6 @@ public class JdbcConfiguration {
         return new NamedParameterJdbcTemplate(dataSource());
     }
 
-    @Bean
-    public ApplicationListener<BeforeSaveEvent> timestampsGenerator() {
-        return event -> {
-            var entity = event.getEntity();
-            if (entity instanceof Hero ) {
-                ((Hero) entity).setCreatedAt(Timestamp.from(Instant.now()));
-                ((Hero) entity).setUpdatedAt(Timestamp.from(Instant.now()));
-            }
-            if (entity instanceof PowerStats) {
-                ((PowerStats) entity).setCreatedAt(Timestamp.from(Instant.now()));
-                ((PowerStats) entity).setUpdatedAt(Timestamp.from(Instant.now()));
-            }
-        };
-    }
-
     /**
      * Identifies how many connections can be opened based on Postgres recommended formula.
      *

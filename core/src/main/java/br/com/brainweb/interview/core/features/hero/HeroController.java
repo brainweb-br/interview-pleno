@@ -18,7 +18,6 @@ public class HeroController {
 
     @PostMapping
     public ResponseEntity<Hero> create(@RequestBody Hero hero) {
-        System.out.println(hero.getPowerStats());
         return new ResponseEntity<Hero>(heroService.createHero(hero), HttpStatus.CREATED);
     }
 }
