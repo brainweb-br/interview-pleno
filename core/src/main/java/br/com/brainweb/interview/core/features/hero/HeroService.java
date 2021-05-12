@@ -1,13 +1,13 @@
 package br.com.brainweb.interview.core.features.hero;
 
+import br.com.brainweb.interview.core.exceptions.DuplicatedHeroNameException;
+import br.com.brainweb.interview.core.features.powerstats.PowerStatsRepository;
 import br.com.brainweb.interview.model.Hero;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.UUID;
+import java.sql.Timestamp;
+import java.time.Instant;
 
 @Service
 public class HeroService {
@@ -15,14 +15,14 @@ public class HeroService {
     @Autowired
     private HeroRepository heroRepository;
 
-    public Hero createHero(Hero hero) throws ResponseStatusException {
-        try {
-            hero.setId(UUID.randomUUID());
-            hero = heroRepository.save(hero);
-        } catch(IllegalArgumentException ex) {
-            // todo https://www.baeldung.com/spring-exceptions-json
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
+    @Autowired
+    private PowerStatsRepository powerStatsRepository;
+
+    public Hero createHero(Hero hero)  {
+        if(heroRepository.findByName(hero.getName()) != null) {
+            throw new DuplicatedHeroNameException("Esse nome de heroi já existe.");
         }
+        hero = heroRepository.save(hero);
         return hero;
     }
 }

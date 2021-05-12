@@ -1,14 +1,21 @@
 package br.com.brainweb.interview.core.configuration;
 
+import br.com.brainweb.interview.model.Hero;
+import br.com.brainweb.interview.model.PowerStats;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.relational.core.mapping.event.BeforeSaveEvent;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
+import java.sql.Timestamp;
+import java.time.Instant;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
@@ -49,6 +56,21 @@ public class JdbcConfiguration {
     @Bean
     public NamedParameterJdbcTemplate namedParameterJdbcTemplate() {
         return new NamedParameterJdbcTemplate(dataSource());
+    }
+
+    @Bean
+    public ApplicationListener<BeforeSaveEvent> timestampsGenerator() {
+        return event -> {
+            var entity = event.getEntity();
+            if (entity instanceof Hero ) {
+                ((Hero) entity).setCreatedAt(Timestamp.from(Instant.now()));
+                ((Hero) entity).setUpdatedAt(Timestamp.from(Instant.now()));
+            }
+            if (entity instanceof PowerStats) {
+                ((PowerStats) entity).setCreatedAt(Timestamp.from(Instant.now()));
+                ((PowerStats) entity).setUpdatedAt(Timestamp.from(Instant.now()));
+            }
+        };
     }
 
     /**
