@@ -6,9 +6,6 @@ import br.com.brainweb.interview.model.Hero;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-
 @Service
 public class HeroService {
 
