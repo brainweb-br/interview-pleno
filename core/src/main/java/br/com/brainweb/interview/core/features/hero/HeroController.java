@@ -4,10 +4,7 @@ import br.com.brainweb.interview.model.Hero;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("heros")
@@ -19,5 +16,10 @@ public class HeroController {
     @PostMapping
     public ResponseEntity<Hero> create(@RequestBody Hero hero) {
         return new ResponseEntity<Hero>(heroService.createHero(hero), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Hero> getById(@PathVariable("id") String id) {
+        return new ResponseEntity<Hero>(heroService.getHeroById(id), HttpStatus.OK);
     }
 }
