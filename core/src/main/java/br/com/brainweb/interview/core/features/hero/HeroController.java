@@ -22,11 +22,16 @@ public class HeroController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Hero> getById(@PathVariable("id") String id) {
-        return new ResponseEntity<Hero>(heroService.findHeroById(id), HttpStatus.OK);
+        return new ResponseEntity<Hero>(heroService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<Hero>> searchHero(@RequestParam(name = "name") String name) {
-        return new ResponseEntity<List<Hero>>(heroService.getHeroByName(name), HttpStatus.OK);
+    public ResponseEntity<List<Hero>> searchByName(@RequestParam(name = "name") String name) {
+        return new ResponseEntity<List<Hero>>(heroService.getByName(name), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Hero> update(@RequestParam(name = "id") String id, @RequestBody Hero hero) {
+        return new ResponseEntity<Hero>(heroService.update(id, hero), HttpStatus.OK);
     }
 }

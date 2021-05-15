@@ -65,7 +65,7 @@ public class HeroServiceTest {
         Optional<Hero> heroOpt = Optional.of((Hero) Utils.getValidHero());
         when(heroRepository.findById(any())).thenReturn(heroOpt);
 
-        Hero hero = heroService.findHeroById(id);
+        Hero hero = heroService.findById(id);
 
         verify(heroRepository, times(1)).findById(any());
         assertNotNull(hero);
@@ -75,7 +75,7 @@ public class HeroServiceTest {
     void shouldThrowExceptionWhenNotFoundHeroById() {
         when(heroRepository.findById(any())).thenReturn(Optional.empty());
 
-        RuntimeException runtimeException = assertThrows(HeroNotFoundException.class, () -> heroService.findHeroById(id));
+        RuntimeException runtimeException = assertThrows(HeroNotFoundException.class, () -> heroService.findById(id));
 
         Assertions.assertEquals(Constants.HERO_NOT_FOUND_MESSAGE, runtimeException.getMessage());
         verify(heroRepository, times(1)).findById(any());
