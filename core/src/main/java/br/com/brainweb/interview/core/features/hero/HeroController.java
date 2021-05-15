@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("heros")
 public class HeroController {
@@ -20,6 +22,11 @@ public class HeroController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Hero> getById(@PathVariable("id") String id) {
-        return new ResponseEntity<Hero>(heroService.getHeroById(id), HttpStatus.OK);
+        return new ResponseEntity<Hero>(heroService.findHeroById(id), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Hero>> searchHero(@RequestParam(name = "name") String name) {
+        return new ResponseEntity<List<Hero>>(heroService.getHeroByName(name), HttpStatus.OK);
     }
 }
