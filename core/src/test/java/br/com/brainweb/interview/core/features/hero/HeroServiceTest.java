@@ -11,8 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
 import static org.mockito.Mockito.*;
@@ -81,5 +80,61 @@ public class HeroServiceTest {
         verify(heroRepository, times(1)).findById(any());
     }
 
+    @Test
+    void shouldUpdateHero() {
+        Hero heroToBeUpdated = Utils.getValidHero();
+        Hero newHero = Utils.getValidHero();
+        newHero.setId(heroToBeUpdated.getId());
+        newHero.setName("Teste2");
 
+
+        Optional<Hero> heroOpt = Optional.of((Hero) heroToBeUpdated);
+        when(heroRepository.findById(any())).thenReturn(heroOpt);
+        when(heroRepository.save(any())).thenReturn(newHero);
+
+        Hero heroResponse = heroService.update(heroToBeUpdated.getId().toString(), Hero.builder().name("Teste2").build());
+
+        assertNotEquals(heroToBeUpdated.getName(), heroResponse.getName());
+        assertEquals("Teste2", heroResponse.getName());
+        assertEquals(heroToBeUpdated.getRace(), heroResponse.getRace());
+        assertEquals(heroToBeUpdated.getId().toString(), heroResponse.getId().toString());
+        verify(heroRepository, times(1)).findById(any());
+        verify(heroRepository, times(1)).save(any());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenNotFoundOnUpdateHero() {
+        when(heroRepository.findById(any())).thenReturn(Optional.empty());
+
+        RuntimeException runtimeException = assertThrows(HeroNotFoundException.class,
+                () -> heroService.update(Utils.getValidHero().getId().toString(), Hero.builder().name("Teste2").build()));
+
+        Assertions.assertEquals(Constants.HERO_NOT_FOUND_MESSAGE, runtimeException.getMessage());
+        verify(heroRepository, times(1)).findById(any());
+        verify(heroRepository, never()).save(any());
+    }
+
+    @Test
+    void shouldDeleteHero() {
+        Optional<Hero> heroOpt = Optional.of((Hero) Utils.getValidHero());
+        when(heroRepository.findById(any())).thenReturn(heroOpt);
+        doNothing().when(heroRepository).delete(any());
+
+        heroService.delete(Utils.getValidHero().getId().toString());
+
+        verify(heroRepository, times(1)).findById(any());
+        verify(heroRepository, times(1)).delete(any());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenNotFoundOnDeleteHero() {
+        when(heroRepository.findById(any())).thenReturn(Optional.empty());
+
+        RuntimeException runtimeException = assertThrows(HeroNotFoundException.class,
+                () -> heroService.delete(Utils.getValidHero().getId().toString()));
+
+        Assertions.assertEquals(Constants.HERO_NOT_FOUND_MESSAGE, runtimeException.getMessage());
+        verify(heroRepository, times(1)).findById(any());
+        verify(heroRepository, never()).delete(any());
+    }
 }
