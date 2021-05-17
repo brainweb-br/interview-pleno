@@ -18,6 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,7 +34,7 @@ public class HeroServiceTest {
 
     @Test
     void shouldCreateValidHero() {
-        when(heroRepository.findByName(anyString())).thenReturn(null);
+        when(heroRepository.findByName(anyString())).thenReturn(Arrays.asList());
         when(heroRepository.save(any())).thenReturn(Utils.getValidHero());
 
         Hero hero = Utils.getValidHero();
@@ -47,7 +48,7 @@ public class HeroServiceTest {
 
     @Test
     void shouldThrowExceptionWhenDuplicatedHeroName() {
-        when(heroRepository.findByName(anyString())).thenReturn(Utils.getValidHero());
+        when(heroRepository.findByName(anyString())).thenReturn(Arrays.asList(Utils.getValidHero()));
 
         Hero hero = Utils.getValidHero();
         hero.setId(null);
@@ -64,7 +65,7 @@ public class HeroServiceTest {
         Optional<Hero> heroOpt = Optional.of((Hero) Utils.getValidHero());
         when(heroRepository.findById(any())).thenReturn(heroOpt);
 
-        Hero hero = heroService.getHeroById(id);
+        Hero hero = heroService.findHeroById(id);
 
         verify(heroRepository, times(1)).findById(any());
         assertNotNull(hero);
@@ -74,7 +75,7 @@ public class HeroServiceTest {
     void shouldThrowExceptionWhenNotFoundHeroById() {
         when(heroRepository.findById(any())).thenReturn(Optional.empty());
 
-        RuntimeException runtimeException = assertThrows(HeroNotFoundException.class, () -> heroService.getHeroById(id));
+        RuntimeException runtimeException = assertThrows(HeroNotFoundException.class, () -> heroService.findHeroById(id));
 
         Assertions.assertEquals(Constants.HERO_NOT_FOUND_MESSAGE, runtimeException.getMessage());
         verify(heroRepository, times(1)).findById(any());
