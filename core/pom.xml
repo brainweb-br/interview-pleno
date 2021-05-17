@@ -50,7 +50,7 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
-
+        
         <!-- Test only -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -99,7 +99,7 @@
             <plugin>
                 <groupId>io.fabric8</groupId>
                 <artifactId>docker-maven-plugin</artifactId>
-                <version>0.31.0</version>
+                <version>0.35.0</version>
                 <configuration>
                     <images>
                         <image>
@@ -136,36 +136,37 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>fabric8-maven-plugin</artifactId>
-                <version>3.5.31</version>
-                <configuration>
-                    <mode>kubernetes</mode>
-                    <images>
-                        <image>
-                            <name>brainweb/interview</name>
-                            <alias>interview-api</alias>
-                            <build>
-                                <dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>
-                                <assembly>
-                                    <descriptorRef>artifact</descriptorRef>
-                                </assembly>
-                            </build>
-                        </image>
-                    </images>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>fabric8</id>
-                        <goals>
-                            <goal>resource</goal>
-                            <goal>build</goal>
-                            <goal>helm</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+<!--  comentei esse plugin pois estava dando no k8s erro ao subir o container para executar os testes atraves do maven -->
+<!--            <plugin>-->
+<!--                <groupId>io.fabric8</groupId>-->
+<!--                <artifactId>fabric8-maven-plugin</artifactId>-->
+<!--                <version>3.5.31</version>-->
+<!--                <configuration>-->
+<!--                    <mode>kubernetes</mode>-->
+<!--                    <images>-->
+<!--                        <image>-->
+<!--                            <name>brainweb/interview</name>-->
+<!--                            <alias>interview-api</alias>-->
+<!--                            <build>-->
+<!--                                <dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>-->
+<!--                                <assembly>-->
+<!--                                    <descriptorRef>artifact</descriptorRef>-->
+<!--                                </assembly>-->
+<!--                            </build>-->
+<!--                        </image>-->
+<!--                    </images>-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>fabric8</id>-->
+<!--                        <goals>-->
+<!--                            <goal>resource</goal>-->
+<!--                            <goal>build</goal>-->
+<!--                            <goal>helm</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
