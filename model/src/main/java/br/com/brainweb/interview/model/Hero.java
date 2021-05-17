@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -28,11 +29,14 @@ public class Hero {
     private UUID id;
 
     @NotNull
+    @NotNull(message = "Informe o campo 'name'")
     private String name;
 
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "Informe o campo 'race'")
     private RaceType race;
 
+    @NotNull(message = "Informe o campo 'enabled'")
     private Boolean enabled;
 
     @Column(name = "created_at")
