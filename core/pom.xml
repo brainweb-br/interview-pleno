@@ -50,6 +50,14 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
         </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>it.ozimov</groupId>-->
+<!--            <artifactId>embedded-redis</artifactId>-->
+<!--            <version>0.7.2</version>-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
+
         <!-- Test only -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

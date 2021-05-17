@@ -8,6 +8,9 @@ import br.com.brainweb.interview.core.utils.Constants;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +32,7 @@ public class HeroService {
         return hero;
     }
 
+    @Cacheable(cacheNames = "Hero", key="#id")
     public Hero findById(String id) {
         Optional<Hero> hero = heroRepository.findById(UUID.fromString(id));
         if(hero.isEmpty()) {
@@ -41,12 +45,14 @@ public class HeroService {
         return heroRepository.findByName(name);
     }
 
+    @CachePut(cacheNames = "Hero", key="#id")
     public Hero update(String id, Hero newValues) {
         Hero hero = this.findById(id);
         Hero updatedHero = updateHeroAttributes(hero, newValues);
         return heroRepository.save(updatedHero);
     }
 
+    @CacheEvict(cacheNames = "Hero", key="#id")
     public void delete(String id) {
         Hero hero = this.findById(id);
         heroRepository.delete(hero);

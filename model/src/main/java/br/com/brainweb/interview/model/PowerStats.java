@@ -11,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.UUID;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @Builder
 @Entity
 @Table(name = "power_stats")
-public class PowerStats {
+public class PowerStats implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", insertable = false, nullable = false)
