@@ -23,7 +23,6 @@ public class HeroController {
 
     @PostMapping
     public ResponseEntity<Hero> create(@Valid @RequestBody Hero hero) {
-        System.out.println("CRIANDO");
         Hero created = heroService.createHero(hero);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
