@@ -28,4 +28,5 @@ public class ExceptionController {
                 ex.getMessage(),
                 request.getDescription(false)), HttpStatus.NOT_FOUND);
     }
+
 }

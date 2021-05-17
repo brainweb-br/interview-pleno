@@ -1,0 +1,2 @@
+insert into power_stats values(uuid_generate_v4(), 5, 5, 6, 9 ,now(), now());
+insert into hero values(uuid_generate_v4(), 'teste 2', 'ALIEN', (select id from power_stats ORDER BY created_at DESC LIMIT 1), true, now(), now());

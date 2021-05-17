@@ -3,9 +3,13 @@ package br.com.brainweb.interview.model;
 import br.com.brainweb.interview.model.enums.RaceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -17,6 +21,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "hero")
+@Builder
 public class Hero {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,11 +29,14 @@ public class Hero {
     private UUID id;
 
     @NotNull
+    @NotNull(message = "Informe o campo 'name'")
     private String name;
 
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "Informe o campo 'race'")
     private RaceType race;
 
+    @NotNull(message = "Informe o campo 'enabled'")
     private Boolean enabled;
 
     @Column(name = "created_at")

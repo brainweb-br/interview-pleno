@@ -23,11 +23,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.hasValue;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("it")
 public class CreateHeroIT {
 
-    private final String BASE_PATH = "/heros";
+    private static final String BASE_PATH = "/heroes";
 
     @Autowired
     private MockMvc mvc;
@@ -50,7 +46,7 @@ public class CreateHeroIT {
     private ObjectMapper objectMapper;
 
     @Autowired
-    Flyway flyway;
+    private Flyway flyway;
 
     @After
     public void clearData(){
