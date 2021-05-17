@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PowerStatsService {
 
-    public PowerStats updatePowerAttributes(PowerStats oldPower, PowerStats power) {
-        if(power != null) {
-            if(power.getStrength() != null) oldPower.setStrength(power.getStrength());
-            if(power.getAgility() != null) oldPower.setAgility(power.getAgility());
-            if(power.getDexterity() != null) oldPower.setDexterity(power.getDexterity());
-            if(power.getIntelligence() != null) oldPower.setIntelligence(power.getIntelligence());
+    public PowerStats updatePowerAttributes(PowerStats oldPower, PowerStats newValues) {
+        if(newValues != null) {
+            if(newValues.getStrength() != null) oldPower.setStrength(newValues.getStrength());
+            if(newValues.getAgility() != null) oldPower.setAgility(newValues.getAgility());
+            if(newValues.getDexterity() != null) oldPower.setDexterity(newValues.getDexterity());
+            if(newValues.getIntelligence() != null) oldPower.setIntelligence(newValues.getIntelligence());
         }
         return  oldPower;
     }

@@ -14,7 +14,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("heros")
+@RequestMapping("heroes")
 @RequiredArgsConstructor
 public class HeroController {
 
@@ -37,7 +37,7 @@ public class HeroController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Hero>> searchByName(@RequestParam(name = "name") String name) {
+    public ResponseEntity<List<Hero>> getByName(@RequestParam(name = "name") String name) {
         return new ResponseEntity<List<Hero>>(heroService.getByName(name), HttpStatus.OK);
     }
 

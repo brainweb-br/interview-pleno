@@ -10,8 +10,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CompareHeroResponse {
-    private UUID hero1Id;
-    private UUID hero2Id;
+    private UUID heroId;
+    private UUID heroComparedId;
     private Integer strength;
     private Integer agility;
     private Integer dexterity;

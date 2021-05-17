@@ -41,9 +41,9 @@ public class HeroService {
         return heroRepository.findByName(name);
     }
 
-    public Hero update(String id, Hero hero) {
-        Hero old = this.findById(id);
-        Hero updatedHero = updateHeroAttributes(old, hero);
+    public Hero update(String id, Hero newValues) {
+        Hero hero = this.findById(id);
+        Hero updatedHero = updateHeroAttributes(hero, newValues);
         return heroRepository.save(updatedHero);
     }
 
@@ -52,14 +52,14 @@ public class HeroService {
         heroRepository.delete(hero);
     }
 
-    private Hero updateHeroAttributes(Hero oldHero, Hero hero) {
-        if(hero.getName() != null) oldHero.setName(hero.getName());
-        if(hero.getRace() != null) oldHero.setRace(hero.getRace());
-        if(hero.getEnabled() != null) oldHero.setEnabled(hero.getEnabled());
+    private Hero updateHeroAttributes(Hero hero, Hero newValues) {
+        if(newValues.getName() != null) hero.setName(newValues.getName());
+        if(newValues.getRace() != null) hero.setRace(newValues.getRace());
+        if(newValues.getEnabled() != null) hero.setEnabled(newValues.getEnabled());
 
-        oldHero.setPowerStats(powerStatsService.updatePowerAttributes(oldHero.getPowerStats(), hero.getPowerStats()));
+        hero.setPowerStats(powerStatsService.updatePowerAttributes(hero.getPowerStats(), newValues.getPowerStats()));
 
-        return oldHero;
+        return hero;
     }
 
     public CompareHeroResponse compare(String hero1Id, String hero2Id) {

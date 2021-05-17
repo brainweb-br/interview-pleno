@@ -2,7 +2,6 @@ package br.com.brainweb.interview.core.features.hero.it;
 
 import br.com.brainweb.interview.core.features.hero.HeroRepository;
 import br.com.brainweb.interview.core.utils.Constants;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.flywaydb.core.Flyway;
 import org.junit.After;
 import org.junit.Test;
@@ -19,13 +18,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.UUID;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.hasValue;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -36,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles("it")
 public class GetHeroIT {
 
-    private final String BASE_PATH = "/heros";
+    private static final String BASE_PATH = "/heroes";
 
     @Autowired
     private MockMvc mvc;
@@ -45,10 +38,7 @@ public class GetHeroIT {
     private HeroRepository heroRepository;
 
     @Autowired
-    private ObjectMapper objectMapper;
-
-    @Autowired
-    Flyway flyway;
+    private Flyway flyway;
 
     @After
     public void clearData(){
