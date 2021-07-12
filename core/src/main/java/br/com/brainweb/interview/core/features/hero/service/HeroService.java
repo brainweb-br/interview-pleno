@@ -27,4 +27,9 @@ public class HeroService {
     public Optional<Hero> findHeroByName(String heroName) {
         return heroRepository.findOneByNameIgnoreCase(heroName);
     }
+
+    public Hero updateHero(Hero hero) {
+        this.findById(hero.getId());
+        return heroRepository.save(hero);
+    }
 }
