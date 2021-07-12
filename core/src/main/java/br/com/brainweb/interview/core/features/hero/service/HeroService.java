@@ -5,11 +5,16 @@ import br.com.brainweb.interview.core.features.hero.exception.HeroNotFoundExcept
 import br.com.brainweb.interview.core.features.hero.repository.HeroRepository;
 import br.com.brainweb.interview.model.Hero;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
+@Log4j2
 @RequiredArgsConstructor
 @Service
 public class HeroService {
@@ -20,6 +25,7 @@ public class HeroService {
         return heroRepository.save(hero);
     }
 
+    @Cacheable(cacheNames = "Hero", key="#heroId")
     public Hero findById(UUID heroId) {
         return heroRepository.findById(heroId)
                 .orElseThrow(() -> new HeroNotFoundException("Hero Not Found"));
@@ -29,11 +35,13 @@ public class HeroService {
         return heroRepository.findOneByNameIgnoreCase(heroName);
     }
 
+    @CachePut(cacheNames = "Hero", key="#hero.id")
     public Hero updateHero(Hero hero) {
         this.findById(hero.getId());
         return heroRepository.save(hero);
     }
 
+    @CacheEvict(cacheNames = "Hero", key="#heroId")
     public void deleteHero(UUID heroId) {
         heroRepository.delete(this.findById(heroId));
     }
@@ -54,5 +62,4 @@ public class HeroService {
                 .build();
 
     }
-
 }
