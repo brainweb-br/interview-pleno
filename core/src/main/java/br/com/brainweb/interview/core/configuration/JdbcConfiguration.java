@@ -2,6 +2,7 @@ package br.com.brainweb.interview.core.configuration;
 
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -12,6 +13,7 @@ import javax.sql.DataSource;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
+@EntityScan(basePackages = {"br.com.brainweb.interview.model"})
 public class JdbcConfiguration {
 
     @Value("${jdbc.url}")
@@ -42,7 +44,7 @@ public class JdbcConfiguration {
     }
 
     @Bean
-    public PlatformTransactionManager platformTransactionManager() {
+    public PlatformTransactionManager transactionManager() {
         return new DataSourceTransactionManager(dataSource());
     }
 

@@ -1,0 +1,73 @@
+version: '3.1'
+
+services:
+
+  postgresdb:
+    image: postgres
+    container_name: postgresdb
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "brainweb"
+      POSTGRES_USER: "brainweb"
+      POSTGRES_DB: "postgres"
+    volumes:
+      - ./core/src/main/resources/db/schema/init_schema.sql:/docker-entrypoint-initdb.d/init_schema.sql
+      - ./core/src/main/resources/db/migration/V1.0__power_stats_ddl.sql:/docker-entrypoint-initdb.d/V1.0__power_stats_ddl.sql
+      - ./core/src/main/resources/db/migration/V1.1__hero_ddl.sql:/docker-entrypoint-initdb.d/V1.1__hero_ddl.sql
+    networks:
+      - my-network
+
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - my-network
+
+  app1:
+    build:
+      dockerfile: ./core/src/main/docker/app.dockerfile
+      context: .
+    image: nivaldj/spring-app
+    container_name: spring-app1
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+    depends_on:
+      - "postgresdb"
+      - "redis"
+
+  app2:
+    build:
+      dockerfile: ./core/src/main/docker/app.dockerfile
+      context: .
+    image: nivaldj/spring-app
+    container_name: spring-app2
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+    depends_on:
+      - "postgresdb"
+      - "redis"
+
+  nginx:
+    build:
+      dockerfile: ./core/src/main/docker/nginx.dockerfile
+      context: .
+    image: nivaldj/nginx
+    container_name: nginx
+    ports:
+      - "80:80"
+    networks:
+      - my-network
+    depends_on:
+      - "app1"
+      - "app2"
+
+networks:
+  my-network:
+    driver: bridge
