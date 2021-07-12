@@ -1,6 +1,7 @@
 package br.com.brainweb.interview.core.features.hero.controller;
 
 import br.com.brainweb.interview.core.features.hero.dto.HeroDTO;
+import br.com.brainweb.interview.core.features.hero.dto.HerosDiffDTO;
 import br.com.brainweb.interview.core.features.hero.mapper.HeroDTOMapper;
 import br.com.brainweb.interview.core.features.hero.service.HeroService;
 import lombok.RequiredArgsConstructor;
@@ -59,4 +60,11 @@ public class HeroController {
         heroService.deleteHero(heroId);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/compare")
+    public ResponseEntity<HerosDiffDTO> compareHeros(@RequestParam(value = "hero1") final String heroName1,
+                                                     @RequestParam(value = "hero2") final String heroName2) {
+        return ResponseEntity.ok().body(heroService.compareHeros(heroName1, heroName2));
+    }
+    
 }

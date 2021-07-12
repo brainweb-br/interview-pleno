@@ -1,5 +1,6 @@
 package br.com.brainweb.interview.core.features.hero.service;
 
+import br.com.brainweb.interview.core.features.hero.dto.HerosDiffDTO;
 import br.com.brainweb.interview.core.features.hero.exception.HeroNotFoundException;
 import br.com.brainweb.interview.core.features.hero.repository.HeroRepository;
 import br.com.brainweb.interview.model.Hero;
@@ -36,4 +37,22 @@ public class HeroService {
     public void deleteHero(UUID heroId) {
         heroRepository.delete(this.findById(heroId));
     }
+
+    public HerosDiffDTO compareHeros(String heroName1, String heroName2) {
+        Hero hero1 = this.findHeroByName(heroName1)
+                .orElseThrow(() -> new HeroNotFoundException(String.format("Hero '%s' Not Found.", heroName1)));
+        Hero hero2 = this.findHeroByName(heroName2)
+                .orElseThrow(() -> new HeroNotFoundException(String.format("Hero '%s' Not Found.", heroName2)));
+
+        return HerosDiffDTO.builder()
+                .heroId1(hero1.getId())
+                .heroId2(hero2.getId())
+                .strengthDiff(hero1.getPowerStats().getStrength() - hero2.getPowerStats().getStrength())
+                .agilityDiff(hero1.getPowerStats().getAgility() - hero2.getPowerStats().getAgility())
+                .intelligenceDiff(hero1.getPowerStats().getIntelligence() - hero2.getPowerStats().getIntelligence())
+                .dexterityDiff(hero1.getPowerStats().getDexterity() - hero2.getPowerStats().getDexterity())
+                .build();
+
+    }
+
 }
