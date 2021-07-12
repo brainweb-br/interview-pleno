@@ -19,7 +19,6 @@ public class HeroDTO {
     private String name;
     @NotNull
     private Race race;
-    @NotNull
     private UUID powerStatsId;
     @NotNull
     private short strength;

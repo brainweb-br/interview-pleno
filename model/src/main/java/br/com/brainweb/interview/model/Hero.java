@@ -16,7 +16,6 @@ public class Hero extends BaseEntity{
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private UUID id;
-    @Column(unique=true)
     private String name;
     @Enumerated(EnumType.STRING)
     private Race race;
