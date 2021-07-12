@@ -29,4 +29,13 @@ public class HeroController {
     public ResponseEntity<HeroDTO> getHeroById(@PathVariable(value = "id") final UUID heroId) {
         return ResponseEntity.ok().body(mapper.toDto(heroService.findById(heroId)));
     }
+
+    @GetMapping
+    public ResponseEntity<HeroDTO> getHeroByParam(@RequestParam(value = "name") final String heroName) {
+        return ResponseEntity.ok().body(
+                heroService.findHeroByName(heroName)
+                        .map(mapper::toDto)
+                        .orElse(null)
+        );
+    }
 }

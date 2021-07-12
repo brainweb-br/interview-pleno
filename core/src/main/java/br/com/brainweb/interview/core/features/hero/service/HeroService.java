@@ -6,6 +6,7 @@ import br.com.brainweb.interview.model.Hero;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -21,5 +22,9 @@ public class HeroService {
     public Hero findById(UUID heroId) {
         return heroRepository.findById(heroId)
                 .orElseThrow(() -> new HeroNotFoundException("Hero Not Found"));
+    }
+
+    public Optional<Hero> findHeroByName(String heroName) {
+        return heroRepository.findOneByNameIgnoreCase(heroName);
     }
 }
