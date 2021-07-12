@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -22,5 +23,10 @@ public class HeroController {
     @PostMapping
     public ResponseEntity<HeroDTO> saveHero(@Valid @RequestBody final HeroDTO hero) {
         return ResponseEntity.ok().body(mapper.toDto(heroService.saveHero(mapper.toModel(hero))));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<HeroDTO> getHeroById(@PathVariable(value = "id") final UUID heroId) {
+        return ResponseEntity.ok().body(mapper.toDto(heroService.findById(heroId)));
     }
 }
