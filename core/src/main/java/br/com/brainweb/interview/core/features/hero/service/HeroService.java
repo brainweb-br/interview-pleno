@@ -32,4 +32,8 @@ public class HeroService {
         this.findById(hero.getId());
         return heroRepository.save(hero);
     }
+
+    public void deleteHero(UUID heroId) {
+        heroRepository.delete(this.findById(heroId));
+    }
 }

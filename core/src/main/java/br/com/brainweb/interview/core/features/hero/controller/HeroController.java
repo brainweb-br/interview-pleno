@@ -53,4 +53,10 @@ public class HeroController {
         }
         return ResponseEntity.ok().body(mapper.toDto(heroService.updateHero(mapper.toModel(heroDto))));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteHero(@PathVariable(value = "id") final UUID heroId) {
+        heroService.deleteHero(heroId);
+        return ResponseEntity.noContent().build();
+    }
 }
