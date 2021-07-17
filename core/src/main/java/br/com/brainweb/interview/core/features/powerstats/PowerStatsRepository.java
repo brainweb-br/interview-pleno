@@ -1,4 +1,15 @@
 package br.com.brainweb.interview.core.features.powerstats;
 
-public class PowerStatsRepository {
+import br.com.brainweb.interview.model.PowerStats;
+
+import java.util.Optional;
+
+public interface PowerStatsRepository {
+
+    Optional<PowerStats> findById(String id);
+
+    void create(PowerStats powerStats);
+
+    void update(PowerStats powerStats);
+
 }
