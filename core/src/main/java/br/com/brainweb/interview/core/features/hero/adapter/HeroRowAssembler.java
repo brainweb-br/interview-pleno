@@ -13,12 +13,12 @@ import java.util.UUID;
 import static br.com.brainweb.interview.core.features.hero.adapter.HeroFields.UPDATED_AT;
 import static br.com.brainweb.interview.core.features.powerstats.adapter.PowerStatsFields.*;
 
-public class HeroAssembler {
+public class HeroRowAssembler {
 
     public static Hero heroRowMapper(ResultSet resultSet, int var2) {
         var prefix = "hero.";
         try {
-            var powerStats = HeroAssembler.powerStatsRowMapper(resultSet, var2, ".power_stats");
+            var powerStats = HeroRowAssembler.powerStatsRowMapper(resultSet, var2, ".power_stats");
             return Hero.builder()
                     .id(UUID.fromString(resultSet.getString(prefix + HeroFields.ID)))
                     .name(resultSet.getString(prefix + HeroFields.NAME))

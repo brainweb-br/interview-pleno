@@ -9,7 +9,6 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.OptionalDataException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -33,7 +32,7 @@ public class HeroRepositoryImpl implements HeroRepository {
     @Override
     public Optional<Hero> findById(String id) {
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_ID, Map.of("id", id), HeroAssembler::heroRowMapper));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_ID, Map.of("id", id), HeroRowAssembler::heroRowMapper));
         }catch (EmptyResultDataAccessException ex){
             return Optional.empty();
         }

@@ -1,36 +1,49 @@
 package br.com.brainweb.interview.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
-@Builder
+@Value
+@Builder(toBuilder = true)
 @AllArgsConstructor
 public class PowerStats {
 
-    private UUID id;
+    UUID id;
 
-    private int  strength;
+    int strength;
 
-    private int agility;
+    int agility;
 
-    private int dexterity;
+    int dexterity;
 
-    private int intelligence;
+    int intelligence;
 
-    private LocalDateTime createdDt;
+    LocalDateTime createdDt;
 
-    private LocalDateTime updatedDt;
+    LocalDateTime updatedDt;
 
-    public PowerStats(){
-        if (this.id == null) {
-            this.id = UUID.randomUUID();
-        }
+    public PowerStats(int strength,
+                      int agility,
+                      int dexterity,
+                      int intelligence) {
+        this.id = UUID.randomUUID();
+        this.strength = strength;
+        this.agility = agility;
+        this.dexterity = dexterity;
+        this.intelligence = intelligence;
+        this.createdDt = LocalDateTime.now();
+        this.updatedDt = LocalDateTime.now();
     }
 
+    public PowerStats copy(PowerStats powerStats) {
+        return this.toBuilder()
+                .strength(powerStats.getStrength())
+                .agility(powerStats.getAgility())
+                .dexterity(powerStats.getDexterity())
+                .intelligence(powerStats.getIntelligence())
+                .updatedDt(powerStats.getUpdatedDt())
+                .build();
+    }
 }
