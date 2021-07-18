@@ -29,12 +29,12 @@ public class HeroController {
         return null;
     }
 
-    @PostMapping
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> create(@RequestBody HeroCommand heroCommand) {
         return ResponseEntity.ok(heroService.create(HeroDTOAssembler.toHero(heroCommand)));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> update(@PathVariable("id") UUID id,
                                        @RequestBody HeroCommand heroCommand) {
         heroService.update(id, HeroDTOAssembler.toHero(heroCommand));

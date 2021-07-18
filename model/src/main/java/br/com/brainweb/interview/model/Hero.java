@@ -65,10 +65,10 @@ public class Hero {
         return CompareHero.builder()
                 .heroId1(this.id)
                 .heroId2(another.getId())
-                .diffStrength(this.powerStats.getStrength() - another.getPowerStats().getStrength())
-                .diffAgility(this.powerStats.getAgility() - another.getPowerStats().getAgility())
-                .diffDexterity(this.powerStats.getDexterity() - another.getPowerStats().getDexterity())
-                .diffIntelligence(this.powerStats.getIntelligence() - another.getPowerStats().getIntelligence())
+                .strengthDiff(this.powerStats.getStrength() - another.getPowerStats().getStrength())
+                .agilityDiff(this.powerStats.getAgility() - another.getPowerStats().getAgility())
+                .dexterityDiff(this.powerStats.getDexterity() - another.getPowerStats().getDexterity())
+                .intelligenceDiff(this.powerStats.getIntelligence() - another.getPowerStats().getIntelligence())
                 .build();
     }
 

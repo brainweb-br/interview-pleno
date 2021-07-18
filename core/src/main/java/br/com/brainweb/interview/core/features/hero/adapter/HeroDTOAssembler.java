@@ -4,17 +4,9 @@ import br.com.brainweb.interview.core.features.hero.adapter.dto.CompareHeroQuery
 import br.com.brainweb.interview.core.features.hero.adapter.dto.HeroCommand;
 import br.com.brainweb.interview.core.features.hero.adapter.dto.HeroQuery;
 import br.com.brainweb.interview.core.features.hero.adapter.dto.PowerStatsQuery;
-import br.com.brainweb.interview.core.features.powerstats.adapter.PowerStatsFields;
 import br.com.brainweb.interview.model.CompareHero;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
-import br.com.brainweb.interview.model.Race;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
-
-import static br.com.brainweb.interview.core.features.hero.adapter.HeroFields.UPDATED_AT;
-import static br.com.brainweb.interview.core.features.powerstats.adapter.PowerStatsFields.*;
 
 public class HeroDTOAssembler {
 
@@ -59,10 +51,10 @@ public class HeroDTOAssembler {
         return CompareHeroQuery.builder()
                 .heroId1(compareHero.getHeroId1())
                 .heroId2(compareHero.getHeroId2())
-                .diffStrength(compareHero.getDiffStrength())
-                .diffAgility(compareHero.getDiffAgility())
-                .diffDexterity(compareHero.getDiffDexterity())
-                .diffIntelligence(compareHero.getDiffIntelligence())
+                .strengthDiff(compareHero.getStrengthDiff())
+                .agilityDiff(compareHero.getAgilityDiff())
+                .dexterityDiff(compareHero.getDexterityDiff())
+                .intelligenceDiff(compareHero.getIntelligenceDiff())
                 .build();
     }
 

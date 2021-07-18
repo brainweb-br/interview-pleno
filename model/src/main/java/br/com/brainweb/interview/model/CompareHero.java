@@ -12,11 +12,11 @@ public class CompareHero {
 
     UUID heroId2;
 
-    int diffStrength;
+    int strengthDiff;
 
-    int diffAgility;
+    int agilityDiff;
 
-    int diffDexterity;
+    int dexterityDiff;
 
-    int diffIntelligence;
+    int intelligenceDiff;
 }
