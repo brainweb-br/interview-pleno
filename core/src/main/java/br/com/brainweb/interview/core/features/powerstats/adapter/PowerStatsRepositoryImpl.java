@@ -23,6 +23,8 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
 
     private static final String DELETE = "delete from power_stats WHERE power_stats.id = :id";
 
+    private static final String DELETE_ALL = "delete from power_stats";
+
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
@@ -38,6 +40,11 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
     @Override
     public void delete(PowerStats powerStats) {
         jdbcTemplate.update(DELETE, Map.of(ID.getBind(), powerStats.getId()));
+    }
+
+    @Override
+    public void deleteAll() {
+        jdbcTemplate.update(DELETE_ALL, Map.of());
     }
 
     private Map<String, ?> toMap(PowerStats powerStats) {

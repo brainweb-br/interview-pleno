@@ -32,7 +32,8 @@ public class Hero {
 
     public Hero(String name,
                 Race race,
-                PowerStats powerStats) {
+                PowerStats powerStats,
+                boolean enabled) {
         if (this.id == null) {
             this.id = UUID.randomUUID();
         }
@@ -43,6 +44,7 @@ public class Hero {
             this.createdDt = LocalDateTime.now();
         }
         this.updatedDt = LocalDateTime.now();
+        this.enabled = enabled;
     }
 
     public void update(Hero from) {

@@ -22,7 +22,8 @@ public class HeroDTOAssembler {
         return new Hero(
                 heroCommand.getName(),
                 heroCommand.getRace(),
-                powerStats);
+                powerStats,
+                heroCommand.isEnabled());
     }
 
     public static HeroQuery toHeroQuery(Hero hero) {

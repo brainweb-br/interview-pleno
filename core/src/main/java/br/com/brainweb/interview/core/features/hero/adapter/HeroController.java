@@ -19,11 +19,6 @@ public class HeroController {
 
     private final HeroService heroService;
 
-    @GetMapping("/hello/say")
-    public String hello(){
-        return "Hello";
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<HeroQuery> findById(@PathVariable UUID id) {
         return ResponseEntity.ok(HeroDTOAssembler.toHeroQuery(heroService.findById(id)));
@@ -34,7 +29,7 @@ public class HeroController {
         return null;
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> create(@RequestBody HeroCommand heroCommand) {
         return ResponseEntity.ok(heroService.create(HeroDTOAssembler.toHero(heroCommand)));
     }

@@ -12,4 +12,6 @@ public interface PowerStatsRepository {
 
     void delete(PowerStats powerStats);
 
+    void deleteAll();
+
 }

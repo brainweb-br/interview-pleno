@@ -34,6 +34,8 @@ public class HeroRepositoryImpl implements HeroRepository {
 
     private static final String DELETE = "delete from hero WHERE hero.id = :id";
 
+    private static final String DELETE_ALL = "delete from hero";
+
     @Override
     public Optional<Hero> findById(UUID id) {
         try {
@@ -65,8 +67,15 @@ public class HeroRepositoryImpl implements HeroRepository {
     @Override
     @Transactional
     public void delete(Hero hero) {
-        powerStatsRepository.delete(hero.getPowerStats());
         jdbcTemplate.update(DELETE, Map.of(ID.getBind(), hero.getId()));
+        powerStatsRepository.delete(hero.getPowerStats());
+    }
+
+    @Override
+    @Transactional
+    public void deleteAll() {
+        jdbcTemplate.update(DELETE_ALL, Map.of());
+        powerStatsRepository.deleteAll();
     }
 
     private Map<String, ?> toMap(Hero hero) {

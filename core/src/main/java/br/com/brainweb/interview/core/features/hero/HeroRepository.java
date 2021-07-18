@@ -18,4 +18,6 @@ public interface HeroRepository {
 
     void delete(Hero hero);
 
+    void deleteAll();
+
 }
