@@ -22,8 +22,8 @@ public class PowerStatsQuery {
 
     int intelligence;
 
-    LocalDateTime createdDt;
+    String createdDt;
 
-    LocalDateTime updatedDt;
+    String updatedDt;
 
 }

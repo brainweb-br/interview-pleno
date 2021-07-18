@@ -39,8 +39,8 @@ public class HeroDTOAssembler {
                 .dexterity(powerStats.getDexterity())
                 .intelligence(powerStats.getIntelligence())
                 .strength(powerStats.getStrength())
-                .createdDt(powerStats.getCreatedDt())
-                .updatedDt(powerStats.getUpdatedDt())
+                .createdDt(powerStats.getCreatedDt().toString())
+                .updatedDt(powerStats.getUpdatedDt().toString())
                 .build();
         return HeroQuery.builder()
                 .id(hero.getId())
@@ -48,8 +48,8 @@ public class HeroDTOAssembler {
                 .race(hero.getRace())
                 .enabled(hero.isEnabled())
                 .powerStats(powerStatsQuery)
-                .createdDt(hero.getCreatedDt())
-                .updatedDt(hero.getUpdatedDt())
+                .createdDt(hero.getCreatedDt().toString())
+                .updatedDt(hero.getUpdatedDt().toString())
                 .build();
     }
 

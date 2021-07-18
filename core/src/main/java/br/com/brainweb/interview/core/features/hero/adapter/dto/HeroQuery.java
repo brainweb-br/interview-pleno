@@ -1,11 +1,9 @@
 package br.com.brainweb.interview.core.features.hero.adapter.dto;
 
-import br.com.brainweb.interview.model.PowerStats;
 import br.com.brainweb.interview.model.Race;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -25,8 +23,8 @@ public class HeroQuery {
 
     private boolean enabled;
 
-    private LocalDateTime createdDt;
+    private String createdDt;
 
-    private LocalDateTime updatedDt;
+    private String updatedDt;
 
 }
