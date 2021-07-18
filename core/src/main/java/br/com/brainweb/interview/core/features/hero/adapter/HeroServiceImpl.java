@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.UUID;
+
 @Component
 @AllArgsConstructor
 public class HeroServiceImpl implements HeroService {
@@ -15,7 +17,7 @@ public class HeroServiceImpl implements HeroService {
     private final HeroRepository heroRepository;
 
     @Override
-    public Hero findById(String id) {
+    public Hero findById(UUID id) {
         return heroRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
@@ -27,8 +29,9 @@ public class HeroServiceImpl implements HeroService {
     }
 
     @Override
-    public void update(Hero hero) {
-        heroRepository.findById(hero.getIdString())
+    public void update(UUID id,
+                       Hero hero) {
+        heroRepository.findById(id)
                 .map(savedHero -> {
                     savedHero.update(hero);
                     heroRepository.update(savedHero);

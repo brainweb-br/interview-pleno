@@ -16,6 +16,8 @@ import static br.com.brainweb.interview.core.features.powerstats.adapter.PowerSt
 
 public class HeroDTOAssembler {
 
+
+
     public static Hero toHero(HeroCommand heroCommand) {
         var powerStatsCommand = heroCommand.getPowerStats();
         var powerStats = new PowerStats(

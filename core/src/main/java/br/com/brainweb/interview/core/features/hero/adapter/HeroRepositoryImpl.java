@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 import static br.com.brainweb.interview.core.features.hero.adapter.HeroFields.*;
 
@@ -26,11 +27,11 @@ public class HeroRepositoryImpl implements HeroRepository {
 
     private static final String UPDATE = "update hero set name = :name, race = :race, enabled = :enabled, created_at = :created_at, updated_at = :updated_at where id = :id";
 
-    public static final String SELECT_ID = "select hero.*, power_stats.* from hero, power_stats where hero.id = :id and hero.power_stats_id = power_stats.id";
+    public static final String SELECT_ID = "select hero.*, p.strength as p_strength, p.agility as p_agility, p.dexterity as p_dexterity, p.intelligence as p_intelligence, p.created_at as p_created_at, p.updated_at as p_updated_at, p.id as p_id from hero, power_stats as p where hero.id = :id and hero.power_stats_id = p.id";
 
 
     @Override
-    public Optional<Hero> findById(String id) {
+    public Optional<Hero> findById(UUID id) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_ID, Map.of("id", id), HeroRowAssembler::heroRowMapper));
         }catch (EmptyResultDataAccessException ex){

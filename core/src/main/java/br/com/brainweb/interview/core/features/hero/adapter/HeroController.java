@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/heroes", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -17,14 +18,8 @@ public class HeroController {
 
     private final HeroService heroService;
 
-    @GetMapping
-    public String hello() {
-        System.out.println("Hello, heroes.");
-        return "Hello, heroes.";
-    }
-
     @GetMapping("/{id}")
-    public ResponseEntity<HeroQuery> findById(@PathVariable String id) {
+    public ResponseEntity<HeroQuery> findById(@PathVariable UUID id) {
         return ResponseEntity.ok(HeroDTOAssembler.toHeroQuery(heroService.findById(id)));
     }
 
@@ -38,9 +33,10 @@ public class HeroController {
         return ResponseEntity.ok(heroService.create(HeroDTOAssembler.toHero(heroCommand)));
     }
 
-    @PutMapping
-    public ResponseEntity<Void> update(@RequestBody HeroCommand heroCommand) {
-        heroService.update(HeroDTOAssembler.toHero(heroCommand));
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> update(@PathVariable("id") UUID id,
+                                       @RequestBody HeroCommand heroCommand) {
+        heroService.update(id, HeroDTOAssembler.toHero(heroCommand));
         return ResponseEntity.ok().build();
     }
 

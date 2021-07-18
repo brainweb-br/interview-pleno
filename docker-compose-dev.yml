@@ -1,0 +1,13 @@
+version: '3.6'
+services:
+  postgresdb:
+    build:
+      context: ./core/src/main/resources/db/schema/
+      dockerfile: Dockerfile
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "admin"
+      POSTGRES_USER: "root"
+      POSTGRES_DB: "postgres"
+

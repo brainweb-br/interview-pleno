@@ -16,17 +16,17 @@ import static br.com.brainweb.interview.core.features.powerstats.adapter.PowerSt
 public class HeroRowAssembler {
 
     public static Hero heroRowMapper(ResultSet resultSet, int var2) {
-        var prefix = "hero.";
+        var prefix = "";
         try {
-            var powerStats = HeroRowAssembler.powerStatsRowMapper(resultSet, var2, ".power_stats");
+            var powerStats = HeroRowAssembler.powerStatsRowMapper(resultSet, var2, "p_");
             return Hero.builder()
-                    .id(UUID.fromString(resultSet.getString(prefix + HeroFields.ID)))
-                    .name(resultSet.getString(prefix + HeroFields.NAME))
-                    .race(Race.valueOf(resultSet.getString(prefix + HeroFields.RACE)))
-                    .enabled(resultSet.getBoolean(prefix + HeroFields.ENABLED))
+                    .id(UUID.fromString(resultSet.getString(prefix + HeroFields.ID.getBind())))
+                    .name(resultSet.getString(prefix + HeroFields.NAME.getBind()))
+                    .race(Race.valueOf(resultSet.getString(prefix + HeroFields.RACE.getBind())))
+                    .enabled(resultSet.getBoolean(prefix + HeroFields.ENABLED.getBind()))
                     .powerStats(powerStats)
-                    .createdDt(resultSet.getObject(prefix + HeroFields.CREATED_AT, LocalDateTime.class))
-                    .updatedDt(resultSet.getObject(prefix + HeroFields.UPDATED_AT, LocalDateTime.class))
+                    .createdDt(resultSet.getTimestamp(prefix + HeroFields.CREATED_AT.getBind()).toLocalDateTime())
+                    .updatedDt(resultSet.getTimestamp(prefix + HeroFields.UPDATED_AT.getBind()).toLocalDateTime())
                     .build();
         } catch (SQLException ex) {
             throw new RuntimeException();
@@ -38,13 +38,13 @@ public class HeroRowAssembler {
                                                  String prefix) {
         try {
             return PowerStats.builder()
-                    .id(UUID.fromString(resultSet.getString(prefix + PowerStatsFields.ID)))
-                    .agility(resultSet.getInt(prefix + AGILITY))
-                    .dexterity(resultSet.getInt(prefix + DEXTERITY))
-                    .intelligence(resultSet.getInt(prefix + INTELLIGENCE))
-                    .strength(resultSet.getInt(prefix + STRENGTH))
-                    .createdDt(resultSet.getObject(prefix + CREATED_AT, LocalDateTime.class))
-                    .updatedDt(resultSet.getObject(prefix + UPDATED_AT, LocalDateTime.class))
+                    .id(UUID.fromString(resultSet.getString(prefix + PowerStatsFields.ID.getBind())))
+                    .agility(resultSet.getInt(prefix + AGILITY.getBind()))
+                    .dexterity(resultSet.getInt(prefix + DEXTERITY.getBind()))
+                    .intelligence(resultSet.getInt(prefix + INTELLIGENCE.getBind()))
+                    .strength(resultSet.getInt(prefix + STRENGTH.getBind()))
+                    .createdDt(resultSet.getTimestamp(prefix + CREATED_AT.getBind()).toLocalDateTime())
+                    .updatedDt(resultSet.getTimestamp(prefix + UPDATED_AT.getBind()).toLocalDateTime())
                     .build();
         } catch (SQLException ex) {
             throw new RuntimeException();
