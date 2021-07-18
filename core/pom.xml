@@ -136,36 +136,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>fabric8-maven-plugin</artifactId>
-                <version>3.5.31</version>
-                <configuration>
-                    <mode>kubernetes</mode>
-                    <images>
-                        <image>
-                            <name>brainweb/interview</name>
-                            <alias>interview-api</alias>
-                            <build>
-                                <dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>
-                                <assembly>
-                                    <descriptorRef>artifact</descriptorRef>
-                                </assembly>
-                            </build>
-                        </image>
-                    </images>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>fabric8</id>
-                        <goals>
-                            <goal>resource</goal>
-                            <goal>build</goal>
-                            <goal>helm</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 

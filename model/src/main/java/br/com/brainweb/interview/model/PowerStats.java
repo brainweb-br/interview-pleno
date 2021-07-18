@@ -7,6 +7,7 @@ import java.util.UUID;
 
 @Value
 @Builder(toBuilder = true)
+@AllArgsConstructor
 public class PowerStats {
 
     UUID id;
