@@ -1,5 +1,6 @@
 package br.com.brainweb.interview.core.features.hero;
 
+import br.com.brainweb.interview.model.CompareHero;
 import br.com.brainweb.interview.model.Hero;
 
 import java.util.List;
@@ -17,5 +18,11 @@ public interface HeroService {
                 Hero hero);
 
     void delete(UUID id);
+
+
+    CompareHero compare(UUID heroId1,
+                        UUID heroId2);
+
+
 
 }

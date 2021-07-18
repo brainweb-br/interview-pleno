@@ -1,9 +1,11 @@
 package br.com.brainweb.interview.core.features.hero.adapter;
 
+import br.com.brainweb.interview.core.features.hero.adapter.dto.CompareHeroQuery;
 import br.com.brainweb.interview.core.features.hero.adapter.dto.HeroCommand;
 import br.com.brainweb.interview.core.features.hero.adapter.dto.HeroQuery;
 import br.com.brainweb.interview.core.features.hero.adapter.dto.PowerStatsQuery;
 import br.com.brainweb.interview.core.features.powerstats.adapter.PowerStatsFields;
+import br.com.brainweb.interview.model.CompareHero;
 import br.com.brainweb.interview.model.Hero;
 import br.com.brainweb.interview.model.PowerStats;
 import br.com.brainweb.interview.model.Race;
@@ -50,6 +52,17 @@ public class HeroDTOAssembler {
                 .powerStats(powerStatsQuery)
                 .createdDt(hero.getCreatedDt().toString())
                 .updatedDt(hero.getUpdatedDt().toString())
+                .build();
+    }
+
+    public static CompareHeroQuery toCompareHeroQuery(CompareHero compareHero){
+        return CompareHeroQuery.builder()
+                .heroId1(compareHero.getHeroId1())
+                .heroId2(compareHero.getHeroId2())
+                .diffStrength(compareHero.getDiffStrength())
+                .diffAgility(compareHero.getDiffAgility())
+                .diffDexterity(compareHero.getDiffDexterity())
+                .diffIntelligence(compareHero.getDiffIntelligence())
                 .build();
     }
 

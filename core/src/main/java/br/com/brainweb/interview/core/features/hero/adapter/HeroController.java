@@ -2,6 +2,7 @@ package br.com.brainweb.interview.core.features.hero.adapter;
 
 import br.com.brainweb.interview.core.features.hero.HeroService;
 import br.com.brainweb.interview.core.features.hero.adapter.dto.HeroCommand;
+import br.com.brainweb.interview.core.features.hero.adapter.dto.CompareHeroQuery;
 import br.com.brainweb.interview.core.features.hero.adapter.dto.HeroQuery;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -44,6 +45,12 @@ public class HeroController {
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
         heroService.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<CompareHeroQuery> compare(@RequestParam("heroId1") UUID heroId1,
+                                                    @RequestParam("heroId2") UUID heroId2) {
+        return ResponseEntity.ok(HeroDTOAssembler.toCompareHeroQuery(heroService.compare(heroId1, heroId2)));
     }
 
 }

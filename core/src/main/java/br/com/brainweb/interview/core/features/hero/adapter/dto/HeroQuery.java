@@ -4,27 +4,28 @@ import br.com.brainweb.interview.model.Race;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Value;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+
 @Builder
-@AllArgsConstructor
+@Value
 public class HeroQuery {
 
-    private UUID id;
+    UUID id;
 
-    private String name;
+    String name;
 
-    private Race race;
+    Race race;
 
-    private PowerStatsQuery powerStats;
+    PowerStatsQuery powerStats;
 
-    private boolean enabled;
+    boolean enabled;
 
-    private String createdDt;
+    String createdDt;
 
-    private String updatedDt;
+    String updatedDt;
 
 }

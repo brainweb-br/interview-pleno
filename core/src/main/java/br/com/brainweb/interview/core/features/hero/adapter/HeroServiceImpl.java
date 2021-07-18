@@ -1,15 +1,13 @@
 package br.com.brainweb.interview.core.features.hero.adapter;
 
+import br.com.brainweb.interview.model.CompareHero;
 import br.com.brainweb.interview.core.features.hero.HeroRepository;
 import br.com.brainweb.interview.core.features.hero.HeroService;
 import br.com.brainweb.interview.core.features.hero.exception.HeroNotFoundException;
 import br.com.brainweb.interview.model.Hero;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -58,5 +56,12 @@ public class HeroServiceImpl implements HeroService {
                     heroRepository.delete(savedHero);
                     return savedHero;
                 }).orElseThrow(HeroNotFoundException::new);
+    }
+
+    @Override
+    public CompareHero compare(UUID heroId1, UUID heroId2) {
+        var hero1 = findById(heroId1);
+        var hero2 = findById(heroId2);
+        return hero1.compare(hero2);
     }
 }

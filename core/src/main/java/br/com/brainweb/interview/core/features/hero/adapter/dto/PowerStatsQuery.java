@@ -3,13 +3,13 @@ package br.com.brainweb.interview.core.features.hero.adapter.dto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Value;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
 @Builder
-@AllArgsConstructor
+@Value
 public class PowerStatsQuery {
 
     UUID id;

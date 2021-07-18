@@ -39,13 +39,13 @@ public class Hero {
         this.name = name;
         this.race = race;
         this.powerStats = powerStats;
-        if(this.createdDt == null){
+        if (this.createdDt == null) {
             this.createdDt = LocalDateTime.now();
         }
         this.updatedDt = LocalDateTime.now();
     }
 
-    public void update(Hero from){
+    public void update(Hero from) {
         this.name = from.name;
         this.race = from.race;
         this.enabled = from.enabled;
@@ -53,12 +53,23 @@ public class Hero {
         this.updatedDt = from.updatedDt;
     }
 
-    public String getIdString(){
+    public String getIdString() {
         return this.id.toString();
     }
 
     public UUID getPowerStatsId() {
         return this.powerStats.getId();
+    }
+
+    public CompareHero compare(Hero another) {
+        return CompareHero.builder()
+                .heroId1(this.id)
+                .heroId2(another.getId())
+                .diffStrength(this.powerStats.getStrength() - another.getPowerStats().getStrength())
+                .diffAgility(this.powerStats.getAgility() - another.getPowerStats().getAgility())
+                .diffDexterity(this.powerStats.getDexterity() - another.getPowerStats().getDexterity())
+                .diffIntelligence(this.powerStats.getIntelligence() - another.getPowerStats().getIntelligence())
+                .build();
     }
 
 }
