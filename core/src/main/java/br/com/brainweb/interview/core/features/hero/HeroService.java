@@ -16,4 +16,6 @@ public interface HeroService {
     void update(UUID id,
                 Hero hero);
 
+    void delete(UUID id);
+
 }

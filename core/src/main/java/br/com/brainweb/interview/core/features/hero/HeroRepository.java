@@ -16,4 +16,6 @@ public interface HeroRepository {
 
     void update(Hero hero);
 
+    void delete(Hero hero);
+
 }

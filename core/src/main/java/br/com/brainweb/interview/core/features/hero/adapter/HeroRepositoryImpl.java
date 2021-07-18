@@ -32,7 +32,7 @@ public class HeroRepositoryImpl implements HeroRepository {
 
     public static final String SELECT_NAME = "select hero.*, p.strength as p_strength, p.agility as p_agility, p.dexterity as p_dexterity, p.intelligence as p_intelligence, p.created_at as p_created_at, p.updated_at as p_updated_at, p.id as p_id from hero, power_stats as p where hero.name = '%:name%' and hero.power_stats_id = p.id";
 
-
+    private static final String DELETE = "delete from hero WHERE hero.id = :id";
 
     @Override
     public Optional<Hero> findById(UUID id) {
@@ -56,11 +56,18 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
     @Override
+    @Transactional
     public void update(Hero hero) {
         powerStatsRepository.update(hero.getPowerStats());
         jdbcTemplate.update(UPDATE, toMap(hero));
     }
 
+    @Override
+    @Transactional
+    public void delete(Hero hero) {
+        powerStatsRepository.delete(hero.getPowerStats());
+        jdbcTemplate.update(DELETE, Map.of(ID.getBind(), hero.getId()));
+    }
 
     private Map<String, ?> toMap(Hero hero) {
         return Map.of(

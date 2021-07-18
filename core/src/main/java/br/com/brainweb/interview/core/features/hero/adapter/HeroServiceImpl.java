@@ -50,4 +50,13 @@ public class HeroServiceImpl implements HeroService {
                     return savedHero;
                 }).orElseThrow(HeroNotFoundException::new);
     }
+
+    @Override
+    public void delete(UUID id) {
+        heroRepository.findById(id)
+                .map(savedHero -> {
+                    heroRepository.delete(savedHero);
+                    return savedHero;
+                }).orElseThrow(HeroNotFoundException::new);
+    }
 }

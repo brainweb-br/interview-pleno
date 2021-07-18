@@ -40,4 +40,10 @@ public class HeroController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") UUID id) {
+        heroService.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
 }

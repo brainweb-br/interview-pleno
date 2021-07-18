@@ -1,18 +1,12 @@
 package br.com.brainweb.interview.core.features.powerstats.adapter;
 
-import br.com.brainweb.interview.core.features.hero.adapter.HeroFields;
 import br.com.brainweb.interview.core.features.powerstats.PowerStatsRepository;
 import br.com.brainweb.interview.model.PowerStats;
 import lombok.AllArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 
 import static br.com.brainweb.interview.core.features.hero.adapter.HeroFields.CREATED_AT;
 import static br.com.brainweb.interview.core.features.hero.adapter.HeroFields.ID;
@@ -27,12 +21,9 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
 
     private static final String INSERT = "insert into power_stats(strength, agility, dexterity, intelligence, created_at, updated_at, id) values (:strength, :agility, :dexterity, :intelligence, :created_at, :updated_at, :id)";
 
-    private final NamedParameterJdbcTemplate jdbcTemplate;
+    private static final String DELETE = "delete from power_stats WHERE power_stats.id = :id";
 
-    @Override
-    public Optional<PowerStats> findById(String id) {
-        return Optional.empty();
-    }
+    private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
     public void create(PowerStats powerStats) {
@@ -44,17 +35,20 @@ public class PowerStatsRepositoryImpl implements PowerStatsRepository {
         jdbcTemplate.update(UPDATE, toMap(powerStats));
     }
 
-
+    @Override
+    public void delete(PowerStats powerStats) {
+        jdbcTemplate.update(DELETE, Map.of(ID.getBind(), powerStats.getId()));
+    }
 
     private Map<String, ?> toMap(PowerStats powerStats) {
         return Map.of(
-                "strength", powerStats.getStrength(),
-                "agility", powerStats.getAgility(),
-                "dexterity", powerStats.getDexterity(),
-                "intelligence", powerStats.getIntelligence(),
-                "created_at", powerStats.getCreatedDt(),
-                "updated_at", powerStats.getUpdatedDt(),
-                "id", powerStats.getId()
+                STRENGTH.getBind(), powerStats.getStrength(),
+                AGILITY.getBind(), powerStats.getAgility(),
+                DEXTERITY.getBind(), powerStats.getDexterity(),
+                INTELLIGENCE.getBind(), powerStats.getIntelligence(),
+                CREATED_AT.getBind(), powerStats.getCreatedDt(),
+                UPDATED_AT.getBind(), powerStats.getUpdatedDt(),
+                ID.getBind(), powerStats.getId()
         );
     }
 }
