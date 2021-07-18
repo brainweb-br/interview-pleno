@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -16,6 +17,7 @@ public class Hero {
     private UUID id;
 
     @NonNull
+    @NotEmpty
     private String name;
 
     @NonNull
@@ -37,7 +39,7 @@ public class Hero {
         if (this.id == null) {
             this.id = UUID.randomUUID();
         }
-        this.name = name;
+        this.name = name.trim();
         this.race = race;
         this.powerStats = powerStats;
         if (this.createdDt == null) {

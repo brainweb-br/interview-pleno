@@ -1,8 +1,10 @@
 package br.com.brainweb.interview.core.features.hero;
 
 import br.com.brainweb.interview.core.features.hero.adapter.dto.HeroCommand;
+import br.com.brainweb.interview.core.features.hero.adapter.dto.HeroQuery;
 import br.com.brainweb.interview.core.features.hero.adapter.dto.PowerStatsCommand;
 import br.com.brainweb.interview.model.Race;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,13 +35,17 @@ public class HeroControllerIT {
 
     @BeforeEach
     void setup() {
+        heroRepository.deleteAll();
+    }
 
+    @AfterEach
+    void after() {
         heroRepository.deleteAll();
     }
 
     @Test
     public void shouldCreateAHeroAndReturn200WithHeroUUID() {
-        var url = base_url + port +"/heroes";
+        var url = base_url + port + "/heroes";
         var command = heroCommand();
         var result = restTemplate.postForEntity(url, command, String.class);
         UUID.fromString(Objects.requireNonNull(result.getBody()));
@@ -47,12 +53,29 @@ public class HeroControllerIT {
     }
 
     @Test
-    public void shouldCreateAHeroAndReturnAndGetHeroById() {
-        var url = base_url + port +"/heroes";
+    public void shouldCreateAHeroAndGetHeroById() {
+        var url = base_url + port + "/heroes";
         var command = heroCommand();
         var result = restTemplate.postForEntity(url, command, String.class);
-        UUID.fromString(Objects.requireNonNull(result.getBody()));
-        assertEquals(200, result.getStatusCode().value());
+        var heroId = result.getBody();
+        var getResult = restTemplate.getForEntity(url + "/"+ heroId, HeroQuery.class);
+        assertEquals(200, getResult.getStatusCode().value());
+        assertEquals(heroId, getResult.getBody().getId().toString());
+    }
+
+    @Test
+    public void shouldUpdateAHeroAndGetHeroById() {
+        var url = base_url + port + "/heroes";
+        var command = heroCommand();
+        var result = restTemplate.postForEntity(url, command, String.class);
+        var heroId = result.getBody();
+        command.setName("Clark Kent");
+        command.setRace(Race.HUMAN);
+        restTemplate.put(url + "/"+ heroId, command);
+        var getResult = restTemplate.getForEntity(url + "/"+ heroId, HeroQuery.class);
+        assertEquals(200, getResult.getStatusCode().value());
+        assertEquals("Clark Kent", getResult.getBody().getName());
+        assertEquals(Race.HUMAN, getResult.getBody().getRace());
     }
 
     private HeroCommand heroCommand() {

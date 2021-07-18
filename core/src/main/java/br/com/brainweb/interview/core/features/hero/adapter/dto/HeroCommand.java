@@ -4,10 +4,13 @@ import br.com.brainweb.interview.model.Race;
 import lombok.Data;
 import lombok.NonNull;
 
+import javax.validation.constraints.NotEmpty;
+
 @Data
 public class HeroCommand {
 
     @NonNull
+    @NotEmpty
     private String name;
 
     @NonNull

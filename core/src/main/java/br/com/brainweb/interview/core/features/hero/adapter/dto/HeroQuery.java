@@ -1,31 +1,30 @@
 package br.com.brainweb.interview.core.features.hero.adapter.dto;
 
 import br.com.brainweb.interview.model.Race;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Value;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 
 @Builder
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class HeroQuery {
 
-    UUID id;
+    private UUID id;
 
-    String name;
+    private String name;
 
-    Race race;
+    private Race race;
 
-    PowerStatsQuery powerStats;
+    private PowerStatsQuery powerStats;
 
-    boolean enabled;
+    private boolean enabled;
 
-    String createdDt;
+    private String createdDt;
 
-    String updatedDt;
+    private String updatedDt;
 
 }

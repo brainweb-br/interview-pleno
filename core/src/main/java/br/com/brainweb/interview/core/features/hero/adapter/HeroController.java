@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "/heroes", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -26,7 +27,11 @@ public class HeroController {
 
     @GetMapping("/search")
     public ResponseEntity<List<HeroQuery>> search(@RequestParam("name") String name) {
-        return null;
+        return ResponseEntity.ok(
+                heroService.search(name)
+                        .stream()
+                        .map(HeroDTOAssembler::toHeroQuery)
+                        .collect(Collectors.toList()));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)

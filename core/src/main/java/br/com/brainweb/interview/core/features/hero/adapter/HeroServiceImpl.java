@@ -49,6 +49,10 @@ public class HeroServiceImpl implements HeroService {
                 }).orElseThrow(HeroNotFoundException::new);
     }
 
+    private void validName(){
+
+    }
+
     @Override
     public void delete(UUID id) {
         heroRepository.findById(id)
