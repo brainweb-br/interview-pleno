@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -29,14 +30,22 @@ public class HeroRepositoryImpl implements HeroRepository {
 
     public static final String SELECT_ID = "select hero.*, p.strength as p_strength, p.agility as p_agility, p.dexterity as p_dexterity, p.intelligence as p_intelligence, p.created_at as p_created_at, p.updated_at as p_updated_at, p.id as p_id from hero, power_stats as p where hero.id = :id and hero.power_stats_id = p.id";
 
+    public static final String SELECT_NAME = "select hero.*, p.strength as p_strength, p.agility as p_agility, p.dexterity as p_dexterity, p.intelligence as p_intelligence, p.created_at as p_created_at, p.updated_at as p_updated_at, p.id as p_id from hero, power_stats as p where hero.name = '%:name%' and hero.power_stats_id = p.id";
+
+
 
     @Override
     public Optional<Hero> findById(UUID id) {
         try {
-            return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_ID, Map.of("id", id), HeroRowAssembler::heroRowMapper));
+            return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_ID, Map.of(ID.getBind(), id), HeroRowAssembler::heroRowMapper));
         }catch (EmptyResultDataAccessException ex){
             return Optional.empty();
         }
+    }
+
+    @Override
+    public List<Hero> search(String name) {
+        return jdbcTemplate.query(SELECT_NAME, Map.of(ID.getBind(), name), HeroRowAssembler::heroRowMapper);
     }
 
     @Override
