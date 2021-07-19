@@ -14,15 +14,18 @@ public interface HeroService {
 
     String create(Hero hero);
 
-    void update(UUID id,
+    Hero update(UUID id,
                 Hero hero);
 
-    void delete(UUID id);
-
+    OperationResult delete(UUID id);
 
     CompareHero compare(UUID heroId1,
                         UUID heroId2);
 
+
+    enum OperationResult {
+        NOTHING, SUCCESS
+    }
 
 
 }

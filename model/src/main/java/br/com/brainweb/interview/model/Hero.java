@@ -1,19 +1,18 @@
 package br.com.brainweb.interview.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-@Builder
+@Builder()
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Hero {
 
+    @EqualsAndHashCode.Include
     private UUID id;
 
     @NonNull

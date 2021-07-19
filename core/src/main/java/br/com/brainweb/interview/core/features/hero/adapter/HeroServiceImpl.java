@@ -35,16 +35,16 @@ public class HeroServiceImpl implements HeroService {
 
     @Override
     public String create(Hero hero) {
-        validName(hero.getName());
+        validName(hero.getName(), hero.getId());
         heroRepository.create(hero);
         return hero.getIdString();
     }
 
     @Override
-    public void update(UUID id,
+    public Hero update(UUID id,
                        Hero hero) {
-        validName(hero.getName());
-        heroRepository.findById(id)
+        validName(hero.getName(), hero.getId());
+        return heroRepository.findById(id)
                 .map(savedHero -> {
                     savedHero.update(hero);
                     heroRepository.update(savedHero);
@@ -52,18 +52,20 @@ public class HeroServiceImpl implements HeroService {
                 }).orElseThrow(HeroNotFoundException::new);
     }
 
-    private void validName(String name){
+    private void validName(String name, UUID id) {
         heroRepository.findByName(name).ifPresent(hero -> {
-            throw new InvalidHeroException("already has a hero named " + name);
+            if(!hero.getId().equals(id)){
+                throw new InvalidHeroException("already has a hero named " + name);
+            }
         });
     }
 
     @Override
-    public void delete(UUID id) {
-        heroRepository.findById(id)
+    public OperationResult delete(UUID id) {
+        return heroRepository.findById(id)
                 .map(savedHero -> {
                     heroRepository.delete(savedHero);
-                    return savedHero;
+                    return OperationResult.SUCCESS;
                 }).orElseThrow(HeroNotFoundException::new);
     }
 

@@ -15,6 +15,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ActiveProfiles("it")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -45,7 +47,7 @@ public class HeroControllerIT {
 
     @AfterEach
     void after() {
-       heroRepository.deleteAll();
+        heroRepository.deleteAll();
     }
 
     @Test
@@ -63,7 +65,7 @@ public class HeroControllerIT {
         var command = heroCommand();
         var result = restTemplate.postForEntity(url, command, String.class);
         var heroId = result.getBody();
-        var getResult = restTemplate.getForEntity(url + "/"+ heroId, HeroQuery.class);
+        var getResult = restTemplate.getForEntity(url + "/" + heroId, HeroQuery.class);
         assertEquals(200, getResult.getStatusCode().value());
         assertEquals(heroId, getResult.getBody().getId().toString());
     }
@@ -76,8 +78,8 @@ public class HeroControllerIT {
         var heroId = result.getBody();
         command.setName("Clark Kent");
         command.setRace(Race.HUMAN);
-        restTemplate.put(url + "/"+ heroId, command);
-        var getResult = restTemplate.getForEntity(url + "/"+ heroId, HeroQuery.class);
+        restTemplate.put(url + "/" + heroId, command);
+        var getResult = restTemplate.getForEntity(url + "/" + heroId, HeroQuery.class);
         assertEquals(200, getResult.getStatusCode().value());
         assertEquals("Clark Kent", getResult.getBody().getName());
         assertEquals(Race.HUMAN, getResult.getBody().getRace());
@@ -97,11 +99,39 @@ public class HeroControllerIT {
                 url + "?name={name}",
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<HeroQuery>>() {},
+                new ParameterizedTypeReference<List<HeroQuery>>() {
+                },
                 Map.of("name", "Woman")
         );
         assertEquals(200, getResult.getStatusCode().value());
         assertEquals(2, getResult.getBody().size());
+    }
+
+    @Test
+    public void shouldCreateAHeroAndDelete() {
+        var url = base_url + port + "/heroes";
+        var statsCommand = new PowerStatsCommand(10, 10, 9, 10);
+        var hero1 = new HeroCommand("WonderWoman1", Race.DIVINE, statsCommand);
+        var id = restTemplate.postForEntity(url, hero1, String.class).getBody();
+        restTemplate.delete(url + "/" + id);
+        assertThrows(HttpClientErrorException.NotFound.class, () -> {
+            restTemplate.getForEntity(url + "/" + id, HeroQuery.class);
+        });
+    }
+
+    @Test
+    public void shouldReturnsHeroesComparisons() {
+        var url = base_url + port + "/heroes";
+        var statsCommand1 = new PowerStatsCommand(10, 8, 9, 10);
+        var statsCommand2 = new PowerStatsCommand(5, 10, 1, 5);
+        var hero1 = new HeroCommand("SuperMan", Race.DIVINE, statsCommand1);
+        var hero2 = new HeroCommand("Flash", Race.HUMAN, statsCommand2);
+        var id1 = restTemplate.postForEntity(url, hero1, String.class).getBody();
+        var id2 = restTemplate.postForEntity(url, hero2, String.class).getBody();
+        var getResult =  restTemplate.getForEntity(url + "/power-stats/comparisons?heroId1={heroId1}&heroId2={heroId2}",
+                HeroQuery.class,
+                Map.of("heroId1", id1, "heroId2", id2));
+        assertEquals(200, getResult.getStatusCode().value());
     }
 
     private HeroCommand heroCommand() {
