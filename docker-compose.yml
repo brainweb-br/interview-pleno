@@ -9,6 +9,7 @@ services:
       - "8082:8080"
     depends_on:
       - postgresdb
+      - redis
   app2:
     build:
       context: ./core
@@ -18,7 +19,11 @@ services:
       - "8081:8080"
     depends_on:
       - postgresdb
-
+      - redis
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
   postgresdb:
     build:
       context: ./core/src/main/resources/db/schema/

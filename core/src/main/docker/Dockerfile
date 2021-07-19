@@ -8,9 +8,10 @@ ENV DB_HOSTNAME="postgresdb"
 ENV DB_PORT="5432"
 ENV DB_USERNAME="brainweb"
 ENV DB_PWD="brainweb"
+ENV REDIS_HOSTNAME="redis"
 
 EXPOSE 8080
 
 COPY target/brainweb-interview.jar interview.jar
 
-ENTRYPOINT [ "java" , "-Xms128m",  "-Xmx400m", "-jar", "-DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector", "interview.jar", "--jdbc.url=jdbc:postgresql://${DB_HOSTNAME}:${DB_PORT}/${DB_NAME}", "--jdbc.password=${DB_PWD}", "--jdbc.username=${DB_USERNAME}"]
+ENTRYPOINT [ "java" , "-Xms128m",  "-Xmx400m", "-jar", "-DLog4jContextSelector=org.apache.logging.log4j.core.async.AsyncLoggerContextSelector", "interview.jar", "--jdbc.url=jdbc:postgresql://${DB_HOSTNAME}:${DB_PORT}/${DB_NAME}", "--jdbc.password=${DB_PWD}", "--jdbc.username=${DB_USERNAME}","--spring.redis.host=${REDIS_HOSTNAME}"]
