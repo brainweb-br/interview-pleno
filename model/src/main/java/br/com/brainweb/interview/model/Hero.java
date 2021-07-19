@@ -3,14 +3,17 @@ package br.com.brainweb.interview.model;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-@Builder()
+@Builder
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Hero {
+public class Hero implements Serializable {
+
+    private static final long serialVersionUID = 6040685836058603583L;
 
     @EqualsAndHashCode.Include
     private UUID id;

@@ -4,6 +4,8 @@ import br.com.brainweb.interview.core.features.hero.HeroRepository;
 import br.com.brainweb.interview.core.features.powerstats.PowerStatsRepository;
 import br.com.brainweb.interview.model.Hero;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -39,6 +41,7 @@ public class HeroRepositoryImpl implements HeroRepository {
     private static final String DELETE_ALL = "delete from hero";
 
     @Override
+    @Cacheable(cacheNames = "hero", key="#id")
     public Optional<Hero> findById(UUID id) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_ID, Map.of(ID.getBind(), id), HeroRowAssembler::heroRowMapper));
@@ -48,6 +51,7 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
     @Override
+    @Cacheable(cacheNames = "hero", key="#name")
     public Optional<Hero> findByName(String name) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_NAME, Map.of(NAME.getBind(), name), HeroRowAssembler::heroRowMapper));
@@ -57,12 +61,14 @@ public class HeroRepositoryImpl implements HeroRepository {
     }
 
     @Override
-    public List<Hero> search(String name) {
-        return jdbcTemplate.query(SELECT_LIKE_NAME, Map.of(NAME.getBind(), "%" + name + "%"), HeroRowAssembler::heroRowMapper);
+    @Cacheable(cacheNames = "hero", key="#text")
+    public List<Hero> search(String text) {
+        return jdbcTemplate.query(SELECT_LIKE_NAME, Map.of(NAME.getBind(), "%" + text + "%"), HeroRowAssembler::heroRowMapper);
     }
 
     @Override
     @Transactional
+    @CacheEvict(cacheNames = "hero", allEntries = true)
     public void create(Hero hero) {
         powerStatsRepository.create(hero.getPowerStats());
         jdbcTemplate.update(INSERT, toMap(hero));
@@ -70,6 +76,7 @@ public class HeroRepositoryImpl implements HeroRepository {
 
     @Override
     @Transactional
+    @CacheEvict(cacheNames = "hero", allEntries = true)
     public void update(Hero hero) {
         powerStatsRepository.update(hero.getPowerStats());
         jdbcTemplate.update(UPDATE, toMap(hero));
@@ -77,6 +84,7 @@ public class HeroRepositoryImpl implements HeroRepository {
 
     @Override
     @Transactional
+    @CacheEvict(cacheNames = "hero", allEntries = true)
     public void delete(Hero hero) {
         jdbcTemplate.update(DELETE, Map.of(ID.getBind(), hero.getId()));
         powerStatsRepository.delete(hero.getPowerStats());
@@ -84,6 +92,7 @@ public class HeroRepositoryImpl implements HeroRepository {
 
     @Override
     @Transactional
+    @CacheEvict(cacheNames = "hero", allEntries = true)
     public void deleteAll() {
         jdbcTemplate.update(DELETE_ALL, Map.of());
         powerStatsRepository.deleteAll();

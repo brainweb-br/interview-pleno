@@ -2,13 +2,16 @@ package br.com.brainweb.interview.model;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Value
 @Builder(toBuilder = true)
 @AllArgsConstructor
-public class PowerStats {
+public class PowerStats implements Serializable {
+
+    private static final long serialVersionUID = 2296118516670685763L;
 
     UUID id;
 

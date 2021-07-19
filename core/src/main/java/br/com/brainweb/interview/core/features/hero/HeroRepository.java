@@ -12,7 +12,7 @@ public interface HeroRepository {
 
     Optional<Hero> findByName(String name);
 
-    List<Hero> search(String name);
+    List<Hero> search(String text);
 
     void create(Hero hero);
 

@@ -43,7 +43,7 @@ public class HeroServiceImpl implements HeroService {
     @Override
     public Hero update(UUID id,
                        Hero hero) {
-        validName(hero.getName(), hero.getId());
+        validName(hero.getName(), id);
         return heroRepository.findById(id)
                 .map(savedHero -> {
                     savedHero.update(hero);
