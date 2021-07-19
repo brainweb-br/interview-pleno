@@ -1,4 +1,25 @@
 package br.com.brainweb.interview.core.features.hero;
 
-public class HeroRepository {
+import br.com.brainweb.interview.model.Hero;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+public interface HeroRepository {
+
+    Optional<Hero> findById(UUID id);
+
+    Optional<Hero> findByName(String name);
+
+    List<Hero> search(String text);
+
+    void create(Hero hero);
+
+    void update(Hero hero);
+
+    void delete(Hero hero);
+
+    void deleteAll();
+
 }

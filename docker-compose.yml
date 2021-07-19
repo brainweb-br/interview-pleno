@@ -1,0 +1,46 @@
+version: '3.6'
+services:
+  app1:
+    build:
+      context: ./core
+      dockerfile: ./src/main/docker/Dockerfile
+    restart: always
+    ports:
+      - "8082:8080"
+    depends_on:
+      - postgresdb
+      - redis
+  app2:
+    build:
+      context: ./core
+      dockerfile: ./src/main/docker/Dockerfile
+    restart: always
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgresdb
+      - redis
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+  postgresdb:
+    build:
+      context: ./core/src/main/resources/db/schema/
+      dockerfile: Dockerfile
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: "admin"
+      POSTGRES_USER: "root"
+      POSTGRES_DB: "postgres"
+  lb:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "9090:9090"
+    depends_on:
+      - app1
+      - app2
+
