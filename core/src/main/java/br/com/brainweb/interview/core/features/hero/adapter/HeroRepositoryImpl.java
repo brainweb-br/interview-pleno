@@ -28,9 +28,11 @@ public class HeroRepositoryImpl implements HeroRepository {
 
     private static final String UPDATE = "update hero set name = :name, race = :race, enabled = :enabled, created_at = :created_at, updated_at = :updated_at where id = :id";
 
-    public static final String SELECT_ID = "select hero.*, p.strength as p_strength, p.agility as p_agility, p.dexterity as p_dexterity, p.intelligence as p_intelligence, p.created_at as p_created_at, p.updated_at as p_updated_at, p.id as p_id from hero, power_stats as p where hero.id = :id and hero.power_stats_id = p.id";
+    public static final String SELECT_ID = "select hero.*, p.strength as p_strength, p.agility as p_agility, p.dexterity as p_dexterity, p.intelligence as p_intelligence, p.created_at as p_created_at, p.updated_at as p_updated_at, p.id as p_id from hero inner join power_stats p on p.id = hero.power_stats_id where hero.id = :id";
 
-    public static final String SELECT_NAME = "select hero.*, p.strength as p_strength, p.agility as p_agility, p.dexterity as p_dexterity, p.intelligence as p_intelligence, p.created_at as p_created_at, p.updated_at as p_updated_at, p.id as p_id from hero, power_stats as p where hero.name = '%:name%' and hero.power_stats_id = p.id";
+    public static final String SELECT_LIKE_NAME = "select hero.*, p.strength as p_strength, p.agility as p_agility, p.dexterity as p_dexterity, p.intelligence as p_intelligence, p.created_at as p_created_at, p.updated_at as p_updated_at, p.id as p_id from hero inner join power_stats p on p.id = hero.power_stats_id where hero.name like :name";
+
+    public static final String SELECT_NAME = "select hero.*, p.strength as p_strength, p.agility as p_agility, p.dexterity as p_dexterity, p.intelligence as p_intelligence, p.created_at as p_created_at, p.updated_at as p_updated_at, p.id as p_id from hero inner join power_stats p on p.id = hero.power_stats_id where hero.name = :name";
 
     private static final String DELETE = "delete from hero WHERE hero.id = :id";
 
@@ -40,14 +42,23 @@ public class HeroRepositoryImpl implements HeroRepository {
     public Optional<Hero> findById(UUID id) {
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_ID, Map.of(ID.getBind(), id), HeroRowAssembler::heroRowMapper));
-        }catch (EmptyResultDataAccessException ex){
+        } catch (EmptyResultDataAccessException ex) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public Optional<Hero> findByName(String name) {
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_NAME, Map.of(NAME.getBind(), name), HeroRowAssembler::heroRowMapper));
+        } catch (EmptyResultDataAccessException ex) {
             return Optional.empty();
         }
     }
 
     @Override
     public List<Hero> search(String name) {
-        return jdbcTemplate.query(SELECT_NAME, Map.of(ID.getBind(), name), HeroRowAssembler::heroRowMapper);
+        return jdbcTemplate.query(SELECT_LIKE_NAME, Map.of(NAME.getBind(), "%" + name + "%"), HeroRowAssembler::heroRowMapper);
     }
 
     @Override

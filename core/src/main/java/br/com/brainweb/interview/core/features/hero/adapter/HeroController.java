@@ -25,7 +25,7 @@ public class HeroController {
         return ResponseEntity.ok(HeroDTOAssembler.toHeroQuery(heroService.findById(id)));
     }
 
-    @GetMapping("/search")
+    @GetMapping
     public ResponseEntity<List<HeroQuery>> search(@RequestParam("name") String name) {
         return ResponseEntity.ok(
                 heroService.search(name)
@@ -52,7 +52,7 @@ public class HeroController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping
+    @GetMapping("/power-stats/comparisons")
     public ResponseEntity<CompareHeroQuery> compare(@RequestParam("heroId1") UUID heroId1,
                                                     @RequestParam("heroId2") UUID heroId2) {
         return ResponseEntity.ok(HeroDTOAssembler.toCompareHeroQuery(heroService.compare(heroId1, heroId2)));

@@ -1,5 +1,6 @@
 package br.com.brainweb.interview.core.features.hero.adapter;
 
+import br.com.brainweb.interview.core.features.hero.exception.InvalidHeroException;
 import br.com.brainweb.interview.model.CompareHero;
 import br.com.brainweb.interview.core.features.hero.HeroRepository;
 import br.com.brainweb.interview.core.features.hero.HeroService;
@@ -34,6 +35,7 @@ public class HeroServiceImpl implements HeroService {
 
     @Override
     public String create(Hero hero) {
+        validName(hero.getName());
         heroRepository.create(hero);
         return hero.getIdString();
     }
@@ -41,6 +43,7 @@ public class HeroServiceImpl implements HeroService {
     @Override
     public void update(UUID id,
                        Hero hero) {
+        validName(hero.getName());
         heroRepository.findById(id)
                 .map(savedHero -> {
                     savedHero.update(hero);
@@ -49,8 +52,10 @@ public class HeroServiceImpl implements HeroService {
                 }).orElseThrow(HeroNotFoundException::new);
     }
 
-    private void validName(){
-
+    private void validName(String name){
+        heroRepository.findByName(name).ifPresent(hero -> {
+            throw new InvalidHeroException("already has a hero named " + name);
+        });
     }
 
     @Override

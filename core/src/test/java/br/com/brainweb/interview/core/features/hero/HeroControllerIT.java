@@ -11,9 +11,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -40,7 +45,7 @@ public class HeroControllerIT {
 
     @AfterEach
     void after() {
-        heroRepository.deleteAll();
+       heroRepository.deleteAll();
     }
 
     @Test
@@ -76,6 +81,27 @@ public class HeroControllerIT {
         assertEquals(200, getResult.getStatusCode().value());
         assertEquals("Clark Kent", getResult.getBody().getName());
         assertEquals(Race.HUMAN, getResult.getBody().getRace());
+    }
+
+    @Test
+    public void shouldCreateAHeroAndSearchByName() {
+        var url = base_url + port + "/heroes";
+        var statsCommand = new PowerStatsCommand(10, 10, 9, 10);
+        var hero1 = new HeroCommand("WonderWoman1", Race.DIVINE, statsCommand);
+        var hero2 = new HeroCommand("WonderWoman2", Race.DIVINE, statsCommand);
+        var hero3 = new HeroCommand("Flash", Race.HUMAN, statsCommand);
+        restTemplate.postForEntity(url, hero1, String.class);
+        restTemplate.postForEntity(url, hero2, String.class);
+        restTemplate.postForEntity(url, hero3, String.class);
+        var getResult = restTemplate.exchange(
+                url + "?name={name}",
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<HeroQuery>>() {},
+                Map.of("name", "Woman")
+        );
+        assertEquals(200, getResult.getStatusCode().value());
+        assertEquals(2, getResult.getBody().size());
     }
 
     private HeroCommand heroCommand() {

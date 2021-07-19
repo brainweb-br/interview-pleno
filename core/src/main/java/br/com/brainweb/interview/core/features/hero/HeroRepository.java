@@ -10,6 +10,8 @@ public interface HeroRepository {
 
     Optional<Hero> findById(UUID id);
 
+    Optional<Hero> findByName(String name);
+
     List<Hero> search(String name);
 
     void create(Hero hero);
