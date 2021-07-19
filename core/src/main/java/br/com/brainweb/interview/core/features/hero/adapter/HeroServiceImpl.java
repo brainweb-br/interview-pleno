@@ -61,11 +61,11 @@ public class HeroServiceImpl implements HeroService {
     }
 
     @Override
-    public OperationResult delete(UUID id) {
+    public boolean delete(UUID id) {
         return heroRepository.findById(id)
                 .map(savedHero -> {
                     heroRepository.delete(savedHero);
-                    return OperationResult.SUCCESS;
+                    return true;
                 }).orElseThrow(HeroNotFoundException::new);
     }
 

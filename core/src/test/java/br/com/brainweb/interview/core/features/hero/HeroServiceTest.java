@@ -8,10 +8,8 @@ import br.com.brainweb.interview.model.PowerStats;
 import br.com.brainweb.interview.model.Race;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.util.UUID;
 
-import static br.com.brainweb.interview.core.features.hero.HeroService.OperationResult.SUCCESS;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class HeroServiceTest {
@@ -136,7 +134,7 @@ public class HeroServiceTest {
         var hero1 = new Hero("SuperMan", Race.DIVINE, stats1, true);
         heroRepository.create(hero1);
         var result = heroService.delete(hero1.getId());
-        assertEquals(SUCCESS, result);
+        assertTrue(result);
     }
 
     @Test

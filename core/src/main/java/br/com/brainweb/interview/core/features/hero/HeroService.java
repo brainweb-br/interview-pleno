@@ -17,15 +17,10 @@ public interface HeroService {
     Hero update(UUID id,
                 Hero hero);
 
-    OperationResult delete(UUID id);
+    boolean delete(UUID id);
 
     CompareHero compare(UUID heroId1,
                         UUID heroId2);
-
-
-    enum OperationResult {
-        NOTHING, SUCCESS
-    }
 
 
 }
