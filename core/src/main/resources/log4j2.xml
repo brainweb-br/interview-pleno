@@ -37,7 +37,7 @@
     </Appenders>
 
     <Loggers>
-        <Logger name="br.com.brainweb" level="INFO"/>
+        <Logger name="br.com.gubee" level="INFO"/>
         <Root level="INFO" includeLocation="false">
             <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="JSON"/>

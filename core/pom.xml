@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>brainweb</groupId>
+        <groupId>gubee</groupId>
         <artifactId>interview</artifactId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
@@ -34,8 +34,16 @@
             <artifactId>spring-boot-starter-data-jdbc</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
         <dependency>
-            <groupId>brainweb</groupId>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.1.1</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>gubee</groupId>
             <artifactId>interview-model</artifactId>
         </dependency>
         <dependency>
@@ -55,6 +63,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -92,7 +105,7 @@
                     <reuseForks>true</reuseForks>
                     <systemPropertyVariables>
                         <!--suppress UnresolvedMavenProperty -->
-                        <it-database.port>${brainweb-interview-postgres-it.port}</it-database.port>
+                        <it-database.port>${gubee-interview-postgres-it.port}</it-database.port>
                     </systemPropertyVariables>
                 </configuration>
             </plugin>
@@ -103,7 +116,7 @@
                 <configuration>
                     <images>
                         <image>
-                            <name>brainweb/interview-postgres-it</name>
+                            <name>gubee/interview-postgres-it</name>
                             <alias>interview-postgres-it</alias>
                             <build>
                                 <dockerFileDir>${project.basedir}/src/main/resources/db/schema</dockerFileDir>
@@ -111,7 +124,7 @@
                             </build>
                             <run>
                                 <ports>
-                                    <port>brainweb-interview-postgres-it.port:5432</port>
+                                    <port>gubee-interview-postgres-it.port:5432</port>
                                 </ports>
                             </run>
                         </image>
@@ -144,7 +157,7 @@
                     <mode>kubernetes</mode>
                     <images>
                         <image>
-                            <name>brainweb/interview</name>
+                            <name>gubee/interview</name>
                             <alias>interview-api</alias>
                             <build>
                                 <dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>

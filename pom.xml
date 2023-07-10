@@ -4,17 +4,16 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.2.1.RELEASE</version>
-        <relativePath /> <!-- lookup parent from repository -->
+        <version>2.6.7</version>
+        <relativePath/> <!-- lookup parent from repository -->
     </parent>
-
-    <groupId>brainweb</groupId>
+    <groupId>gubee</groupId>
     <artifactId>interview</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
-    <name>brainweb-interview</name>
+    <name>gubee-interview</name>
     <description>Pleno interview project.</description>
 
     <licenses>
@@ -25,8 +24,8 @@
     </licenses>
 
     <organization>
-        <name>BrainWeb</name>
-        <url>http://www.brainweb.com.br</url>
+        <name>gubee</name>
+        <url>http://www.gubee.com.br</url>
     </organization>
 
     <properties>
@@ -46,12 +45,18 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api -->
             <dependency>
-                <groupId>brainweb</groupId>
+                <groupId>javax.ws.rs</groupId>
+                <artifactId>javax.ws.rs-api</artifactId>
+                <version>2.1.1</version>
+            </dependency>
+
+            <dependency>
+                <groupId>gubee</groupId>
                 <artifactId>interview-model</artifactId>
                 <version>${project.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
@@ -100,7 +105,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <annotationProcessorPaths>
                         <path>

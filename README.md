@@ -1,8 +1,5 @@
-# Teste Programador Backend Pleno
-Teste destinado aos candidatos a vaga de Programador Backend <b>Pleno</b>. Se o seu nível é outro, por favor, dê uma olhada nos demais repositórios e escolha o que se adequa a sua skill. 
-- [@brainweb-interview-junior](https://github.com/brainweb-br/interview-junior)
-- [@brainweb-interview-senior](https://github.com/brainweb-br/interview-senior)
-
+# Teste Programador Backend 
+Teste destinado aos candidatos a vaga de Programador Backend. 
 ## Descrição
 Um cliente chamado Bruce Wayne nos contratou para fazer um sistema com o objetivo de catalogar os super-heróis existentes.
 </br>
@@ -39,8 +36,8 @@ Como primeiro passo faça um ***fork*** desse projeto na sua conta do GitHub, se
 #### Correção
 Ao término da prova, ***abra um PR (Pull Request)***, é assim que iremos avaliar o código proposto.
 #### Configurações
-- OpenJDK 11 instalado;
-- Maven na versão 3.6+ instalado;
+- OpenJDK 17 instalado;
+- Maven na versão 3.8+ instalado;
 - IDE pode ser o de preferência, mas gostamos bastante do IntelliJ por aqui;
 - Docker e docker-compose instalados.
 
@@ -53,6 +50,7 @@ mvn clean verify
 #### Bônus
 Será considerado um plus os candidatos que entregarem:
 - Bom uso dos padrões de REST;
+- Refatorar para Arquitetura Hexagonal/Clean Arch
 - Uso de BDD para escrever os testes de integração;
 - Redundância e Escalabilidade da API:
     - Mínimo de 2 instâncias;

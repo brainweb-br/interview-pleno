@@ -1,0 +1,181 @@
+{
+	"info": {
+		"_postman_id": "dba21538-8424-4e63-bd11-5b51a231964d",
+		"name": "Gubee - Interview",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12086119"
+	},
+	"item": [
+		{
+			"name": "Health",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/actuator/health",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"actuator",
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetHero",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/getHero/4e80e32d-23ea-4314-8fd1-8f2f8f4609c4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"getHero",
+						"4e80e32d-23ea-4314-8fd1-8f2f8f4609c4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetHeroByName",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/getHeroByName/paulo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"getHeroByName",
+						"paulo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteHeroById",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/deleteHero/2926d4b9-18d5-4fc1-a93d-db7cd7821f42",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"deleteHero",
+						"2926d4b9-18d5-4fc1-a93d-db7cd7821f42"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateHero",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"pauloUm\",\r\n    \"race\": \"HUMAN\",\r\n    \"enabled\": true,\r\n    \"strength\": 2,\r\n    \"agility\": 3,\r\n    \"dexterity\": 1,\r\n    \"intelligence\": 4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/createHero",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"createHero"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditHero",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"pauloDois\",\r\n    \"race\": \"HUMAN\",\r\n    \"enabled\": true,\r\n    \"strength\": 5,\r\n    \"agility\": 5,\r\n    \"dexterity\": 5,\r\n    \"intelligence\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/editHero/4e80e32d-23ea-4314-8fd1-8f2f8f4609c4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"editHero",
+						"4e80e32d-23ea-4314-8fd1-8f2f8f4609c4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CompareHeroes",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"hero1\" :  \"4e80e32d-23ea-4314-8fd1-8f2f8f4609c4\",\r\n    \"hero2\" :  \"1056ed18-2d1a-4887-8907-894f0d02fca7\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/compareHeroes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"compareHeroes"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
